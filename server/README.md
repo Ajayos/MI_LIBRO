@@ -6,10 +6,9 @@ MI LIBRO is a book management system built with Node.js and Express.
 
 - Version: 1.0.1
 - Repository: [https://github.com/Ajayos/MI_LIBRO](https://github.com/Ajayos/MI_LIBRO)
-- Authors: [`Ajay o s`](https://github.com/Ajayos), [`Akarsh Krishna`](https://github.com/akarsh-krishna), [`	Abinas Sulaimans`](https://github.com/Abinas8055), [`Saran T K`](https://github.com/SARAN-TK), [`Yasir Muhd`](https://github.com/yasirmuhd)
+- Authors: [`Ajay o s`](https://github.com/Ajayos), [`Akarsh Krishna`](https://github.com/akarsh-krishna), [`Abinas Sulaimans`](https://github.com/Abinas8055), [`Saran T K`](https://github.com/SARAN-TK), [`Yasir Muhd`](https://github.com/yasirmuhd)
 - Created: 2023-05-17
 - Modified: 2023-05-17
-- Editor: Ajayos
 
 ## Description
 
