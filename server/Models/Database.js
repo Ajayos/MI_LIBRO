@@ -30,7 +30,10 @@ const colors = require("colors");
  */
 const connectDB = async (url) => {
   // Exit the process with a non-zero status code if the URL is not provided
-  if (!url) return process.exit();
+  if (!url) {
+    log('MongoDB URL not provided'.red.bold);
+    process.exit();
+  }
 
   try {
     // Use Mongoose to connect to the database with the provided URL

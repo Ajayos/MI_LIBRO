@@ -30,5 +30,4 @@ module.exports = {
   Admin, // Admin model for managing admin data
   User, // User model for managing user data
   Book, // Book model for managing book data
-  File, // File model for managing file data
 };

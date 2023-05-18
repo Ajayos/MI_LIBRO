@@ -10,7 +10,7 @@
  * @editor : Ajayos
  * @file : Admin.js
  * @path : Models/Admin.js
- * 
+ *
  * Description : This module exports a Mongoose model for managing admin data in the database. It defines an admin schema
  * with fields such as username and password. The Admin model allows adding, updating, or deleting admin data from the database.
  *

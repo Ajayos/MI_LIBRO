@@ -32,7 +32,7 @@ const { log } = require("@ajayos/nodelogger");
 
 // Import local modules
 const setupLogger = require("./lib/logger");
-const apiRouter = require("./Routers");
+//const apiRouter = require("./Routers");
 const { connectDB } = require("./Models");
 
 // Define
@@ -63,7 +63,7 @@ app.use(bodyParser.json());
 
 // setup api
 // v1 api
-app.use("/api/v1/", apiRouter);
+//app.use("/api/v1/", apiRouter);
 
 // Default of get method for render the client
 app.get("*", (req, res) => {
