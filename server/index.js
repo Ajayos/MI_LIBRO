@@ -35,18 +35,19 @@ const setupLogger = require("./lib/logger");
 //const apiRouter = require("./Routers");
 const { connectDB } = require("./Models");
 
+// config env file
+dotenv.config();
+
 // Define
 const SERVER_PORT = process.env.PORT || 3000;
 const publicPath = path.join(__dirname, "Public");
 
-// config env file
-dotenv.config();
 
 // Set up the logger
-setupLogger();
+//setupLogger();
 
 // connect to Database
-connectDB(process.env.MONGO_URL);
+//connectDB(process.env.MONGO_URL);
 
 // Create Express app
 const app = express();
