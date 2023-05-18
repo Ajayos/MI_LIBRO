@@ -3,7 +3,7 @@
  * @module controllers/adminController
  */
 
-const Admin = require('../models/Admin');
+const Admin = require('../Models/Admin');
 const bcrypt = require('bcrypt');
 
 /**

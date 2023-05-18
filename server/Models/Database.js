@@ -43,10 +43,10 @@ const connectDB = async (url) => {
     });
 
     // Log a message indicating that the connection was successful
-    nodelog.log(`MongoDB Connected`.cyan.underline);
+    log(`MongoDB Connected`.cyan.underline);
   } catch (error) {
     // Log an error message if the connection failed
-    nodelog.log(`Error: ${error.message}`.red.bold);
+    log(`Error: ${error.message}`.red.bold);
     // Exit the process with a non-zero status code
     process.exit();
   }

@@ -20,7 +20,7 @@
  */
 
 // Import dependencies
-const User = require('../models/User');
+const User = require('../Models/User');
 const bcrypt = require('bcrypt');
 
 /**
@@ -59,4 +59,5 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
 

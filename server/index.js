@@ -44,10 +44,10 @@ const publicPath = path.join(__dirname, "Public");
 
 
 // Set up the logger
-//setupLogger();
+setupLogger();
 
 // connect to Database
-//connectDB(process.env.MONGO_URL);
+connectDB(process.env.MONGO_URL);
 
 // Create Express app
 const app = express();
