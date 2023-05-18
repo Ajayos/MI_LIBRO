@@ -127,7 +127,7 @@ const Admin = () => {
             <FormControl fullWidth>
               <InputLabel
                 htmlFor="outlined-adornment-password-login"
-                sx={{ color: "blue" }}
+                sx={{ color: "#03e9f4"  }}
               >
                 {"Email / Username"}
               </InputLabel>
@@ -135,7 +135,7 @@ const Admin = () => {
                 id="outlined-adornment-username-login"
                 type="text"
                 name="password"
-                sx={{ color: "#000000", backgroundColor: "#ffffff" }}
+                sx={{ color: "#ffffff", backgroundColor: "#000000" }}
                 label={"Username"}
               />
             </FormControl>
@@ -145,7 +145,7 @@ const Admin = () => {
             <FormControl fullWidth>
               <InputLabel
                 htmlFor="outlined-adornment-password-login"
-                sx={{ color: "blue" }}
+                sx={{ color: "#03e9f4"  }}
               >
                 {"Enter Password"}
               </InputLabel>
@@ -153,7 +153,7 @@ const Admin = () => {
                 id="outlined-adornment-password-login"
                 type={showPassword ? "text" : "password"}
                 name="password"
-                sx={{ color: "#000000", backgroundColor: "#ffffff" }}
+                sx={{ color: "#ffffff", backgroundColor: "#000000" }}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -164,9 +164,9 @@ const Admin = () => {
                       size="large"
                     >
                       {showPassword ? (
-                        <Visibility sx={{ color: "blue" }} />
+                        <Visibility sx={{ color: "#03e9f4"  }} />
                       ) : (
-                        <VisibilityOff sx={{ color: "blue" }} />
+                        <VisibilityOff sx={{ color: "#03e9f4"  }} />
                       )}
                     </IconButton>
                   </InputAdornment>

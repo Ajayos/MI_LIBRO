@@ -45,7 +45,7 @@ const Signup = () => {
     var cpassword = document.getElementsByName("cpassword")[0].value
     var data = { username: username, password: password };
     if(!username || !password) {
-      
+
     }
     if(password !== cpassword) {
       setiferror(true)
@@ -133,73 +133,73 @@ const Signup = () => {
           <form onSubmit={handleSubmit}>
             <div style={{ position: "relative", padding: 12 }}>
               <FormControl fullWidth className={classes.formControl}>
-                <InputLabel sx={{ color: "blue" }} >Name</InputLabel>
+                <InputLabel sx={{ color: "#03e9f4"  }} >Name</InputLabel>
                 <OutlinedInput
                 error= {iferror}
                   type="text"
                   name="name"
-                  sx={{ color: "#000000", backgroundColor: "#ffffff" }}
+                  sx={{ color: "#ffffff", backgroundColor: "#000000" }}
                   label="Name"
                 />
               </FormControl>
               <br />
               <br />
               <FormControl fullWidth className={classes.formControl}>
-                <InputLabel sx={{ color: "blue" }}>Place</InputLabel>
+                <InputLabel sx={{ color: "#03e9f4"  }}>Place</InputLabel>
                 <OutlinedInput
                   type="text"
                   name="place"
-                  sx={{ color: "#000000", backgroundColor: "#ffffff" }}
+                  sx={{ color: "#ffffff", backgroundColor: "#000000" }}
                   label="Place"
                 />
               </FormControl>
               <br />
               <br />
               <FormControl fullWidth className={classes.formControl}>
-                <InputLabel sx={{ color: "blue" }}>Age</InputLabel>
+                <InputLabel sx={{ color: "#03e9f4"  }}>Age</InputLabel>
                 <OutlinedInput
                   type="number"
                   name="age"
-                  sx={{ color: "#000000", backgroundColor: "#ffffff" }}
+                  sx={{ color: "#ffffff", backgroundColor: "#000000" }}
                   label="Age"
                 />
               </FormControl>
               <br />
               <br />
               <FormControl fullWidth className={classes.formControl}>
-                <InputLabel sx={{ color: "blue" }}>Email ID</InputLabel>
+                <InputLabel sx={{ color: "#03e9f4"  }}>Email ID</InputLabel>
                 <OutlinedInput
                   type="email"
                   name="email"
-                  sx={{ color: "#000000", backgroundColor: "#ffffff" }}
+                  sx={{ color: "#ffffff", backgroundColor: "#000000" }}
                   label="Email ID"
                 />
               </FormControl>
               <br />
               <br />
               <FormControl fullWidth className={classes.formControl}>
-                <InputLabel sx={{ color: "blue" }}>Education</InputLabel>
+                <InputLabel sx={{ color: "#03e9f4"  }}>Education</InputLabel>
                 <OutlinedInput
                   type="text"
                   name="education"
-                  sx={{ color: "#000000", backgroundColor: "#ffffff" }}
+                  sx={{ color: "#ffffff", backgroundColor: "#000000" }}
                   label="Education"
                 />
               </FormControl>
               <br />
               <br />
               <FormControl fullWidth className={classes.formControl}>
-                <InputLabel sx={{ color: "blue" }}>Contact Details</InputLabel>
+                <InputLabel sx={{ color: "#03e9f4"  }}>Contact Details</InputLabel>
                 <OutlinedInput
                   type="tel"
                   name="phoneNumber"
-                  sx={{ color: "#000000", backgroundColor: "#ffffff" }}
+                  sx={{ color: "#ffffff", backgroundColor: "#000000" }}
                   label="Phone Number"
                 />
                 <OutlinedInput
                   type="email"
                   name="email"
-                  sx={{ color: "#000000", backgroundColor: "#ffffff" }}
+                  sx={{ color: "#ffffff", backgroundColor: "#000000" }}
                   label="Email ID"
                 />
               </FormControl>
