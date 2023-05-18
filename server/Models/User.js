@@ -6,7 +6,7 @@
  * @link : https://github.com/Ajayos/MI_LIBRO
  * @authors : Ajay, Akarsh, Abhinas, Saran, Yasir
  * @created : 2023-05-17 10:14:13
- * @modified : 2023-05-17 12:17:47
+ * @modified : 2023-05-18 18:11:12
  * @editor : Ajayos
  * @file : User.js
  * @path : Models/User.js
@@ -65,18 +65,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // Define the 'contactDetails' field as an object
+  // Define the 'contactDetails' field with type String and it is required
   contactDetails: {
-    // Define the 'phoneNumber' field within 'contactDetails' as type String and it is required
-    phoneNumber: {
       type: String,
       required: true,
-    },
-    // Define the 'emailId' field within 'contactDetails' as type String and it is required
-    emailId: {
-      type: String,
-      required: true,
-    },
   },
   // Define the 'termsAndConditions' field with type Boolean and it is required
   termsAndConditions: {
