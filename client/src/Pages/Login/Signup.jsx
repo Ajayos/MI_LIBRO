@@ -23,7 +23,7 @@ import Logo from "../../image/logo.png";
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "rgb(10, 22, 66)", // Replace with your desired background color
-    minHeight: "170vh",
+    minHeight: "150vh",
   },
 }));
 const Signup = () => {
