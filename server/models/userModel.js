@@ -1,23 +1,21 @@
 /**
- * Module for managing user data in the database.
+ * User Model
  *
  * @project : MI LIBRO
  * @version : 1.0.1
  * @link : https://github.com/Ajayos/MI_LIBRO
- * @authors : Ajay, Akarsh, Abhinas, Saran, Yasir
+ * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 10:14:13
- * @modified : 2023-05-18 18:11:12
+ * @modified : 2023-05-20 14:11:12
  * @editor : Ajayos
- * @file : User.js
- * @path : Models/User.js
+ * @file : userModel.js
+ * @path : /models/userModel.js
  *
- * Description: This module exports a Mongoose model for managing user data in the database. It defines a user schema
- * with fields such as username, password, name, place, age, email, education, contact details, terms and conditions.
- * The User model allows adding, updating, or deleting user data from the database.
+ * Description: Model for the User entity.
  *
  * GitHub Repository: https://github.com/Ajayos/MI_LIBRO
  *
- * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abhinas, Saran, Yasir)
+ * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abinas, Saran, Yasir)
  */
 
 

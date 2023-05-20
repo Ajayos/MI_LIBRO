@@ -4,7 +4,7 @@
  * @project : MI LIBRO
  * @version : 1.0.1
  * @link : https://github.com/Ajayos/MI_LIBRO
- * @authors : Ajay, Akarsh, Abhinas, Saran, Yasir
+ * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-18 18:32:52
  * @modified : 2023-05-18 18:41:01
  * @editor : Ajayos

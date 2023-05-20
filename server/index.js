@@ -1,22 +1,23 @@
 /**
- * Main entry point for the home page.
+ * Bookstore Library App
  *
  * @project : MI LIBRO
  * @version : 1.0.1
  * @link : https://github.com/Ajayos/MI_LIBRO
- * @authors : Ajay, Akarsh, Abhinas, Saran, Yasir
+ * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 10:02:42
- * @modified : 2023-05-17 21:34:08
+ * @modified : 2023-05-20 15:25:38
  * @editor : Ajayos
  * @file : index.js
- * @path : /
+ * @path : /index.js
  *
- * Description: This is the main entry point for the home page. It initializes Express, sets up the routes, and uses Socket.IO for real-time updates.
+ * Description: Main entry point for the Bookstore Library App backend.
  *
  * GitHub Repository: https://github.com/Ajayos/MI_LIBRO
  *
- * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abhinas, Saran, Yasir)
+ * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abinas, Saran, Yasir)
  */
+
 
 // Import dependencies
 const fs = require("fs");
@@ -64,7 +65,7 @@ app.use(bodyParser.json());
 
 // setup api
 // v1 api
-//app.use("/api/v1/", apiRouter);
+app.use("/api/v1/", apiRouter);
 
 // Default of get method for render the client
 app.get("*", (req, res) => {
@@ -76,6 +77,9 @@ app.get("*", (req, res) => {
     res.send("Server is running");
   }
 });
+
+// Error handler middleware
+app.use(errorHandler);
 
 // Set up Socket.IO for real-time updates
 io.on("connection", (socket) => {

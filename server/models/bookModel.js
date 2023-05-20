@@ -1,15 +1,15 @@
 /**
- * Module for managing book data in the database.
+ * Book Model
  *
  * @project : MI LIBRO
  * @version : 1.0.1
  * @link : https://github.com/Ajayos/MI_LIBRO
- * @authors : Ajay, Akarsh, Abhinas, Saran, Yasir
+ * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 11:12:02
- * @modified : 2023-05-17 22:19:14
+ * @modified : 2023-05-20 23:19:14
  * @editor : Ajayos
- * @file : Books.js
- * @path : Models/Books.js
+ * @file : bookModel.js
+ * @path : models/bookModel.js
  *
  * Description: This module exports a Mongoose model for managing book data in the database. It defines a book schema
  * with fields such as title, author, genre, publication date, description, status, rented by, buy info, likes, and comments.
@@ -17,9 +17,10 @@
  *
  * GitHub Repository: https://github.com/Ajayos/MI_LIBRO
  *
- * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abhinas, Saran, Yasir)
+ * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abinas, Saran, Yasir)
  */
 
+// Import the mongoose package
 const mongoose = require('mongoose');
 
 /**
@@ -126,3 +127,4 @@ const bookSchema = new mongoose.Schema({
 const Book = mongoose.model('Book', bookSchema);
 
 module.exports = Book;
+

@@ -4,7 +4,7 @@
  * @project : MI LIBRO
  * @version : 1.0.1
  * @link : https://github.com/Ajayos/MI_LIBRO
- * @authors : Ajay, Akarsh, Abhinas, Saran, Yasir
+ * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 10:11:19
  * @modified : 2023-05-17 10:14:10
  * @editor : Ajayos
@@ -15,7 +15,7 @@
  *
  * GitHub Repository: https://github.com/Ajayos/MI_LIBRO
  *
- * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abhinas, Saran, Yasir)
+ * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abinas, Saran, Yasir)
  */
 
 // Import the necessary dependencies
