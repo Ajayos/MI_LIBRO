@@ -18,18 +18,16 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Loginmod from "../../theme/Login";
 import { buttonStyles } from "../../theme/buttonStyles";
-import axios from "axios";
 
 const Admin = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -39,98 +37,79 @@ const Admin = () => {
     event.preventDefault();
   };
 
-  const handleInputChange = (event) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const validateForm = () => {
-    let errors = {};
-    let isValid = true;
-
-    if (!formData.email) {
-      isValid = false;
-      errors.email = "Email/Username is required";
-    }
-
-    if (!formData.password) {
-      isValid = false;
-      errors.password = "Password is required";
-    }
-
-    setErrors(errors);
-
-    return isValid;
-  };
-
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (validateForm()) {
-      try {
-        setLoading(true);
+    // Frontend validations
+    if (!username || !password) {
+      toast.error("Please enter both username and password.");
+      return;
+    }
 
-        // Send login request to the backend
-        const response = await axios.post("/api/v1/admin/login", formData);
+    // Prepare data to be sent to the backend
+    const userData = {
+      username,
+      password,
+    };
 
-        setLoading(false);
+    // Send data to the backend
+    axios
+      .post("/api/v1/admin/login", userData)
+      .then((response) => {
+        // Successful login
+        toast.success("Login successful!");
 
-        // Wait for a second and then redirect to the '/home' page
+        // Wait for a second and then redirect to /home page
         setTimeout(() => {
           window.location.replace("/home");
         }, 1000);
-      } catch (error) {
-        setLoading(false);
-
-        // Display error message
-        setErrors({ email: "Invalid email/username or password" });
-      }
-    }
+      })
+      .catch((error) => {
+        // Error handling
+        if (error.response) {
+          // Request made and server responded with an error status
+          toast.error(error.response.data.message);
+        } else if (error.request) {
+          // The request was made but no response was received
+          toast.error("No response received from the server.");
+        } else {
+          // Something else happened in making the request
+          toast.error("An error occurred while processing the request.");
+        }
+      });
   };
 
   return (
     <Loginmod message="ADMIN DASHBOARD LOGIN">
-
       <form onSubmit={handleSubmit}>
-
         <div style={{ position: "relative", padding: 12 }}>
           <FormControl fullWidth>
-            <InputLabel
-              htmlFor="outlined-adornment-username-login"
-              sx={{ color: "#03e9f4" }}
-            >
+            <InputLabel htmlFor="outlined-adornment-username-login" sx={{ color: "#03e9f4" }}>
               {"Email / Username"}
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-username-login"
               type="text"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               sx={{ color: "#ffffff", backgroundColor: "#000000" }}
               label={"Username"}
-              error={!!errors.email}
-              helperText={errors.email}
             />
           </FormControl>
           <br />
           <br />
 
           <FormControl fullWidth>
-            <InputLabel
-              htmlFor="outlined-adornment-password-login"
-              sx={{ color: "#03e9f4" }}
-            >
+            <InputLabel htmlFor="outlined-adornment-password-login" sx={{ color: "#03e9f4" }}>
               {"Enter Password"}
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-password-login"
               type={showPassword ? "text" : "password"}
               name="password"
-              value={formData.password}
-              onChange={handleInputChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               sx={{ color: "#ffffff", backgroundColor: "#000000" }}
               endAdornment={
                 <InputAdornment position="end">
@@ -141,17 +120,11 @@ const Admin = () => {
                     edge="end"
                     size="large"
                   >
-                    {showPassword ? (
-                      <Visibility sx={{ color: "#03e9f4" }} />
-                    ) : (
-                      <VisibilityOff sx={{ color: "#03e9f4" }} />
-                    )}
+                    {showPassword ? <Visibility sx={{ color: "#03e9f4" }} /> : <VisibilityOff sx={{ color: "#03e9f4" }} />}
                   </IconButton>
                 </InputAdornment>
               }
               label={"password"}
-              error={!!errors.password}
-              helperText={errors.password}
             />
           </FormControl>
 
@@ -174,17 +147,9 @@ const Admin = () => {
             <Box></Box>
           </Box>
         </div>
-        <Button
-          type="submit"
-          fullWidth
-          sx={{
-            ...buttonStyles,
-          }}
-          disabled={loading}
-        >
-          <span /> <span /> <span /> <span />
-          {loading && <>{'Loading...'}</>}
-          {!loading && <>{'Login'}</>}
+        <Button onClick={handleSubmit} type="submit" fullWidth sx={{ ...buttonStyles }}>
+          <span /> <span /> <span />
+          LOGIN
         </Button>
       </form>
       <Button
@@ -196,7 +161,7 @@ const Admin = () => {
         }}
         onClick={() => window.location.replace("/login")}
       >
-        <span /> <span /> <span /> <span />
+        <span /> <span /> <span />
         USER LOGIN
       </Button>
 
@@ -208,9 +173,9 @@ const Admin = () => {
           width: "30%",
           marginLeft: 26,
         }}
-        onClick={() => window.location.replace("/signup")}
+        onClick={() => toast.success("Login successful!")}
       >
-        <span /> <span /> <span /> <span />
+        <span /> <span /> <span />
         CREATE ACCOUNT
       </Button>
     </Loginmod>
