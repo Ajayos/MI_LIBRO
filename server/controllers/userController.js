@@ -25,6 +25,43 @@ const generateAuthToken = require("../lib/generateToken");
 const asyncHandler = require("express-async-handler");
 
 /**
+ * Controller function for user login.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the authentication token.
+ * @throws {Object} Error object if an error occurs during the login process.
+ */
+exports.login = asyncHandler(async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Find the user by email
+    const user = await User.findOne({ email });
+
+    // If user not found, return error
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Compare the provided password with the hashed password in the database
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    // If passwords don't match, return error
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+
+    // Generate and return a token for authentication
+    const token = generateAuthToken(user);
+
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+/**
  * Controller function for user account creation.
  *
  * @param {Object} req - Express request object.
@@ -95,7 +132,7 @@ exports.createAccount = asyncHandler(async (req, res) => {
 exports.updatePassword = asyncHandler(async (req, res) => {
   try {
     const { userId } = req.params;
-    const { password } = req.body;
+    const { password, newPassword } = req.body;
 
     // Find the user by ID
     const user = await User.findById(userId);
@@ -104,8 +141,16 @@ exports.updatePassword = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Compare the provided password with the hashed password in the database
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    // If passwords don't match, return error
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
+    
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     user.password = hashedPassword
     await user.save();
@@ -114,11 +159,49 @@ exports.updatePassword = asyncHandler(async (req, res) => {
     // Generate and return a token for authentication
     const token = generateAuthToken(userInfo._id);
 
-    res.status(200).json({message: "Password updated successfully"});
+    return res.status(200).json({message: "Password updated successfully"});
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+/**
+ * Controller function for forgot password of a user account.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response indicating successful changed password.
+ * @throws {Object} Error object if an error occurs during the account password change process.
+ */
+exports.forgotPassword = asyncHandler(async (req, res) => {
+  try {
+    const { mail, dob, password } = req.body;
+
+    // Find the user by ID
+    const user = await User.findOne({email});
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if(user.dob !== dob) {
+      return res.status(409).json({message: "Dob don't match"})
+    }
+// Hash the password
+const hashedPassword = await bcrypt.hash(password, 10);
+
+user.password = hashedPassword
+await user.save();
+
+const userInfo = await User.findOne({ email });
+// Generate and return a token for authentication
+const token = generateAuthToken(userInfo._id);
+
+return res.status(200).json({message: "Password updated successfully"});
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 /**
  * Controller function for editing a user account.
@@ -225,7 +308,7 @@ exports.countBooksRented = asyncHandler(async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 });
-
+// TODO: 
 // Controller method for add count of books rented by user
 exports.addBooksRented = asyncHandler(async (req, res) => {
   try {

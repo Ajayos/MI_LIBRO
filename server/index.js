@@ -43,7 +43,6 @@ dotenv.config();
 const SERVER_PORT = process.env.PORT || 3000;
 const publicPath = path.join(__dirname, "Public");
 
-
 // Set up the logger
 setupLogger();
 
