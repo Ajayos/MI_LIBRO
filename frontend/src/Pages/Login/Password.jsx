@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import LoginBox from "../../components/Login/LoginBox";
 import {
   Box,
-  Checkbox,
   FormControl,
   Grid,
   IconButton,
   InputAdornment,
   InputLabel,
-  Link,
   OutlinedInput,
   Typography,
 } from "@mui/material";
@@ -16,11 +14,11 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CustomButton from "./../../components/Button/CustomButton";
 import { useAuth } from "../../contexts/AuthContext";
 import { useEffect } from "react";
-import { login } from "../../utils/handleAuth";
 import { useSnackbar } from "notistack";
 
 const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
+  // eslint-disable-next-line 
   const { isAuthenticated, SignIn } = useAuth();
 
   useEffect(() => {

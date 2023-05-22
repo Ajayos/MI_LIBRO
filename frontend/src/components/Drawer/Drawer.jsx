@@ -1,8 +1,8 @@
-import { Avatar, Box, Button, Drawer, IconButton } from "@mui/material";
+// eslint-disable-next-line 
+import { Box, Button, Drawer } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
 import { useState } from "react";
-import LOGO from './logo.png'
 
 const drawerWidth = "15%";
 

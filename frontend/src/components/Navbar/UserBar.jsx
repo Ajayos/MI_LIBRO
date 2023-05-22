@@ -1,22 +1,20 @@
-import { AccountCircle, Mail, Notifications } from "@mui/icons-material";
+import { Mail, Notifications } from "@mui/icons-material";
 import {
   Badge,
   Box,
   Fade,
-  Icon,
   IconButton,
   Paper,
-  Popover,
   Popper,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import LoginIcon from "@mui/icons-material/Login";
 import { useAuth } from "../../contexts/AuthContext";
 import ProflleBar from "./ProflleBar";
 
 const UserBar = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [showMail, setShowMail] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 

@@ -10,25 +10,19 @@ import {
 import React from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import CustomButton from "../Button/CustomButton";
-
-import { useSnackbar } from 'notistack';
-import { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const handleCopy = () => {
   //
 };
 const ProflleBar = () => {
-    const { enqueueSnackbar } = useSnackbar();
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout } = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-  const showSnackbar = () => {
-    enqueueSnackbar('Snackbar message', { variant: 'success' });
-  };
+ 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };

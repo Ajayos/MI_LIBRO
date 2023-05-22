@@ -1,7 +1,5 @@
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
-import { AppBar, Badge, Box, IconButton, InputBase, Avatar, Button, Toolbar, Typography } from "@mui/material";
-import Drawer from "../Drawer/Drawer";
+import { AppBar, Box, Avatar, Button, Toolbar, Typography } from "@mui/material";
 import UserBar from "./UserBar";
 import LOGO from "../../image/logo.png"
 

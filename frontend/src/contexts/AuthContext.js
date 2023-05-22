@@ -4,6 +4,8 @@ import { getToken, login, getUserData, getAccess, logout } from "../utils/handle
 import { useEffect } from "react";
 import { useSnackbar } from "notistack";
 
+export const BACKENDURL = '/api/v1'
+
 const AuthContext = createContext({});
 
 export function AuthProvider({ children }) {
@@ -12,6 +14,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState({});
   const [MyToken, setMyToken] = useState("");
   const [access, setAccess] = useState(false);
+
 
   useEffect(() => {
     const myToken = getToken();
@@ -25,51 +28,46 @@ export function AuthProvider({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //useEffect(() => {
-  //  if (MyToken) {
-  //    axios.defaults.headers.common["Authorization"] = `Bearer ${MyToken}`;
-  //  } else {
-  //    axios.defaults.headers.common["Authorization"] = null;
-  //  }
-  //}, [MyToken]);
+  useEffect(() => {
+    if (MyToken) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${MyToken}`;
+    } else {
+      axios.defaults.headers.common["Authorization"] = null;
+    }
+  }, [MyToken]);
 
 
   async function SignIn(email, password) {
-  //  try {
-  //    const response = await axios.get("/api/v1/users", {
-  //      params: { email, password }
-  //    });
-//
-  //    if (response.status === 200) {
-  //      const { token, name, email, id, pic } = response.data;
-  //      login(token, name, email, id, pic, "user");
-  //      setIsAuthenticated(true);
-  //      setMyToken(token);
-  //      setAccess(false);
-  //      return { message: "Loged In successfully", status: 200 };
-  //    } else {
-  //      return { message: response.data.message, status: response.status };
-  //    }
-  //  } catch (error) {
-  //    if (error.response) {
-  //      return {
-  //        message: error.response.data.message,
-  //        status: error.response.status
-  //      };
-  //    } else {
-  //      return { message: "An error occurred", status: 500 };
-  //    }
-  //  }
-  login("fjgvdfjuihn", email, email, password, "https://github.com/Ajayos.png", "user");
+    try {
+      const response = await axios.get(BACKENDURL + "/users", {
+        params: { email, password }
+      });
+
+      if (response.status === 200) {
+        const { token, name, email, id, pic } = response.data;
+        login(token, name, email, id, pic, "user");
         setIsAuthenticated(true);
+        setMyToken(token);
         setAccess(false);
-        setMyToken("duihgrju");
-    return { message: "successfully", status: 200 };
+        return { message: "Loged In successfully", status: 200 };
+      } else {
+        return { message: response.data.message, status: response.status };
+      }
+    } catch (error) {
+      if (error.response) {
+        return {
+          message: error.response.data.message,
+          status: error.response.status
+        };
+      } else {
+        return { message: "An error occurred", status: 500 };
+      }
+    }
   }
 
   async function SignUp(name, email, password) {
     try {
-      const response = await axios.post("/api/v1/users", {
+      const response = await axios.post(BACKENDURL + "/users", {
         name,
         email,
         password
@@ -98,7 +96,7 @@ export function AuthProvider({ children }) {
   }
   async function AdminLogin(email, password) {
     try {
-      const response = await axios.get("/api/v1/admins", {
+      const response = await axios.get(BACKENDURL + "/admins", {
         params: { email, password }
       });
 
