@@ -31,8 +31,12 @@ const adminSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  // Define the 'username' field with type String
-  username: {
+  // Define the 'name' field with type String
+  name: {
+    type: String,
+  },
+  // Define the 'pic' field with type String
+  pic: {
     type: String,
   },
   // Define the 'password' field with type String and it is required
@@ -46,7 +50,8 @@ const adminSchema = new mongoose.Schema({
  * Create an Admin model using the admin schema.
  *
  * @param {String} email - The email id of the admin. (required)
- * @param {String} username - The username of the admin.
+ * @param {String} name - The name of the admin.
+ * @param {String} pic - The profile pic of the admin.
  * @param {String} password - The password of the admin. (required)
  * @returns {Model} The Admin model.
  */

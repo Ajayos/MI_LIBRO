@@ -18,93 +18,110 @@
  * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abinas, Saran, Yasir)
  */
 
-
 // Import the mongoose package
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 /**
  * User schema for managing user data.
  */
-const userSchema = new mongoose.Schema({
-  // Define the 'username' field with type String and it is required
-  username: {
-    type: String,
-    required: true,
-  },
-  // Define the 'password' field with type String and it is required
-  password: {
-    type: String,
-    required: true,
-  },
-  // Define the 'name' field with type String and it is required
-  name: {
-    type: String,
-    required: true,
-  },
-  // Define the 'phoneNumber' field with type String and it is required, and should be unique
-  phoneNumber: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  // Define the 'about' field with type String and default value null
-  about: {
-    type: String,
-    default: null,
-  },
-  // Define the 'place' field with type String and it is required
-  place: {
-    type: String,
-    required: true,
-  },
-  // Define the 'age' field with type Number and it is required
-  age: {
-    type: Number,
-    required: true,
-  },
-  // Define the 'email' field with type String, it is required, and should be unique
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  // Define the 'education' field with type String and it is required
-  education: {
-    type: String,
-    required: true,
-  },
-  // Define the 'contactDetails' field with type String and it is required
-  contactDetails: {
+const userSchema = new mongoose.Schema(
+  {
+    // Define the 'password' field with type String and it is required
+    password: {
       type: String,
       required: true,
+    },
+    // Define the 'name' field with type String and it is required
+    name: {
+      type: String,
+      required: true,
+    },
+    // Define the 'phoneNumber' field with type String and it is required, and should be unique
+    phoneNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    // Define the 'dob' field with type Date and it is required
+    dob: {
+      type: Date,
+      required: true,
+    },
+    // Define the 'pic' field with type Buffer and default value null
+    pic: {
+      type: Buffer,
+      default: null,
+    },
+    // Define the 'place' field with type String and it is required
+    place: {
+      type: String,
+      required: true,
+    },
+    // Define the 'age' field with type Number and it is required
+    age: {
+      type: Number,
+      required: true,
+    },
+    // Define the 'email' field with type String, it is required, and should be unique
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    // Define the 'education' field with type String and it is required
+    education: {
+      type: String,
+      required: true,
+    },
+    // Define the 'contactDetails' field with type String and it is required
+    contactDetails: {
+      type: String,
+      required: true,
+    },
+    // Define the 'termsAndConditions' field with type Boolean and it is required
+    termsAndConditions: {
+      type: Boolean,
+      required: true,
+    },
+    // Define the 'access' field with type Boolean and it is required
+    access: {
+      type: Boolean,
+      required: true,
+    },
+    // Define the 'booksRented' field with type Number and default value 0
+    booksRented: {
+      type: Number,
+      default: 0,
+    },
+    // Define the 'created' field with type Date and default value Date.now
+    created: {
+      type: Date,
+      default: Date.now,
+    },
+    // Define the 'updated' field with type Date and default value Date.now
+    updated: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  // Define the 'termsAndConditions' field with type Boolean and it is required
-  termsAndConditions: {
-    type: Boolean,
-    required: true,
-  },
-  // Define the 'access' field with type Boolean and it is required
-  access: {
-    type: Boolean,
-    required: true,
-  },
-  // Define the 'booksRented' field with type Number and default value 0
-  booksRented: {
-    type: Number,
-    default: 0,
-  },
-});
+  {
+    timestamps: {
+      createdAt: "created",
+      updatedAt: "updated",
+    },
+  }
+);
 
 /**
  * Create a User model using the user schema.
  *
- * @param {String} username - The username of the user. (required)
  * @param {String} password - The password of the user. (required)
  * @param {String} name - The name of the user. (required)
  * @param {String} place - The place of the user. (required)
  * @param {Number} age - The age of the user. (required)
  * @param {String} email - The email of the user. (required)
- * @param {String} about - The about of the user
+ * @param {Date} dob - The date of birth of the user. (required)
+ * @param {Buffer} pic - The profile picture of the user. (default null)
  * @param {Number} phoneNumber - The phone no of the user. (require)
  * @param {String} education - The education of the user. (required)
  * @param {Object} contactDetails - The contact details of the user. (required)
@@ -113,10 +130,12 @@ const userSchema = new mongoose.Schema({
  * @param {Boolean} termsAndConditions - The acceptance status of terms and conditions by the user. (required)
  * @param {Boolean} access - The access status of the user. (required)
  * @param {Number} booksRented - The number of how many books rented. (default 0)
+ * @param {Date} created - The date when the user was created. (default Date.now)
+ * @param {Date} updated - The date when the user was updated. (default Date.now)
  *
  * @returns {Model} The User model.
  */
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 // Export the User model
 module.exports = User;

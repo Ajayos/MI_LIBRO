@@ -20,10 +20,16 @@
 
 const express = require('express');
 const router = express.Router();
-const  {login, getAllUsers, deleteUser, updateBookStatus, createBook}= require('../controllers/adminController');
+const  { login, createAccount}= require('../controllers/adminController');
+
 
 // Route: POST /api/v1/admins
 router.get('/', login);
+
+// Route: POST /api/v1/admins
+router.post("/", createAccount);
+
+
 
 // Route: GET /api/v1/admins/users
 router.get('/users', getAllUsers);

@@ -60,7 +60,7 @@ exports.login = asyncHandler(async (req, res) => {
     // Generate and return a token for authentication
     const token = generateAuthToken(admin._id);
 
-    res.status(200).json({ token: token, name: admin.name, email: admin.email  });
+    res.status(200).json({ token: token, name: admin.name, email: admin.email, pic: admin.pic });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error' });
   }
@@ -78,7 +78,7 @@ exports.login = asyncHandler(async (req, res) => {
  */
 exports.createAccount = async (req, res) => {
   try {
-    const { email, username, password } = req.body;
+    const { email, name, password, pic } = req.body;
 
     // Check if the admin already exists
     const existingAdmin = await Admin.findOne({ email });
@@ -90,7 +90,7 @@ exports.createAccount = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create the new admin account
-    const newAdmin = new Admin({ email, password: hashedPassword });
+    const newAdmin = new Admin({ email, name, pic, password: hashedPassword });
     await newAdmin.save();
 
     res.status(201).json({ message: 'Admin account created successfully' });

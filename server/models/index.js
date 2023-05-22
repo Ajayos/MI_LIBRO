@@ -23,11 +23,19 @@ const connectDB = require('./Database');
 const Admin = require('./adminModel');
 const User = require('./userModel');
 const Book = require('./bookModel');
+const Rental = require('./rentalModel');
+const Like = require('./likeModel');
+const Comment = require('./commentModel');
+const login = require('./loginModel');
 
 // Export the models and schemas
 module.exports = {
-  connectDB, // // Function to connect to the database
+  connectDB, // Function to connect to the database
   Admin, // Admin model for managing admin data
   User, // User model for managing user data
   Book, // Book model for managing book data
+  Rental, // Rental model for managing rental data
+  Like, // Like model for managing like data
+  Comment, // Comment model for managing comment data
+  login, // Login model for managing login data
 };
