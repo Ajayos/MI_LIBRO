@@ -1,9 +1,9 @@
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
-import { AppBar, Badge, Box, IconButton, InputBase, Avatar, Button, Toolbar, Typography } from "@mui/material";
+import { AppBar, Badge, Box, IconButton, InputBase, Toolbar, Typography } from "@mui/material";
 import Drawer from "../Drawer/Drawer";
 import UserBar from "./UserBar";
-import LOGO from "../../image/logo.png"
+
 
 
 export default function Navbar() {
@@ -13,15 +13,7 @@ export default function Navbar() {
       <AppBar position="static" sx={{ backgroundColor: "rgb(33, 41, 70)" }}>
 
         <Toolbar>
-        <Button
-        aria-label="open drawer"
-        onClick={() => {window.location.replace("/");}}
-      >
-        <Avatar
-          alt="Mi_LIBRO"
-          src={LOGO}
-        />
-      </Button>
+            <Drawer />
           <Typography
             variant="h6"
             noWrap

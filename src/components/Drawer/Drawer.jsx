@@ -36,7 +36,17 @@ const Drawer_ = () => {
 
   return (
     <Box>
-      
+      <Button
+        aria-label="open drawer"
+        onClick={(e) => {
+          setOpenDrawer(true);
+        }}
+      >
+        <Avatar
+          alt="Mi_LIBRO"
+          src={LOGO}
+        />
+      </Button>
       <Drawer
         className={classes.drawer}
         variant="temporary"

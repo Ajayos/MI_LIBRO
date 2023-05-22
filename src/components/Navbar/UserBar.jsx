@@ -2,21 +2,16 @@ import { AccountCircle, Mail, Notifications } from "@mui/icons-material";
 import {
   Badge,
   Box,
-  Fade,
   Icon,
   IconButton,
-  Paper,
   Popover,
-  Popper,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import LoginIcon from "@mui/icons-material/Login";
-import { useAuth } from "../../contexts/AuthContext";
-import ProflleBar from "./ProflleBar";
 
 const UserBar = () => {
-  const { user, isAuthenticated } = useAuth();
+  const [user, setUser] = useState(false);
   const [showMail, setShowMail] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -24,8 +19,18 @@ const UserBar = () => {
     setShowMail(false);
     setShowNotifications(false);
   };
+  useEffect(() => {
+    // take userinfo from the browser's local storage
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    // if userInfo is not null, then set the user's name to the navbar
+    if (userInfo) {
+      setUser(userInfo);
+    } else {
+      setUser(false);
+    }
+  }, [user]);
 
-  if (isAuthenticated) {
+  if (user) {
     return (
       <Box>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
@@ -54,7 +59,7 @@ const UserBar = () => {
             aria-haspopup="true"
             color="inherit"
           >
-            <ProflleBar />
+            <AccountCircle />
           </IconButton>
         </Box>
       </Box>
@@ -79,8 +84,7 @@ const UserBar = () => {
             size="large"
             aria-label="show 17 new notifications"
             color="inherit"
-            id="Notifications"
-            aria-describedby={"Notifications"}
+            aria-describedby={"Notifications-popover"}
             onClick={() => setShowNotifications(true)}
           >
             <Notifications />
@@ -93,7 +97,11 @@ const UserBar = () => {
           >
             <LoginIcon />
           </IconButton>
-          <Popper
+
+          <Popover
+            id={"mail-popover"}
+            open={showMail}
+            anchorEl={"mail-popover"}
             onClose={handleClose}
             anchorOrigin={{
               vertical: "bottom",
@@ -103,33 +111,25 @@ const UserBar = () => {
               vertical: "top",
               horizontal: "center",
             }}
-            open={showMail}
-            anchorEl={"mail-popover"}
-            placement={"bottom"}
-            transition
-            sx={{ zIndex: 1000, marginLeft: 210, marginTop: 8 }}
           >
-            {({ TransitionProps }) => (
-              <Fade {...TransitionProps} timeout={350}>
-                <Paper>
-                  <Typography sx={{ p: 2 }}>
-                    Login to see
-                    Mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  </Typography>
-                </Paper>
-              </Fade>
-            )}
-          </Popper>
-          <Popper
-            onClose={handleClose}
-            onClick={() => setShowNotifications(!showNotifications)}
+            <Typography sx={{ p: 2 }}>Login to See Messages</Typography>
+          </Popover>
+          <Popover
+            id={"Notifications-popover"}
             open={showNotifications}
-            anchorEl={"Notifications"}
-            placement={"bottom"}
-            sx={{ zIndex: 1000, marginLeft: 210, marginTop: 8 }}
+            anchorEl={"Notifications-popover"}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
           >
-            <Typography sx={{ p: 2 }}>Login to see Notification</Typography>
-          </Popper>
+            <Typography sx={{ p: 2 }}>Login to see Notifications</Typography>
+          </Popover>
         </Box>
       </Box>
     );

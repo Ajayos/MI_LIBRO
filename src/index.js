@@ -4,18 +4,12 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
-import { AuthProvider } from "./contexts/AuthContext";
-import { SnackbarProvider } from 'notistack';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    <AuthProvider>
-    <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-        <App />
-      </SnackbarProvider>
-      </AuthProvider>
+      <App />
     </BrowserRouter>
   </React.StrictMode>
 );

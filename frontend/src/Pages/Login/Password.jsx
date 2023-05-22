@@ -8,20 +8,37 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  Link,
   OutlinedInput,
-  Typography
+  Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CustomButton from "./../../components/Button/CustomButton";
+import { useAuth } from "../../contexts/AuthContext";
+import { useEffect } from "react";
+import { login } from "../../utils/handleAuth";
+import { useSnackbar } from "notistack";
 
-const Admin = () => {
+const Login = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const { isAuthenticated, SignIn } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      window.location.replace("/");
+    }
+  }, [isAuthenticated]);
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
+    dob: "",
+    newPassword: "",
+    confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -30,6 +47,11 @@ const Admin = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  const handleDateFocus = () => {
+    setShowDatePicker(true);
+  };
+
 
   const handleInputChange = (event) => {
     setFormData({
@@ -47,9 +69,24 @@ const Admin = () => {
       errors.email = "Email/Username is required";
     }
 
-    if (!formData.password) {
+    if (!formData.dob) {
+        isValid = false;
+        errors.dob = "Date of Birth is required";
+      }
+
+    if (!formData.newPassword) {
       isValid = false;
-      errors.password = "Password is required";
+      errors.newPassword = "New Password is required";
+    }
+
+    if (!formData.confirmPassword) {
+      isValid = false;
+      errors.confirmPassword = "Confirm Password is required";
+    }
+
+    if (formData.newPassword !== formData.confirmPassword) {
+      isValid = false;
+      errors.confirmPassword = "Passwords do not match";
     }
 
     setErrors(errors);
@@ -63,27 +100,20 @@ const Admin = () => {
     if (validateForm()) {
       try {
         setLoading(true);
-
-        // Send login request to the backend
-        //const response = await axios.post("/api/v1/admin/login", formData);
-
+        // Change password logic
+        // ...
         setLoading(false);
-
-        // Wait for a second and then redirect to the '/home' page
-        setTimeout(() => {
-          window.location.replace("/");
-        }, 1000);
+        enqueueSnackbar("Password changed successfully", { variant: "success" });
       } catch (error) {
         setLoading(false);
-
-        // Display error message
         setErrors({ email: "Invalid email/username or password" });
       }
     }
   };
+
   return (
     <div>
-      <LoginBox message={"Hi, Welcome"}>
+      <LoginBox message={"Change Your Password"}>
         <Box component="form" sx={{ mt: 3 }} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -112,20 +142,46 @@ const Admin = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="body2" sx={{ color: "#f80202" }}>
-                {errors.password}
+                {errors.dob}
               </Typography>
               <FormControl fullWidth>
                 <InputLabel
-                  htmlFor="outlined-adornment-password-login"
+                  htmlFor="outlined-adornment-dob-login"
                   sx={{ color: "#03e9f4" }}
                 >
-                  {"Enter Password"}
+                  {"Date of Birth"}
                 </InputLabel>
                 <OutlinedInput
-                  id="outlined-adornment-password-login"
+                  id="outlined-adornment-dob-login"
+                  type={showDatePicker ? "date" : "text"}
+                  name="dob"
+                  value={formData.dob}
+                  onChange={handleInputChange}
+                  onFocus={handleDateFocus}
+                  onBlur={() => setShowDatePicker(false)}
+                  sx={{ color: "#ffffff", backgroundColor: "#000000" }}
+                  label={"Date of Birth"}
+                  error={!!errors.dob}
+                  helperText={errors.dob}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2" sx={{ color: "#f80202" }}>
+                {errors.newPassword}
+              </Typography>
+              <FormControl fullWidth>
+                <InputLabel
+                  htmlFor="outlined-adornment-newpassword-login"
+                  sx={{ color: "#03e9f4" }}
+                >
+                  {"New Password"}
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-newpassword-login"
                   type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
+                  name="newPassword"
+                  value={formData.newPassword}
                   onChange={handleInputChange}
                   sx={{ color: "#ffffff", backgroundColor: "#000000" }}
                   endAdornment={
@@ -145,40 +201,58 @@ const Admin = () => {
                       </IconButton>
                     </InputAdornment>
                   }
-                  label={"password"}
-                  error={!!errors.password}
-                  helperText={errors.password}
+                  label={"New Password"}
+                  error={!!errors.newPassword}
+                  helperText={errors.newPassword}
                 />
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <Box
-                padding={1}
-                sx={{
-                  boxSizing: "border-box",
-                  position: "relative",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Box
-                  sx={{ display: "flex", alignItems: "center", marginLeft: -2 }}
+              <Typography variant="body2" sx={{ color: "#f80202" }}>
+                {errors.confirmPassword}
+              </Typography>
+              <FormControl fullWidth>
+                <InputLabel
+                  htmlFor="outlined-adornment-confirmpassword-login"
+                  sx={{ color: "#03e9f4" }}
                 >
-                  <Checkbox color="primary" />
-                  <Typography variant="body1" sx={{ color: "#fff" }}>
-                    Keep me logged in
-                  </Typography>
-                </Box>
-                <Box>
-                 
-                </Box>
-              </Box>
+                  {"Confirm Password"}
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-confirmpassword-login"
+                  type={showPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  sx={{ color: "#ffffff", backgroundColor: "#000000" }}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                        size="large"
+                      >
+                        {showPassword ? (
+                          <Visibility sx={{ color: "#03e9f4" }} />
+                        ) : (
+                          <VisibilityOff sx={{ color: "#03e9f4" }} />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label={"Confirm Password"}
+                  error={!!errors.confirmPassword}
+                  helperText={errors.confirmPassword}
+                />
+              </FormControl>
             </Grid>
+           
           </Grid>
           <CustomButton
             type="submit"
-            text="Login"
+            text="Change Password"
             fullWidth
             disabled={loading}
             onClick={handleSubmit}
@@ -196,11 +270,11 @@ const Admin = () => {
           </CustomButton>
           <CustomButton
             sx={{ width: "30%", marginLeft: 26 }}
-            onClick={() => window.location.replace("/signup")}
+            onClick={() => window.location.replace("/admin")}
             disabled={loading}
           >
             {loading && <>{"Loading..."}</>}
-            {!loading && <>{"CREATE ACCOUNT"}</>}
+            {!loading && <>{"ADMIN LOGIN"}</>}
           </CustomButton>
           <br />
           <br />
@@ -210,4 +284,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default Login;

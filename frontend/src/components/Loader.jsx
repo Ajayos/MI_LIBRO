@@ -1,18 +1,12 @@
-import LinearProgress from '@mui/material/LinearProgress';
-import { styled } from '@mui/material/styles';
-
-const LoaderWrapper = styled('div')({
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    zIndex: 1301,
-    width: '100%'
-});
+import { Backdrop, CircularProgress } from "@mui/material";
 
 const Loader = () => (
-    <LoaderWrapper>
-        <LinearProgress color="primary" />
-    </LoaderWrapper>
+  <Backdrop
+    sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    open={true}
+  >
+    <CircularProgress color="inherit" />
+  </Backdrop>
 );
 
 export default Loader;

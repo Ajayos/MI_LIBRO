@@ -1,22 +1,34 @@
 import React, { useState } from "react";
+import LoginBox from "../../components/Login/LoginBox";
 import {
-  Button,
   Box,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
-  IconButton,
-  Typography,
   Checkbox,
+  FormControl,
+  Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
   Link,
+  OutlinedInput,
+  Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { buttonStyles } from "../../theme/buttonStyles";
-import Loginmod from "../../theme/Login";
-import axios from "axios";
+import CustomButton from "./../../components/Button/CustomButton";
+import { useAuth } from "../../contexts/AuthContext";
+import { useEffect } from "react";
+import { login } from "../../utils/handleAuth";
+import { useSnackbar } from "notistack";
 
 const Login = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const { isAuthenticated, SignIn } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      window.location.replace("/");
+    }
+  }, [isAuthenticated]);
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -65,140 +77,149 @@ const Login = () => {
     if (validateForm()) {
       try {
         setLoading(true);
-
-        // Send login request to the backend
-        const response = await axios.post("/api/login", formData);
-
+        // Login user
+        var { message, status } = SignIn(formData.email, formData.password);
+        if (status === 200) {
+          enqueueSnackbar(message, { variant: "success" });
+        } else {
+          enqueueSnackbar(message, { variant: "error" });
+          setErrors({ email: message, password: message });
+        }
         setLoading(false);
-
-        // Wait for a second and then redirect to the '/home' page
-        setTimeout(() => {
-          window.location.replace("/home");
-        }, 1000);
       } catch (error) {
         setLoading(false);
-
-        // Display error message
         setErrors({ email: "Invalid email/username or password" });
       }
     }
   };
-
   return (
-    <Loginmod message="Hi, Welcome Back">
-      <form onSubmit={handleSubmit}>
-        <div style={{ position: "relative", padding: 12 }}>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="outlined-adornment-username-login" sx={{ color: "#03e9f4" }}>
-              {"Email / Username"}
-            </InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-username-login"
-              type="text"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              sx={{ color: "#ffffff", backgroundColor: "#000000" }}
-              label={"Username"}
-              error={!!errors.email}
-              helperText={errors.email}
-            />
-          </FormControl>
-          <br />
-          <br />
-
-          <FormControl fullWidth>
-            <InputLabel htmlFor="outlined-adornment-password-login" sx={{ color: "#03e9f4" }}>
-              {"Enter Password"}
-            </InputLabel>
-            <OutlinedInput
-              id="outlined-adornment-password-login"
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              sx={{ color: "#ffffff", backgroundColor: "#000000" }}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                    size="large"
-                  >
-                    {showPassword ? <Visibility sx={{ color: "#03e9f4" }} /> : <VisibilityOff sx={{ color: "#03e9f4" }} />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label={"password"}
-              error={!!errors.password}
-              helperText={errors.password}
-            />
-          </FormControl>
-
-          <Box
-            padding={1}
-            sx={{
-              boxSizing: "border-box",
-              position: "relative",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center", marginLeft: -2 }}>
-              <Checkbox color="primary" />
-              <Typography variant="body1" sx={{ color: "#fff" }}>
-                Keep me logged in
+    <div>
+      <LoginBox message={"Hi, Welcome Back"}>
+        <Box component="form" sx={{ mt: 3 }} onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Typography variant="body2" sx={{ color: "#f80202" }}>
+                {errors.email}
               </Typography>
-            </Box>
-            <Box>
-              <Link href="/forgotpassword" variant="body1" sx={{ color: "#fff" }}>
-                Forgot password
-              </Link>
-            </Box>
-          </Box>
-        </div>
-        <Button
-          type="submit"
-          fullWidth
-          sx={{
-            ...buttonStyles,
-          }}
-          disabled={loading}
-        >
-          <span /> <span /> <span /><span />
-          {loading ? <>Loading...</> : <>Login</>}
-        </Button>
-      </form>
-      <Button
-        type="submit"
-        fullWidth
-        sx={{
-          ...buttonStyles,
-          width: "30%",
-        }}
-        onClick={() => window.location.replace("/admin")}
-      >
-        <span /> <span /> <span /><span />
-        ADMIN LOGIN
-      </Button>
-
-      <Button
-        type="submit"
-        fullWidth
-        sx={{
-          ...buttonStyles,
-          width: "30%",
-          marginLeft: 26,
-        }}
-        onClick={() => window.location.replace("/signup")}
-      >
-        <span /> <span /> <span /><span />
-        CREATE ACCOUNT
-      </Button>
-    </Loginmod>
+              <FormControl fullWidth>
+                <InputLabel
+                  htmlFor="outlined-adornment-username-login"
+                  sx={{ color: "#03e9f4" }}
+                >
+                  {"Email / Username"}
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-username-login"
+                  type="text"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  sx={{ color: "#ffffff", backgroundColor: "#000000" }}
+                  label={"Username"}
+                  error={!!errors.email}
+                  helperText={errors.email}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body2" sx={{ color: "#f80202" }}>
+                {errors.password}
+              </Typography>
+              <FormControl fullWidth>
+                <InputLabel
+                  htmlFor="outlined-adornment-password-login"
+                  sx={{ color: "#03e9f4" }}
+                >
+                  {"Enter Password"}
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password-login"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  sx={{ color: "#ffffff", backgroundColor: "#000000" }}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                        size="large"
+                      >
+                        {showPassword ? (
+                          <Visibility sx={{ color: "#03e9f4" }} />
+                        ) : (
+                          <VisibilityOff sx={{ color: "#03e9f4" }} />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label={"password"}
+                  error={!!errors.password}
+                  helperText={errors.password}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                padding={1}
+                sx={{
+                  boxSizing: "border-box",
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box
+                  sx={{ display: "flex", alignItems: "center", marginLeft: -2 }}
+                >
+                  <Checkbox color="primary" />
+                  <Typography variant="body1" sx={{ color: "#fff" }}>
+                    Keep me logged in
+                  </Typography>
+                </Box>
+                <Box>
+                  <Link href="/password" sx={{ color: "#126aee" }}>
+                    Forgot password
+                  </Link>
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
+          <CustomButton
+            type="submit"
+            text="Login"
+            fullWidth
+            disabled={loading}
+            onClick={handleSubmit}
+          >
+            {loading && <>{"Loading..."}</>}
+            {!loading && <>{"SUBMIT"}</>}
+          </CustomButton>
+          <CustomButton
+            sx={{ width: "30%" }}
+            onClick={() => window.location.replace("/signup")}
+            disabled={loading}
+          >
+            {loading && <>{"Loading..."}</>}
+            {!loading && <>{"CREATE ACCOUNT"}</>}
+          </CustomButton>
+          <CustomButton
+            sx={{ width: "30%", marginLeft: 26 }}
+            onClick={() => window.location.replace("/admin")}
+            disabled={loading}
+          >
+            {loading && <>{"Loading..."}</>}
+            {!loading && <>{"ADMIN LOGIN"}</>}
+          </CustomButton>
+          <br />
+          <br />
+        </Box>
+      </LoginBox>
+    </div>
   );
 };
 

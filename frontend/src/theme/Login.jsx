@@ -5,7 +5,7 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      backgroundColor: "rgb(10, 22, 66)",
+      backgroundColor: "rgb(27, 29, 36)",
       minHeight: "110vh",
     },
   }));
@@ -26,7 +26,7 @@ const Login = ({ message, children, classes: cls }) => {
         width={600}
         padding={4}
         bgcolor="rgb(21, 21, 26)"
-        boxShadow="0px 10px 25px rgb(255, 253, 253)"
+        boxShadow="0px 10px 25px rgb(60, 60, 255)"
         borderRadius={7}
         sx={{ boxSizing: "border-box", position: "relative" }}
       >
