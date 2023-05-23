@@ -20,7 +20,8 @@
 
 const express = require('express');
 const router = express.Router();
-const { login, createAccount } = require('../controllers/userController');
+const { login, createAccount, editAccount, deleteAccount, updatePassword, updateUserProfile, forgotPassword, getUserById, changeAccess, countBooksRented, addBooksRented  } = require('../controllers/userController');
+const { protectUser, protectAdmin } = require('../middleware/authMiddleware');
 
 // Route: GET /api/v1/users
 router.get('/', login);
@@ -29,7 +30,28 @@ router.get('/', login);
 router.post("/", createAccount);
 
 // Route: PUT /api/v1/users/:id
-router.put('/:id', updateUser);
+router.put('/:id', protectUser, editAccount);
 
 // Route: DELETE /api/v1/users/:id
-router.delete('/:id', deleteUser);
+router.delete('/:id', protectAdmin, deleteAccount);
+
+// Route: PUT /api/v1/users/forgotPassword
+router.put('/forgotPassword', forgotPassword);
+
+// Route: PUT /api/v1/users/changePassword
+router.put('/changePassword', protectUser, updatePassword);
+
+// Route: PUT /api/v1/users/profile
+router.put('/profile', protectUser, updateUserProfile);
+
+// Route: GET /api/v1/users/:id
+router.get('/:id', protectAdmin, getUserById);
+
+// Route: PUT /api/v1/users/access
+router.put('/access', protectAdmin, changeAccess);
+
+// Route: GET /api/v1/users/rent
+router.get('/rent', protectUser, countBooksRented);
+
+// Route: PUT /api/v1/users/rent
+router.put('/rent', protectUser, addBooksRented);

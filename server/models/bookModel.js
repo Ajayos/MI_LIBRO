@@ -78,48 +78,6 @@ const bookSchema = new mongoose.Schema({
     enum: ['Available', 'Rented', 'Sold'],
     default: 'Available',
   },
-  // Define the 'rentedBy' field with type String and default value null
-  rentedBy: {
-    type: String,
-    default: null,
-  },
-  // Define the 'buyInfo' field as an embedded document with 'buyer', 'purchaseDate', and 'returnDate' fields
-  buyInfo: {
-    buyer: {
-      type: String,
-      default: null,
-    },
-    purchaseDate: {
-      type: Date,
-      default: null,
-    },
-    returnDate: {
-      type: Date,
-      default: null,
-    },
-  },
-  // Define the 'likes' field as an array of objects referencing the 'User' model
-  likes: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-      },
-    },
-  ],
-  // Define the 'comments' field as an array of objects with 'user' and 'comment' fields
-  comments: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-      },
-      comment: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
 });
 
 /**
@@ -132,12 +90,8 @@ const bookSchema = new mongoose.Schema({
  * - publicationDate: A required Date field representing the publication date of the book.
  * - description: A required String field representing the description of the book.
  * - status: A String field with enum values 'Available', 'Rented', or 'Sold'. It defaults to 'Available'.
- * - rentedBy: A String field representing the user who rented the book. It defaults to null.
- * - buyInfo: An embedded document field with 'buyer', 'purchaseDate', and 'returnDate' fields representing buyer information for the book.
- * - likes: An array of objects referencing the 'User' model, representing users who liked the book.
- * - comments: An array of objects with 'user' and 'comment' fields representing user comments on the book.
+ * - pic: A String field with url or path to a picture and mimetype of the image
  */
 const Book = mongoose.model('Book', bookSchema);
 
 module.exports = Book;
-

@@ -55,9 +55,9 @@ exports.login = asyncHandler(async (req, res) => {
 		// Generate and return a token for authentication
 		const token = generateAuthToken(user);
 
-		res.status(200).json({ token });
+		return res.status(200).json({ token });
 	} catch (error) {
-		res.status(500).json({ message: "Internal server error" });
+		return res.status(500).json({ message: "Internal server error" });
 	}
 });
 
@@ -116,7 +116,7 @@ exports.createAccount = asyncHandler(async (req, res) => {
 		// Generate and return a token for authentication
 		const token = generateAuthToken(userInfo._id);
 
-		res.status(201).json({
+		return res.status(201).json({
 			message: "User account created successfully",
 			token: token,
 			name: name,
@@ -124,7 +124,7 @@ exports.createAccount = asyncHandler(async (req, res) => {
 			pic: pic,
 		});
 	} catch (error) {
-		res.status(500).json({ message: "Internal server error" });
+		return res.status(500).json({ message: "Internal server error" });
 	}
 });
 
@@ -206,7 +206,7 @@ exports.forgotPassword = asyncHandler(async (req, res) => {
 
 		return res.status(200).json({ message: "Password updated successfully" });
 	} catch (error) {
-		res.status(500).json({ message: "Internal server error" });
+		return res.status(500).json({ message: "Internal server error" });
 	}
 });
 
@@ -229,9 +229,11 @@ exports.editAccount = asyncHandler(async (req, res) => {
 
 		await user.save(req.body);
 
-		res.status(200).json({ message: "User account updated successfully" });
+		return res
+			.status(200)
+			.json({ message: "User account updated successfully" });
 	} catch (error) {
-		res.status(500).json({ message: "Internal server error" });
+		return res.status(500).json({ message: "Internal server error" });
 	}
 });
 
@@ -253,9 +255,11 @@ exports.deleteAccount = asyncHandler(async (req, res) => {
 			return res.status(404).json({ message: "User not found" });
 		}
 
-		res.status(200).json({ message: "User account deleted successfully" });
+		return res
+			.status(200)
+			.json({ message: "User account deleted successfully" });
 	} catch (error) {
-		res.status(500).json({ message: "Internal server error" });
+		return res.status(500).json({ message: "Internal server error" });
 	}
 });
 

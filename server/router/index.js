@@ -25,7 +25,7 @@ const router = express.Router();
 // Import individual router modules
 const adminRouter = require('./adminRouter');
 const userRouter = require('./userRouter');
-const booksRouter = require('./booksRouter');
+const booksRouter = require('./bookRouter');
 
 // Set up routes
 router.use('/admins', adminRouter);
