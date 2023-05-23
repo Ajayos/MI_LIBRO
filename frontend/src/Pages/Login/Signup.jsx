@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CustomButton from "./../../components/Button/CustomButton";
+import Navbar from "../../components/Navbar/Navbar";
 
 const Admin = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -83,6 +84,8 @@ const Admin = () => {
   };
   return (
     <div>
+      
+      <Navbar  />
       <LoginBox message={"Hi, Welcome"}>
         <Box component="form" sx={{ mt: 3 }} onSubmit={handleSubmit}>
           <Grid container spacing={2}>

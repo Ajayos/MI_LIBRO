@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import React from 'react';
-import { buttonStyles } from '../../theme/buttonStyles';
+import { buttonStyles } from './buttonStyles';
 
 const CustomButton = ({ message, sx, onClick, type, fullWidth, disabled, children }) => {
   return (

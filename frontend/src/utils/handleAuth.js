@@ -1,6 +1,7 @@
 export const TOKEN_KEY = "key";
 export const AUTH_USER = "username";
 export const AUTH_ACCESS = "access";
+export const BACKEND_URL = "https://localhost:3001/api/v1"
 
 export const isAuthenticated = () =>
   Boolean(localStorage.getItem(TOKEN_KEY) !== null);
@@ -16,7 +17,5 @@ export const login = (token, name, email, id, pic, access) => {
 };
 
 export const logout = () => {
-  localStorage.removeItem(TOKEN_KEY);
-  localStorage.removeItem(AUTH_USER);
-  
+  localStorage.clear()
 };

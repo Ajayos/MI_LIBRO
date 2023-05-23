@@ -18,6 +18,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useEffect } from "react";
 import { login } from "../../utils/handleAuth";
 import { useSnackbar } from "notistack";
+import Navbar from "../../components/Navbar/Navbar";
 
 const Login = () => {
   const { enqueueSnackbar } = useSnackbar();
@@ -94,6 +95,8 @@ const Login = () => {
   };
   return (
     <div>
+      
+      <Navbar />
       <LoginBox message={"Hi, Welcome Back"}>
         <Box component="form" sx={{ mt: 3 }} onSubmit={handleSubmit}>
           <Grid container spacing={2}>

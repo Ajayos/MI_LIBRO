@@ -10,7 +10,8 @@ const useStyles = makeStyles((theme) => ({
     minHeight: '100vh',
   },
 }));
-
+/**height: "100%",
+  minHeight: '100vh', */
 const AuthControl = () => {
   const theme = useTheme();
   const classes = useStyles();

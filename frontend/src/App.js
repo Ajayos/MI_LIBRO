@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Loadable from './components/Loadable'
+import { makeStyles } from "@mui/styles";
 
 const Home = Loadable(() => import('./Pages/Home/Home'))
 const Login = Loadable(() => import('./Pages/Login/Login'))
@@ -10,9 +11,17 @@ const Dashboard = Loadable(() => import('./Pages/Dashboard/Dashboard'))
 //const Profile = Loadable(() => import('./Pages/Profile/Profile'))
 //const Book = Loadable(() => import('./Pages/Book/Book'))
 const Password = Loadable(() => import('./Pages/Login/Password'))
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: 'rgb(28, 29, 33)', // Replace with your desired background color
+    minHeight: '100vh',
+  },
+}));
 function App() {
+  const classes = useStyles();
   return (
-    <div className="App">
+    <div className={classes.root} >
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
