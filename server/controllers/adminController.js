@@ -21,14 +21,10 @@
 
 // Import dependencies
 
-
-const { Admin } = require('../Models');
+const { Admin } = require("../Models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
-
-
-
 
 /**
  * Controller function to handle admin login.
@@ -37,35 +33,42 @@ const asyncHandler = require("express-async-handler");
  * @returns {Object} The response object.
  * @throws {Error} If an error occurs while processing the request.
  */
+
 exports.login = asyncHandler(async (req, res) => {
-  try {
-    const { email, password } = req.body;
+	try {
+		const { email, password } = req.body;
 
-    // Find the admin by username
-    const admin = await Admin.findOne({ email });
+		// Find the admin by username
+		const admin = await Admin.findOne({ email });
 
-    // If admin not found, return error
-    if (!admin) {
-      return res.status(404).json({ message: 'Admin not found' });
-    }
+		// If admin not found, return error
+		if (!admin) {
+			return res.status(404).json({ message: "Admin not found" });
+		}
 
-    // Compare the provided password with the hashed password in the database
-    const isMatch = await bcrypt.compare(password, admin.password);
+		// Compare the provided password with the hashed password in the database
+		const isMatch = await bcrypt.compare(password, admin.password);
 
-    // If passwords don't match, return error
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
+		// If passwords don't match, return error
+		if (!isMatch) {
+			return res.status(401).json({ message: "Invalid credentials" });
+		}
 
-    // Generate and return a token for authentication
-    const token = generateAuthToken(admin._id);
+		// Generate and return a token for authentication
+		const token = generateAuthToken(admin._id);
 
-    res.status(200).json({ token: token, name: admin.name, email: admin.email, pic: admin.pic });
-  } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
-  }
+		res
+			.status(200)
+			.json({
+				token: token,
+				name: admin.name,
+				email: admin.email,
+				pic: admin.pic,
+			});
+	} catch (error) {
+		res.status(500).json({ message: "Internal server error" });
+	}
 });
-
 
 /**
  * Controller function for admin account creation.
@@ -77,24 +80,24 @@ exports.login = asyncHandler(async (req, res) => {
  * @throws {Object} Error object if an error occurs during the account creation process.
  */
 exports.createAccount = async (req, res) => {
-  try {
-    const { email, name, password, pic } = req.body;
+	try {
+		const { email, name, password, pic } = req.body;
 
-    // Check if the admin already exists
-    const existingAdmin = await Admin.findOne({ email });
-    if (existingAdmin) {
-      return res.status(409).json({ message: 'Admin already exists' });
-    }
+		// Check if the admin already exists
+		const existingAdmin = await Admin.findOne({ email });
+		if (existingAdmin) {
+			return res.status(409).json({ message: "Admin already exists" });
+		}
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+		// Hash the password
+		const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the new admin account
-    const newAdmin = new Admin({ email, name, pic, password: hashedPassword });
-    await newAdmin.save();
+		// Create the new admin account
+		const newAdmin = new Admin({ email, name, pic, password: hashedPassword });
+		await newAdmin.save();
 
-    res.status(201).json({ message: 'Admin account created successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Internal server error' });
-  }
+		res.status(201).json({ message: "Admin account created successfully" });
+	} catch (error) {
+		res.status(500).json({ message: "Internal server error" });
+	}
 };

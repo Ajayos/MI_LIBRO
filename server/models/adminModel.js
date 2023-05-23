@@ -35,9 +35,18 @@ const adminSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-  // Define the 'pic' field with type String
+  // Define the 'pic' field with type Object and it is required
   pic: {
-    type: String,
+    // Define the 'url' field with type String and it is required
+    url: {
+      type: String,
+      required: true,
+    },
+    // Define the 'mimetype' field with type String and it is required
+    mimetype: {
+      type: String,
+      required: true,
+    },
   },
   // Define the 'password' field with type String and it is required
   password: {

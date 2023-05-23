@@ -32,15 +32,15 @@ router.post("/", createAccount);
 
 
 // Route: GET /api/v1/admins/users
-router.get('/users', getAllUsers);
+//router.get('/users', getAllUsers);
 
 // Route: DELETE /api/v1/admins/users/:id
-router.delete('/users/:id', deleteUser);
+//router.delete('/users/:id', deleteUser);
 
 // Route: PUT /api/v1/admins/books/:id
-router.put('/books/:id', updateBookStatus);
+//router.put('/books/:id', updateBookStatus);
 
 // Route: POST /api/v1/admins/books
-router.post('/books', createBook);
+//router.post('/books', createBook);
 
 module.exports = router;
