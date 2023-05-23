@@ -164,7 +164,9 @@ modules.deleteBook = asyncHandler(async (req, res) => {
 			return res.status(404).json({ message: "Book not found" });
 		}
 
-		return res.status(200).json({ message: "Book deleted deleted successfully" });
+		return res
+			.status(200)
+			.json({ message: "Book deleted deleted successfully" });
 	} catch (error) {
 		return res.status(500).json({ message: "Internal server error" });
 	}
