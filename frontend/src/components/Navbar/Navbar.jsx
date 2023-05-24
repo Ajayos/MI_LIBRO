@@ -18,12 +18,14 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+
+// Import the different drawer components based on login status or role
 import NoLoginDrawer from "./NoLoginDrawer";
 import AdminDrawer from "./AdminDrawer";
 import UserDrawer from "./UserDrawer";
 import { useAuth } from "../../contexts/AuthContext";
 
-const drawerWidth = 170;
+const drawerWidth = 70;
 
 const openedMixin = (theme) => ({
 	width: drawerWidth,
@@ -50,6 +52,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 	alignItems: "center",
 	justifyContent: "flex-end",
 	padding: theme.spacing(0, 1),
+	// necessary for content to be below app bar
 	...theme.mixins.toolbar,
 }));
 
@@ -57,6 +60,7 @@ const AppBar = styled(MuiAppBar, {
 	shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
 	zIndex: theme.zIndex.drawer + 1,
+	backgroundColor: "rgb(28, 29, 33)",
 	transition: theme.transitions.create(["width", "margin"], {
 		easing: theme.transitions.easing.sharp,
 		duration: theme.transitions.duration.leavingScreen,
@@ -76,8 +80,7 @@ const Drawer = styled(MuiDrawer, {
 })(({ theme, open }) => ({
 	width: drawerWidth,
 	flexShrink: 0,
-
-	backgroundColor: "rgb(28, 29, 33)",
+	boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.5)",
 	whiteSpace: "nowrap",
 	boxSizing: "border-box",
 	...(open && {
@@ -93,6 +96,7 @@ const Drawer = styled(MuiDrawer, {
 export default function Navbar() {
 	const theme = useTheme();
 	const { isAuthenticated, access } = useAuth();
+
 	const [open, setOpen] = useState(false);
 
 	const handleDrawerOpen = () => {
@@ -114,35 +118,38 @@ export default function Navbar() {
 	};
 
 	return (
-		<Box bgcolor={"rgb(28, 29, 33)"} sx={{ display: "flex" }}>
+		<Box bgcolor={"rgb(27, 29, 36)"} sx={{ flexGrow: 1, display: "flex" }}>
 			<CssBaseline />
 			<AppBar
-				position='absolute'
+				position='fixed'
 				open={open}
-				sx={{ backgroundColor: "rgb(28, 29, 33)" }}
-			>
+				sx={{ backgroundColor: "rgb(27, 29, 36)" }}>
 				<Toolbar>
 					<Button
 						aria-label='open drawer'
-						onClick={() => window.location.replace("/")}
-					>
+						onClick={() => window.location.replace("/")}>
 						<Avatar alt='Mi_LIBRO' src={LOGO} />
-						<Typography
-							variant='h6'
-							noWrap
-							component='div'
-							sx={{ display: { xs: "none", sm: "block" } }}
+					
+					<Typography
+						variant='h6'
+						noWrap
+						component='div'
+						sx={{ display: { xs: "none", sm: "block" } }}
 						>
-							&nbsp;&nbsp;{" MI LIBRO "}
-						</Typography>
+						&nbsp;{" MI LIBRO "}
+					</Typography>
 					</Button>
 
 					<Box sx={{ flexGrow: 1 }} />
 					<UserBar />
 				</Toolbar>
 			</AppBar>
-			<Drawer variant='' open={open} sx={{ background: "rgb(28, 29, 33)" }}>
-				<List sx={{ height: "100%", background: "rgb(28, 29, 33)" }}>
+			<Drawer variant='permanent' open={open} sx={{ backgroundColor: "rgb(27, 29, 36)" }}>
+				<DrawerHeader sx={{ backgroundColor: "rgb(27, 29, 36)" }}>
+					
+				</DrawerHeader>
+				<Divider />
+				<List sx={{ backgroundColor: "rgb(27, 29, 36)", minHeight: "130vh", }}>
 					{/* Render the appropriate drawer content */}
 					{renderDrawerContent()}
 				</List>

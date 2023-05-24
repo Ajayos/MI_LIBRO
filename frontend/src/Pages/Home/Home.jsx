@@ -15,8 +15,10 @@ const Home = () => {
       {!isAuthenticated && (
         <>
           <Box
+            sx={{marginTop: 3}}
             height="100vh"
             display="flex"
+            position={"fixed"}
             alignItems="center"
             justifyContent="center"
             width={1}
@@ -25,21 +27,23 @@ const Home = () => {
             <Box
               flexDirection="column"
               alignItems="center"
-              sx={{ marginTop: -50, marginLeft: 5 }}
+              sx={{ marginTop: -50,  }}
             >
               <Logo message={"LOGIN TO SEE PAGE"} />
             </Box>
-
+            <br />
+        <Box sx={{ width: "50%", marginLeft: 10 }}>
             <CustomButton
               message="User Login"
               onClick={() => window.location.replace("/login")}
-              sx={{ width: "10%", marginLeft: -45 }}
+              sx={{ width: "10%", marginLeft: -35 }}
             />
             <CustomButton
               message="Admin Login"
               onClick={() => window.location.replace("/admin")}
               sx={{ width: "10%", marginLeft: 10 }}
             />
+            </Box>
           </Box>
         </>
       )}
