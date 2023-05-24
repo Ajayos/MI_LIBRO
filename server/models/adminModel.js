@@ -35,18 +35,10 @@ const adminSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-  // Define the 'pic' field with type Object and it is required
-  pic: {
-    // Define the 'url' field with type String and it is required
-    url: {
-      type: String,
-      required: true,
-    },
-    // Define the 'mimetype' field with type String and it is required
-    mimetype: {
-      type: String,
-      required: true,
-    },
+  // Define the 'img' field with type String and it is required
+  img: {
+    type: String,
+    required: true,
   },
   // Define the 'password' field with type String and it is required
   password: {
@@ -60,7 +52,7 @@ const adminSchema = new mongoose.Schema({
  *
  * @param {String} email - The email id of the admin. (required)
  * @param {String} name - The name of the admin.
- * @param {String} pic - The profile pic of the admin.
+ * @param {String} img - The image of the admin. (required)
  * @param {String} password - The password of the admin. (required)
  * @returns {Model} The Admin model.
  */

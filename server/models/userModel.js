@@ -47,18 +47,10 @@ const userSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    // Define the 'pic' field with type Object and it is required
-    pic: {
-      // Define the 'url' field with type String and it is required
-      url: {
-        type: String,
-        required: true,
-      },
-      // Define the 'mimetype' field with type String and it is required
-      mimetype: {
-        type: String,
-        required: true,
-      },
+    // Define the 'img' field with type String and it is required
+    img: {
+      type: String,
+      required: true,
     },
     // Define the 'place' field with type String and it is required
     place: {
@@ -94,7 +86,7 @@ const userSchema = new mongoose.Schema(
     // Define the 'access' field with type Boolean and it is required
     access: {
       type: Boolean,
-      required: true,
+      default: true,
     },
     // Define the 'booksRented' field with type Number and default value 0
     booksRented: {
