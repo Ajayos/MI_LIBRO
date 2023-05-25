@@ -6,11 +6,12 @@ import { makeStyles } from "@mui/styles";
 import { Container } from "@mui/system";
 import React from "react";
 import Logo from "../Logo/Logo";
+import bgg from '../../image/login.jpg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "rgb(27, 29, 36)",
-    minHeight: "130vh",
+    minHeight: "10vh",
   },
 }));
 
@@ -50,7 +51,8 @@ const LoginBox = ({ message, children, cls }) => {
          borderRadius={7}
          boxShadow={21}
           sx={{
-            boxSizing: "border-box", position: "relative",
+            boxSizing: "border-box",
+            position: "relative",
             marginTop: 15,
             marginLeft: -20,
             display: "flex",

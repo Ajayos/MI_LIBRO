@@ -21,11 +21,11 @@ export function AuthProvider({ children }) {
 
 	useEffect(() => {
 		const myToken = getToken();
-		if (myToken) {
+		if (true) {
 			setIsAuthenticated(true);
-			setMyToken(myToken);
-			setUser(getUserData());
-			setAccess(getAccess());
+			setMyToken("jhfghfidsgujgy");
+			setUser({ name: "ajayos", email: "ajayos@gmail", id: "sfdghfd68498965", pic: "https://github.com/Ajayos.png", token: "jhgfdbjhfduuygyvu" })//getUserData());
+			setAccess(true)//getAccess());
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

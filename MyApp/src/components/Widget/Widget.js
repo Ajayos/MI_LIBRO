@@ -33,9 +33,7 @@ export default function Widget({
 
   return (
     <div className={classes.widgetWrapper} style={style && {...style}}>
-      <Paper className={classes.paper} classes={{ root: classnames(classes.widgetRoot, {
-        [classes.noWidgetShadow]: noWidgetShadow
-        }) }}>
+      <Paper >
         <div className={classnames(classes.widgetHeader, {
           [classes.noPadding]: noHeaderPadding,
           [headerClass]: headerClass
@@ -47,18 +45,7 @@ export default function Widget({
               <Typography variant="h5" color="textSecondary" noWrap>
                 {title}
               </Typography>
-              {!disableWidgetMenu && (
-                <IconButton
-                  color="primary"
-                  classes={{ root: classes.moreButton }}
-                  aria-owns="widget-menu"
-                  aria-haspopup="true"
-                  onClick={() => setMoreMenuOpen(true)}
-                  buttonRef={setMoreButtonRef}
-                >
-                  <MoreIcon />
-                </IconButton>
-              )}
+              
             </React.Fragment>
           )}
         </div>
@@ -71,26 +58,7 @@ export default function Widget({
           {children}
         </div>
       </Paper>
-      <Menu
-        id="widget-menu"
-        open={isMoreMenuOpen}
-        anchorEl={moreButtonRef}
-        onClose={() => setMoreMenuOpen(false)}
-        disableAutoFocusItem
-      >
-        <MenuItem>
-          <Typography>Edit</Typography>
-        </MenuItem>
-        <MenuItem>
-          <Typography>Copy</Typography>
-        </MenuItem>
-        <MenuItem>
-          <Typography>Delete</Typography>
-        </MenuItem>
-        <MenuItem>
-          <Typography>Print</Typography>
-        </MenuItem>
-      </Menu>
+  
     </div>
   );
 }

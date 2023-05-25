@@ -4,12 +4,20 @@ import './index.css';
 import App from './App';
 import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
-
+import { AuthProvider } from "./contexts/AuthContext";
+import { SnackbarProvider } from 'notistack';
+import { SocketProvider } from "./contexts/SocketContext";
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+    <AuthProvider>
+      <SocketProvider>
+    <SnackbarProvider maxSnack={3} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <App />
+      </SnackbarProvider>
+      </SocketProvider>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

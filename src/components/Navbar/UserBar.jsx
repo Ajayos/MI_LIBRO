@@ -1,17 +1,20 @@
-import { AccountCircle, Mail, Notifications } from "@mui/icons-material";
+import { Mail, Notifications } from "@mui/icons-material";
 import {
   Badge,
   Box,
-  Icon,
+  Fade,
   IconButton,
-  Popover,
+  Paper,
+  Popper,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import LoginIcon from "@mui/icons-material/Login";
+import { useAuth } from "../../contexts/AuthContext";
+import ProflleBar from "./ProflleBar";
 
 const UserBar = () => {
-  const [user, setUser] = useState(false);
+  const { isAuthenticated } = useAuth();
   const [showMail, setShowMail] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -19,18 +22,8 @@ const UserBar = () => {
     setShowMail(false);
     setShowNotifications(false);
   };
-  useEffect(() => {
-    // take userinfo from the browser's local storage
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    // if userInfo is not null, then set the user's name to the navbar
-    if (userInfo) {
-      setUser(userInfo);
-    } else {
-      setUser(false);
-    }
-  }, [user]);
 
-  if (user) {
+  if (isAuthenticated) {
     return (
       <Box>
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
@@ -59,7 +52,7 @@ const UserBar = () => {
             aria-haspopup="true"
             color="inherit"
           >
-            <AccountCircle />
+            <ProflleBar />
           </IconButton>
         </Box>
       </Box>
@@ -84,7 +77,8 @@ const UserBar = () => {
             size="large"
             aria-label="show 17 new notifications"
             color="inherit"
-            aria-describedby={"Notifications-popover"}
+            id="Notifications"
+            aria-describedby={"Notifications"}
             onClick={() => setShowNotifications(true)}
           >
             <Notifications />
@@ -97,39 +91,43 @@ const UserBar = () => {
           >
             <LoginIcon />
           </IconButton>
-
-          <Popover
-            id={"mail-popover"}
+          <Popper
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
             open={showMail}
             anchorEl={"mail-popover"}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
+            placement={"bottom"}
+            transition
+            sx={{ zIndex: 1000, marginLeft: 210, marginTop: 8 }}
           >
-            <Typography sx={{ p: 2 }}>Login to See Messages</Typography>
-          </Popover>
-          <Popover
-            id={"Notifications-popover"}
+            {({ TransitionProps }) => (
+              <Fade {...TransitionProps} timeout={350}>
+                <Paper>
+                  <Typography sx={{ p: 2 }}>
+                    Login to see
+                    Mail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </Typography>
+                </Paper>
+              </Fade>
+            )}
+          </Popper>
+          <Popper
+            onClose={handleClose}
+            onClick={() => setShowNotifications(!showNotifications)}
             open={showNotifications}
-            anchorEl={"Notifications-popover"}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
+            anchorEl={"Notifications"}
+            placement={"bottom"}
+            sx={{ zIndex: 1000, marginLeft: 210, marginTop: 8 }}
           >
-            <Typography sx={{ p: 2 }}>Login to see Notifications</Typography>
-          </Popover>
+            <Typography sx={{ p: 2 }}>Login to see Notification</Typography>
+          </Popper>
         </Box>
       </Box>
     );

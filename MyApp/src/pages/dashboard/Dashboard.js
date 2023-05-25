@@ -422,6 +422,7 @@ export default function Dashboard(props) {
             <Table data={mock.table} />
           </Widget>
         </Grid>
+        
       </Grid>
     </>
   );

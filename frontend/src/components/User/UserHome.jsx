@@ -1,11 +1,11 @@
 import React from 'react';
 
-const themes = () => {
+const UserHome = () => {
   return (
     <div>
-      
+      home
     </div>
   );
 }
 
-export default themes;
+export default UserHome;

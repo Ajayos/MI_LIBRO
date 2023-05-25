@@ -124,9 +124,7 @@ export { Badge, Typography, Button };
 // ########################################################################
 
 function getColor(color, theme, brigtness = "main") {
-  if (color && theme.palette[color] && theme.palette[color][brigtness]) {
-    return theme.palette[color][brigtness];
-  }
+    return "black";
 }
 
 function getFontWeight(style) {
@@ -163,10 +161,7 @@ function getFontSize(size, variant = "", theme) {
       break;
   }
 
-  var defaultSize =
-    variant && theme.typography[variant]
-      ? theme.typography[variant].fontSize
-      : theme.typography.fontSize + "px";
+  var defaultSize = "20px";
 
   return `calc(${defaultSize} * ${multiplier})`;
 }

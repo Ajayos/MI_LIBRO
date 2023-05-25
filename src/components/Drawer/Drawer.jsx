@@ -1,8 +1,8 @@
-import { Avatar, Box, Button, Drawer, IconButton } from "@mui/material";
+// eslint-disable-next-line 
+import { Box, Button, Drawer } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
 import { useState } from "react";
-import LOGO from './logo.png'
 
 const drawerWidth = "15%";
 
@@ -36,17 +36,7 @@ const Drawer_ = () => {
 
   return (
     <Box>
-      <Button
-        aria-label="open drawer"
-        onClick={(e) => {
-          setOpenDrawer(true);
-        }}
-      >
-        <Avatar
-          alt="Mi_LIBRO"
-          src={LOGO}
-        />
-      </Button>
+      
       <Drawer
         className={classes.drawer}
         variant="temporary"
