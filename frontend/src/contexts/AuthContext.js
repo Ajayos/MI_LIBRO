@@ -18,14 +18,22 @@ export function AuthProvider({ children }) {
 	const [user, setUser] = useState({});
 	const [MyToken, setMyToken] = useState("");
 	const [access, setAccess] = useState(false);
+	const [books, setBooks] = useState({});
+	const [error, setError] = useState(false)
 
 	useEffect(() => {
 		const myToken = getToken();
 		if (true) {
-			setIsAuthenticated(true);
+			setIsAuthenticated(false);
 			setMyToken("jhfghfidsgujgy");
-			setUser({ name: "ajayos", email: "ajayos@gmail", id: "sfdghfd68498965", pic: "https://github.com/Ajayos.png", token: "jhgfdbjhfduuygyvu" })//getUserData());
-			setAccess(true)//getAccess());
+			setUser({
+				name: "ajayos",
+				email: "ajayos@gmail",
+				id: "sfdghfd68498965",
+				pic: "https://github.com/Ajayos.png",
+				token: "jhgfdbjhfduuygyvu",
+			}); //getUserData());
+			setAccess(false); //getAccess());
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -116,6 +124,32 @@ export function AuthProvider({ children }) {
 		}
 	}
 
+	async function GetBooks() {
+		try {
+			const response = await API.get("/books");
+
+			if (response.status === 200) {
+				const data = response.data;
+				setBooks(data)
+			} else {
+				setError(response.status)
+			}
+		} catch (error) {
+			if (error.response) {
+				setError ({
+					message: error.response.data.message,
+					status: error.response.status,
+				});
+			} else {
+				setError("An error occurred");
+			}
+		}
+	}
+
+	async function createBook() {
+
+	}
+
 	const LogOutUser = () => {
 		enqueueSnackbar("Logout successfully", { variant: "success" });
 		setTimeout(() => {
@@ -132,15 +166,16 @@ export function AuthProvider({ children }) {
 			value={{
 				SignIn,
 				SignUp,
-        API,
+				API,
 				user,
+				createBook,
+				GetBooks,
 				logout: LogOutUser,
 				AdminLogin,
 				isAuthenticated,
 				access,
 				MyToken,
-			}}
-		>
+			}}>
 			{children}
 		</AuthContext.Provider>
 	);
