@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Link,
   Stack,
@@ -24,12 +24,13 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export default function LoginForm() {
   const { enqueueSnackbar } = useSnackbar();
-  const { isAuthenticated, user, SignUp } = useAuth();
+  const { isAuthenticated, user, SignUp, IsPermit } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phoneNo: "",
+    place: "",
     dob: "",
     age: "",
     education: "",
@@ -43,6 +44,16 @@ export default function LoginForm() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [avatarImage, setAvatarImage] = useState(null);
+
+  useEffect(() => {
+    if(isAuthenticated) {
+      if(user) {
+        window.location.href = "/Home"
+      } else {
+        window.location.href = "/home";
+      }
+    }
+  }, [isAuthenticated]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -149,6 +160,11 @@ export default function LoginForm() {
       errors.newPassword = "New Password is required";
     }
 
+    if (!formData.place) {
+      isValid = false;
+      errors.place = "Place is required";
+    }
+
     if (!formData.confirmPassword) {
       isValid = false;
       errors.confirmPassword = "Confirm Password is required";
@@ -180,13 +196,18 @@ export default function LoginForm() {
     if (validateForm()) {
       try {
         setLoading(true);
+        console.log(formData)
         const { message, status } = SignUp(formData);
+        
         if (status === 200) {
           enqueueSnackbar(message, { variant: "success" });
+          window.location.href = "/home";
         } else {
           enqueueSnackbar(message, { variant: "error" });
           setErrors({ email: message, password: message });
         }
+
+        window.location.reload()
         setLoading(false);
       } catch (error) {
         setLoading(false);
@@ -310,6 +331,25 @@ export default function LoginForm() {
               label="Education"
               error={!!errors.education}
               helperText={errors.education}
+            />
+          </FormControl>
+
+          <Typography variant="body2" sx={{ color: "#f80202" }}>
+            {errors.place}
+          </Typography>
+          <FormControl fullWidth>
+            <InputLabel htmlFor="outlined-adornment-place">
+              Place
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-place"
+              type="text"
+              name="place"
+              value={formData.place}
+              onChange={handleInputChange}
+              label="Place"
+              error={!!errors.place}
+              helperText={errors.place}
             />
           </FormControl>
 

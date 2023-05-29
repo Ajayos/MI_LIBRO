@@ -37,7 +37,7 @@ exports.login = asyncHandler(async (req, res) => {
 		const { email, password } = req.body;
 
 		// Find the user by email
-		const user = await User.findOne({ email });
+		const user = await User.findOne({ email: email });
 
 		// If user not found, return error
 		if (!user) {
@@ -53,9 +53,16 @@ exports.login = asyncHandler(async (req, res) => {
 		}
 
 		// Generate and return a token for authentication
-		const token = generateAuthToken(user);
+		const token = generateAuthToken(user._id, user.email, user.password);
 
-		return res.status(200).json({ token });
+		// Add the token to the user data
+		user.token = token;
+		var Data = {
+			token: token,
+			user
+		}
+
+		return res.status(200).json(Data);
 	} catch (error) {
 		return res.status(500).json({ message: "Internal server error" });
 	}
@@ -70,19 +77,20 @@ exports.login = asyncHandler(async (req, res) => {
  * @throws {Object} Error object if an error occurs during the account creation process.
  */
 exports.createAccount = asyncHandler(async (req, res) => {
+
+
 	try {
 		const {
 			email,
-			password,
+			newPassword,
 			pic,
 			name,
 			dob,
 			age,
-			termsAndConditions,
-			phoneNumber,
+			phoneNo,
 			place,
 			education,
-			contactDetails,
+			address,
 		} = req.body;
 
 		// Check if the user already exists
@@ -92,7 +100,7 @@ exports.createAccount = asyncHandler(async (req, res) => {
 		}
 
 		// Hash the password
-		const hashedPassword = await bcrypt.hash(password, 10);
+		const hashedPassword = await bcrypt.hash(newPassword, 10);
 
 		// Create the new user account
 		const newUser = new User({
@@ -103,18 +111,17 @@ exports.createAccount = asyncHandler(async (req, res) => {
 			dob,
 			age,
 			address,
-			termsAndConditions,
-			phoneNumber,
+			phoneNumber:phoneNo,
 			place,
 			education,
-			contactDetails,
+			contactDetails: address,
 			access: true,
 		});
 		await newUser.save();
 
 		const userInfo = await User.findOne({ email });
 		// Generate and return a token for authentication
-		const token = generateAuthToken(userInfo._id);
+		const token = generateAuthToken(userInfo._id, email, hashedPassword);
 
 		return res.status(201).json({
 			message: "User account created successfully",
@@ -122,7 +129,33 @@ exports.createAccount = asyncHandler(async (req, res) => {
 			name: name,
 			email: email,
 			pic: pic,
+			address: address,
+			phoneNumber: phoneNo,
+			phoneNo,
+			place,
+			education,
+            dob,
+            age,
+            access: true,
+			contactDetails: address,
 		});
+	} catch (error) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+});
+
+ 
+/**
+ * Controller function for user login.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the authentication token.
+ * @throws {Object} Error object if an error occurs during the login process.
+ */
+exports.LogeUser = asyncHandler(async (req, res) => {
+	try {
+		return res.status(200).json(req.user);
 	} catch (error) {
 		return res.status(500).json({ message: "Internal server error" });
 	}
@@ -138,8 +171,8 @@ exports.createAccount = asyncHandler(async (req, res) => {
  */
 exports.updatePassword = asyncHandler(async (req, res) => {
 	try {
-		const { userId } = req.params;
-		const { password, newPassword } = req.body;
+		const userId = req.user._id;
+		const { password } = req.body;
 
 		// Find the user by ID
 		const user = await User.findById(userId);
@@ -148,27 +181,19 @@ exports.updatePassword = asyncHandler(async (req, res) => {
 			return res.status(404).json({ message: "User not found" });
 		}
 
-		// Compare the provided password with the hashed password in the database
-		const isMatch = await bcrypt.compare(password, user.password);
-
-		// If passwords don't match, return error
-		if (!isMatch) {
-			return res.status(401).json({ message: "Invalid credentials" });
-		}
-
 		// Hash the password
-		const hashedPassword = await bcrypt.hash(newPassword, 10);
-
+		const hashedPassword = await bcrypt.hash(password, 10);
+		console.log(hashedPassword)
 		user.password = hashedPassword;
 		await user.save();
 
 		const userInfo = await User.findOne({ email });
 		// Generate and return a token for authentication
-		const token = generateAuthToken(userInfo._id);
+		const token = generateAuthToken(userInfo._id, userInfo.email, hashedPassword);
 
 		return res
 			.status(200)
-			.json({ token, message: "Password updated successfully" });
+			.json({ token: token, message: "Password updated successfully" });
 	} catch (error) {
 		return res.status(500).json({ message: "Internal server error" });
 	}
@@ -185,15 +210,16 @@ exports.updatePassword = asyncHandler(async (req, res) => {
 exports.forgotPassword = asyncHandler(async (req, res) => {
 	try {
 		const { email, dob, password } = req.body;
+		console.log(email, dob, password)
 
 		// Find the user by ID
 		const user = await User.findOne({ email });
 		if (!user) {
 			return res.status(404).json({ message: "User not found" });
 		}
-		if (user.dob !== dob) {
-			return res.status(409).json({ message: "Dob don't match" });
-		}
+		//if (user.dob !== dob) {
+		//	return res.status(409).json({ message: "Dob don't match" });
+		//}
 		// Hash the password
 		const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -220,14 +246,15 @@ exports.forgotPassword = asyncHandler(async (req, res) => {
  */
 exports.editAccount = asyncHandler(async (req, res) => {
 	try {
-		const { userId } = req.params;
-		// Find the user by ID
+		const userId = req.user._id;
 		const user = await User.findById(userId);
-		if (!user) {
-			return res.status(404).json({ message: "User not found" });
-		}
-
-		await user.save(req.body);
+		user.name = req.body.name;
+		user.education = req.body.education;
+		user.contactDetails = req.body.contactDetails;
+		user.dob = req.body.dob;
+		user.age = req.body.age;
+		user.place = req.body.place;
+		await user.save();
 
 		return res
 			.status(200)
@@ -297,15 +324,10 @@ exports.getUserById = asyncHandler(async (req, res) => {
  */
 exports.updateUserProfile = asyncHandler(async (req, res) => {
 	try {
-		const { userId } = req.params;
+		const userId = req.user._id;
 		const { pic } = req.body;
-
 		// Find the user by ID
 		const user = await User.findById(userId);
-		if (!user) {
-			return res.status(404).json({ message: "User not found" });
-		}
-
 		user.pic = pic;
 		await user.save();
 

@@ -20,7 +20,7 @@ import { useAuth } from "../../contexts/AuthContext";
 export default function LoginForm() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { isAuthenticated, user, SignIn, IsPermit } = useAuth();
+  const { isAuthenticated, user,  AdminLogin, IsPermit } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -30,7 +30,6 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    IsPermit();
     if(isAuthenticated) {
       if(user) {
         window.location.href = "/Home"
@@ -81,10 +80,10 @@ export default function LoginForm() {
       try {
         setLoading(true);
         // Login user
-        var { message, status } = SignIn(formData.email, formData.password);
+        var { message, status } =  AdminLogin(formData.email, formData.password);
         if (status === 200) {
           enqueueSnackbar(message, { variant: "success" });
-          window.location.href = "/home";
+          window.location.href = "/dashboard/home";
         } else {
           enqueueSnackbar(message, { variant: "error" });
           setErrors({ email: message, password: message });

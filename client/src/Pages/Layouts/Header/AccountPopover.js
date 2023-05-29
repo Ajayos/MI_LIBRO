@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import { useAuth } from "../../../contexts/AuthContext";
+import { logout } from "../../../utils/handleAuth";
 
 const MENU_OPTIONS = [
   {
@@ -30,7 +31,7 @@ const MENU_OPTIONS = [
 function adminProfile() {}
 
 export default function AccountPopover() {
-  const { user, logout, access } = useAuth();
+  const { user, access } = useAuth();
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -43,6 +44,7 @@ export default function AccountPopover() {
   const handleLogout = () => {
     setOpen(null);
     logout();
+    window.location.replace("/login");
   };
 
   const handleMenuItemClick = (path) => {

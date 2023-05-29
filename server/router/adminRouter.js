@@ -20,12 +20,16 @@
 
 const express = require("express");
 const router = express.Router();
-const { login, createAccount } = require("../controllers/adminController");
+const { login, createAccount, getDashboardData, getUsersData } = require("../controllers/adminController");
+const { protectUser, protectAdmin, SkipPprotect } = require("../middleware/authMiddleware");
 
 // Route: POST /api/v1/admins
-router.get("/", login);
+router.post("/login", login);
 
 // Route: POST /api/v1/admins
 router.post("/", createAccount);
 
+router.post("/dashboard", protectAdmin, getDashboardData)
+
+router.get("/users",  getUsersData)
 module.exports = router;

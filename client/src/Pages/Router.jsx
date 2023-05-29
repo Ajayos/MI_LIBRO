@@ -12,8 +12,10 @@ const Page404 = Load(() => import("./404"));
 //import HOME from "./Home";
 const UserAccount = Load(() => import("./User/Account"));
 const Settings = Load(() => import("./User/Settings"));
+const UserBooks = Load(() => import("./User/Books"));
 // AUTH
 const LoginPage = Load(() => import("./Auth/Login"));
+const AdminLoginPage = Load(() => import("./Auth/Admin"));
 const ForgotPage = Load(() => import("./Auth/ForgotPssword"));
 const CreatePage = Load(() => import("./Auth/CreateAccount"));
 
@@ -30,7 +32,7 @@ export default function Router() {
       children: [
         { element: <Navigate to="/home" />, index: true },
         { path: "home", element: <DashboardHomePage /> },
-        { path: "books", element: <div /> },
+        { path: "books", element: <UserBooks /> },
         { path: "my-books", element: <div /> },
         { path: "liked-books", element: <div /> },
         { path: "account", element: <UserAccount /> },
@@ -49,6 +51,7 @@ export default function Router() {
       ],
     },
     { path: "login", element: <LoginPage /> },
+    { path: "admin", element: <AdminLoginPage /> },
     { path: "forgot", element: <ForgotPage /> },
     { path: "create", element: <CreatePage /> },
     {

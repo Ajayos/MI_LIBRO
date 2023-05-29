@@ -35,8 +35,8 @@ const adminSchema = new mongoose.Schema({
   name: {
     type: String,
   },
-  // Define the 'img' field with type String and it is required
-  img: {
+  // Define the 'pic' field with type String and it is required
+  pic: {
     type: String,
     required: true,
   },
@@ -52,10 +52,10 @@ const adminSchema = new mongoose.Schema({
  *
  * @param {String} email - The email id of the admin. (required)
  * @param {String} name - The name of the admin.
- * @param {String} img - The image of the admin. (required)
+ * @param {String} pic - The image of the admin. (required)
  * @param {String} password - The password of the admin. (required)
  * @returns {Model} The Admin model.
  */
-const Admin = mongoose.model('Admin', adminSchema);
+const Admins = mongoose.model('Admin', adminSchema);
 
-module.exports = Admin;
+module.exports = Admins;

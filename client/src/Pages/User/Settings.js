@@ -10,7 +10,10 @@ export default function Account() {
   const { isAuthenticated, IsPermit, user } = useAuth();
 
   useEffect(() => {
-    //IsPermit(false);
+    IsPermit(false);
+    if(user) {
+      window.location.href = '/dashboard/home'
+    }
   }, [isAuthenticated]);
 
   return (

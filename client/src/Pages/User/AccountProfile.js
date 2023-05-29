@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 
 export default function UserPage() {
-  const { user } = useAuth();
+  const { user, updateUserProfileFetch } = useAuth();
   const [profilePic, setProfilePic] = useState();
   const [newProfilePic, setNewProfilePic] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -46,11 +46,11 @@ export default function UserPage() {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        console.log(reader.result);
         setTimeout(() => {
           setIsSaving(false);
           setProfilePic(reader.result);
           setNewProfilePic(null);
+          updateUserProfileFetch(reader.result)
         }, 1000);
       };
 

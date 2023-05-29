@@ -49,18 +49,10 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // Define the 'pic' field with type Object and it is required
+  // Define the 'pic' field with type String and it is required
   pic: {
-    // Define the 'url' field with type String and it is required
-    url: {
       type: String,
       required: true,
-    },
-    // Define the 'mimetype' field with type String and it is required
-    mimetype: {
-      type: String,
-      required: true,
-    },
   },
   // Define the 'publicationDate' field with type Date and it is required
   publicationDate: {

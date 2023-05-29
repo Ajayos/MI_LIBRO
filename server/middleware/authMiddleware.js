@@ -17,7 +17,6 @@
  *
  * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abinas, Saran, Yasir)
  */
-
 const jwt = require("jsonwebtoken");
 const { User, Admin } = require("../Models");
 const asyncHandler = require("express-async-handler");
@@ -29,19 +28,28 @@ const protectUser = asyncHandler(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
-      var token = req.headers.authorization.split(" ")[1];
+      const token = req.headers.authorization.split(" ")[1];
 
-      // Decode the token to get the user id
+      // Decode the token to get the user id, email, and hashed password
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const { id, email, hashedPassword } = decoded;
 
       // Find the user based on the decoded id
-      req.user = await User.findById(decoded.id).select("-password");
+      const user = await User.findById(id);
 
-      next();
+      if (user && user.password === hashedPassword) {
+        req.user = user;
+        next();
+      } else {
+        return res.status(401).json({
+          error: "Invalid Token",
+          message: "Not authorized, token failed",
+        });
+      }
     } catch (error) {
       return res.status(401).json({
         error: "Invalid Token",
-        message: "Not authorized,  token failed",
+        message: "Not authorized, token failed",
       });
     }
   } else {
@@ -59,19 +67,28 @@ const protectAdmin = asyncHandler(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
-      var token = req.headers.authorization.split(" ")[1];
+      const token = req.headers.authorization.split(" ")[1];
 
-      // Decode the token to get the user id
+      // Decode the token to get the user id, email, and hashed password
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const { id, email, hashedPassword } = decoded;
 
-      // Find the user based on the decoded id
-      req.user = await Admin.findById(decoded.id).select("-password");
+      // Find the admin based on the decoded id
+      const admin = await Admin.findById(id);
 
-      next();
+      if (admin && admin.password === hashedPassword) {
+        req.user = admin;
+        next();
+      } else {
+        return res.status(401).json({
+          error: "Invalid Token",
+          message: "Not authorized, token failed",
+        });
+      }
     } catch (error) {
       return res.status(401).json({
         error: "Invalid Token",
-        message: "Not authorized,  token failed",
+        message: "Not authorized, token failed",
       });
     }
   } else {
@@ -82,7 +99,12 @@ const protectAdmin = asyncHandler(async (req, res, next) => {
   }
 });
 
+const SkipPprotect = asyncHandler(async (req, res, next) => {
+        next();
+});
+
 module.exports = {
   protectUser,
   protectAdmin,
+  SkipPprotect
 };

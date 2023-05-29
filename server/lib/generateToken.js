@@ -1,9 +1,17 @@
+const jwt = require('jsonwebtoken');
 
-
-
-// Helper function to generate a JWT token
-const generateToken = (userId) => {
-    return jwt.sign({ id: userId }, process.env.JWT_SECRET)
+const generateToken = (userId, email, hashedPassword) => {
+  const payload = {
+    id: userId,
+    email: email,
+    hashedPassword: hashedPassword,
   };
+
+  const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    expiresIn: '1w', // 1 week expiration
+  });
+
+  return token;
+};
 
 module.exports = generateToken;
