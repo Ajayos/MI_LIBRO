@@ -6,11 +6,17 @@ import { makeStyles } from "@mui/styles";
 import { Container } from "@mui/system";
 import React from "react";
 import Logo from "../Logo/Logo";
+import bgg from '../../image/login.jpg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "rgb(27, 29, 36)",
-    minHeight: "130vh",
+    backgroundColor: "rgb(90, 91, 92)",
+    backgroundImage: `url(https://png.pngtree.com/background/20210710/original/pngtree-black-brick-wall-picture-image_989135.jpg)`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "100vh",
+    minHeight: "10vh",
   },
 }));
 
@@ -49,9 +55,11 @@ const LoginBox = ({ message, children, cls }) => {
          padding={3}
          borderRadius={7}
          boxShadow={21}
+         backgroundColor={"rgb(36, 38, 41)"}
           sx={{
-            boxSizing: "border-box", position: "relative",
-            marginTop: 15,
+            boxSizing: "border-box",
+            position: "relative",
+            marginTop: 10,
             marginLeft: -20,
             display: "flex",
             flexDirection: "column",

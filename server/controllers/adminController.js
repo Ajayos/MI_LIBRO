@@ -21,7 +21,7 @@
 
 // Import dependencies
 
-const { Admin } = require("../Models");
+const { Admin } = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");

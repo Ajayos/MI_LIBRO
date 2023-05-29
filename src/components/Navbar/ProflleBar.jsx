@@ -58,7 +58,7 @@ const ProflleBar = () => {
           sx={{
             width: "200px",
             height: 290,
-            background: "black",
+            background: "rgb(28, 29, 33)",
             marginTop: -1,
           }}
         >

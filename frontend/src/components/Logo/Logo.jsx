@@ -17,21 +17,20 @@ const Logo = ({ message }) => {
       >
         <Avatar
           src={PROFILE}
-          sx={{ width: 80, height: 80, marginRight: "20px" }}
+          sx={{ width: 50, height: 50, marginRight: "20px" }}
         />
         <Typography
           variant="h3"
           sx={{
             color: "#eeff00",
             position: "relative",
-            marginTop: "10px",
+            marginTop: "8px",
             marginLeft: "10px",
           }}
         >
           Mi LIBRO
         </Typography>
       </Box>
-      <br />
       <br />
       <Box
         sx={{

@@ -43,7 +43,7 @@ const NoLoginDrawer = () => {
 	};
 
 	const handleForgotPassword = () => {
-		window.location.href = "/forgot-password";
+		window.location.href = "/password";
 	};
 
 	const handleAdminLogin = () => {
@@ -60,12 +60,12 @@ const NoLoginDrawer = () => {
 		<List>
 			<Tooltip title="Home">
 				<ListItem button onClick={handleHome} selected={currentPage === "/"}>
-					<ListItemIcon sx={{ color: currentPage === "/" ? "blue" : "white" }}>
+					<ListItemIcon sx={{ color: currentPage === "/" ? "#03e9f4" : "white" }}>
 						<Home />
 					</ListItemIcon>
 					<ListItemText
 						primaryTypographyProps={{
-							color: currentPage === "/" ? "blue" : "white",
+							color: currentPage === "/" ? "#03e9f4" : "white",
 							noWrap: true,
 						}}
 						primary="Home"
@@ -74,12 +74,12 @@ const NoLoginDrawer = () => {
 			</Tooltip>
 			<Tooltip title="User Login">
 				<ListItem button onClick={handleUserLogin} selected={currentPage === "/login"}>
-					<ListItemIcon sx={{ color: currentPage === "/login" ? "blue" : "white" }}>
+					<ListItemIcon sx={{ color: currentPage === "/login" ? "#03e9f4" : "white" }}>
 						<AccountCircle />
 					</ListItemIcon>
 					<ListItemText
 						primaryTypographyProps={{
-							color: currentPage === "/login" ? "blue" : "white",
+							color: currentPage === "/login" ? "#03e9f4" : "white",
 							noWrap: true,
 						}}
 						primary="User Login"
@@ -88,12 +88,12 @@ const NoLoginDrawer = () => {
 			</Tooltip>
 			<Tooltip title="Create Account">
 				<ListItem button onClick={handleCreateAccount} selected={currentPage === "/signup"}>
-					<ListItemIcon sx={{ color: currentPage === "/signup" ? "blue" : "white" }}>
+					<ListItemIcon sx={{ color: currentPage === "/signup" ? "#03e9f4" : "white" }}>
 						<Create />
 					</ListItemIcon>
 					<ListItemText
 						primaryTypographyProps={{
-							color: currentPage === "/signup" ? "blue" : "white",
+							color: currentPage === "/signup" ? "#03e9f4" : "white",
 							noWrap: true,
 						}}
 						primary="Create Account"
@@ -104,16 +104,16 @@ const NoLoginDrawer = () => {
 				<ListItem
 					button
 					onClick={handleForgotPassword}
-					selected={currentPage === "/forgot-password"}
+					selected={currentPage === "/password"}
 				>
 					<ListItemIcon
-						sx={{ color: currentPage === "/forgot-password" ? "blue" : "white" }}
+						sx={{ color: currentPage === "/password" ? "#03e9f4" : "white" }}
 					>
 						<VpnKey />
 					</ListItemIcon>
 					<ListItemText
 						primaryTypographyProps={{
-							color: currentPage === "/forgot-password" ? "blue" : "white",
+							color: currentPage === "/password" ? "#03e9f4" : "white",
 							noWrap: true,
 						}}
 						primary="Forgot Password"
@@ -123,12 +123,12 @@ const NoLoginDrawer = () => {
 			<Divider sx={{ backgroundColor: "lightblue" }} />
 			<Tooltip title="Admin Login">
 				<ListItem button onClick={handleAdminLogin} selected={currentPage === "/admin"}>
-					<ListItemIcon sx={{ color: currentPage === "/admin" ? "blue" : "white" }}>
+					<ListItemIcon sx={{ color: currentPage === "/admin" ? "#03e9f4" : "white" }}>
 						<Lock />
 					</ListItemIcon>
 					<ListItemText
 						primaryTypographyProps={{
-							color: currentPage === "/admin" ? "blue" : "white",
+							color: currentPage === "/admin" ? "#03e9f4" : "white",
 							noWrap: true,
 						}}
 						primary="Admin Login"
@@ -142,12 +142,12 @@ const NoLoginDrawer = () => {
 					onMouseLeave={handlePopoverClose}
 					selected={currentPage === "/terms-conditions"}
 				>
-					<ListItemIcon sx={{ color: currentPage === "/terms-conditions" ? "blue" : "white" }}>
+					<ListItemIcon sx={{ color: currentPage === "/terms-conditions" ? "#03e9f4" : "white" }}>
 						<Description />
 					</ListItemIcon>
 					<ListItemText
 						primaryTypographyProps={{
-							color: currentPage === "/terms-conditions" ? "blue" : "white",
+							color: currentPage === "/terms-conditions" ? "#03e9f4" : "white",
 							noWrap: true,
 						}}
 						primary="Terms and Conditions"

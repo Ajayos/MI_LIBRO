@@ -34,7 +34,7 @@ const { log } = require("@ajayos/nodelogger");
 // Import local modules
 const setupLogger = require("./lib/logger");
 //const apiRouter = require("./Routers");
-const { connectDB } = require("./Models");
+const { connectDB } = require("./models");
 
 // config env file
 dotenv.config();
@@ -47,7 +47,7 @@ const publicPath = path.join(__dirname, "Public");
 setupLogger();
 
 // connect to Database
-connectDB(process.env.MONGO_URL);
+//connectDB(process.env.MONGO_URL);
 
 // Create Express app
 const app = express();
@@ -100,5 +100,3 @@ server.listen(SERVER_PORT, () => {
   log(`Server is running at http://${address}:${port}`);
   log(`Open above url to view the app :)`);
 });
-
-
