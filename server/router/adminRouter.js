@@ -18,13 +18,12 @@
  * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abinas, Saran, Yasir)
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const  { login, createAccount}= require('../controllers/adminController');
-
+const { login, createAccount } = require("../controllers/adminController");
 
 // Route: POST /api/v1/admins
-router.get('/', login);
+router.get("/", login);
 
 // Route: POST /api/v1/admins
 router.post("/", createAccount);

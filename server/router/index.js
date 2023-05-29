@@ -19,19 +19,18 @@
  */
 
 // Import dependencies
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 // Import individual router modules
-const adminRouter = require('./adminRouter');
-const userRouter = require('./userRouter');
-const booksRouter = require('./bookRouter');
+const adminRouter = require("./adminRouter");
+const userRouter = require("./userRouter");
+const booksRouter = require("./bookRouter");
 
 // Set up routes
-router.use('/admins', adminRouter);
-router.use('/users', userRouter);
-router.use('/books', booksRouter);
-
+router.use("/admins", adminRouter);
+router.use("/users", userRouter);
+router.use("/books", booksRouter);
 
 // Export router
 module.exports = router;

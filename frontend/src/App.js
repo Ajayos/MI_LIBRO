@@ -23,7 +23,6 @@ const DashboardOnlineUsers = Loadable(() => import('./Pages/Dashboard/onlineUser
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: 'rgb(28, 29, 33)', // Replace with your desired background color
     minHeight: '100vh',
   },
 }));

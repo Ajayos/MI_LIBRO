@@ -14,12 +14,7 @@ import LOGO from "../../image/logo.png";
 import { styled, useTheme } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
-// Import the different drawer components based on login status or role
 import NoLoginDrawer from "./NoLoginDrawer";
 import AdminDrawer from "./AdminDrawer";
 import UserDrawer from "./UserDrawer";
@@ -134,7 +129,7 @@ export default function Navbar() {
 						variant='h6'
 						noWrap
 						component='div'
-						sx={{ display: { xs: "none", sm: "block" } }}
+						sx={{ display: { xs: "none", sm: "block" }, color: "#eeff00" }}
 						>
 						&nbsp;{" MI LIBRO "}
 					</Typography>

@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
 	useEffect(() => {
 		const myToken = getToken();
 		if (true) {
-			setIsAuthenticated(false);
+			setIsAuthenticated(true);
 			setMyToken("jhfghfidsgujgy");
 			setUser({
 				name: "ajayos",

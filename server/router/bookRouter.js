@@ -1,6 +1,6 @@
 /**
  * Book Router
- * 
+ *
  * @project : MI LIBRO
  * @version: 1.0.1
  * @link : https://github.com/Ajayos/MI_LIBRO
@@ -18,11 +18,11 @@
  * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abinas, Saran, Yasir)
  */
 
-const express = require('express')
+const express = require("express");
 const router = express.Router();
 
-const { routes } = require('../controllers/bookController');
-const { protectUser, protectAdmin } = require('../middleware/authMiddleware');
+const { routes } = require("../controllers/bookController");
+const { protectUser, protectAdmin } = require("../middleware/authMiddleware");
 
 // Route: GET /api/v1/books
-router.get('/', getBook);
+router.get("/", getBook);
