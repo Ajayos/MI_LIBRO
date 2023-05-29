@@ -30,7 +30,7 @@ const booksRouter = require("./bookRouter");
 // Set up routes
 router.use("/admins", adminRouter);
 router.use("/users", userRouter);
-router.use("/books", booksRouter);
+//router.use("/books", booksRouter);
 
 // Export router
 module.exports = router;

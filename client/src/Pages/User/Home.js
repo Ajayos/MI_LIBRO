@@ -16,14 +16,10 @@ export default function Dashboard() {
     useAuth();
 
   useEffect(() => {
-    async function getAllData_() {
-      await GetDashboradData();
+    IsPermit(false);
+    if(user) {
+      window.location.href = '/dashboard/home'
     }
-    IsPermit(true);
-    if(!user) {
-      window.location.href = '/home'
-    }
-    getAllData_();
   }, [isAuthenticated]);
 
   return (

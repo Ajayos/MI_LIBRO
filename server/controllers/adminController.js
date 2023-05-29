@@ -21,11 +21,11 @@
 
 // Import dependencies
 
-const { Admin } = require("../models");
+const { Admin, User } = require("../Models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
-
+const generateAuthToken = require("../lib/generateToken");
 /**
  * Controller function to handle admin login.
  * @param {Object} req - The request object.
@@ -40,7 +40,6 @@ exports.login = asyncHandler(async (req, res) => {
 
 		// Find the admin by username
 		const admin = await Admin.findOne({ email });
-
 		// If admin not found, return error
 		if (!admin) {
 			return res.status(404).json({ message: "Admin not found" });
@@ -55,7 +54,7 @@ exports.login = asyncHandler(async (req, res) => {
 		}
 
 		// Generate and return a token for authentication
-		const token = generateAuthToken(admin._id);
+		const token = generateAuthToken(admin._id, admin.email, admin.password);
 
 		res
 			.status(200)
@@ -79,15 +78,15 @@ exports.login = asyncHandler(async (req, res) => {
  * @returns {Object} Response indicating successful admin account creation.
  * @throws {Object} Error object if an error occurs during the account creation process.
  */
-exports.createAccount = async (req, res) => {
-	try {
+exports.createAccount = asyncHandler(async  (req, res) => {
+	//try {
 		const { email, name, password, pic } = req.body;
 
 		// Check if the admin already exists
-		const existingAdmin = await Admin.findOne({ email });
-		if (existingAdmin) {
-			return res.status(409).json({ message: "Admin already exists" });
-		}
+		//const existingAdmin = await Admin.findOne({ email });
+		//if (existingAdmin) {
+		//	return res.status(409).json({ message: "Admin already exists" });
+		//}
 
 		// Hash the password
 		const hashedPassword = await bcrypt.hash(password, 10);
@@ -97,7 +96,18 @@ exports.createAccount = async (req, res) => {
 		await newAdmin.save();
 
 		res.status(201).json({ message: "Admin account created successfully" });
-	} catch (error) {
-		res.status(500).json({ message: "Internal server error" });
-	}
-};
+	//} catch (error) {
+	//	res.status(500).json({ message: "Internal server error" });
+	//}
+});
+
+
+exports.getDashboardData = asyncHandler(async  (req, res) => {
+	res.status(200).json({ message: "Dashboard data", users: 10, rbooks: 50, online: 6 , books: 7});
+})
+
+
+exports.getUsersData = asyncHandler(async (req, res) => {
+	const all = await User.find();
+	res.send(all)
+})

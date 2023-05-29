@@ -20,6 +20,7 @@
 
 
 // Import dependencies
+const os = require('os');
 const fs = require("fs");
 const path = require("path");
 const http = require("http");
@@ -33,9 +34,9 @@ const { log } = require("@ajayos/nodelogger");
 
 // Import local modules
 const setupLogger = require("./lib/logger");
-//const apiRouter = require("./Routers");
-const { connectDB } = require("./models");
-
+const apiRouter = require("./router");
+const { connectDB } = require("./Models");
+const errorHandler = require("./middleware/errorHandler");
 // config env file
 dotenv.config();
 
@@ -47,7 +48,8 @@ const publicPath = path.join(__dirname, "Public");
 setupLogger();
 
 // connect to Database
-//connectDB(process.env.MONGO_URL);
+connectDB(process.env.MONGO_URL);
+//require('./Models')
 
 // Create Express app
 const app = express();
@@ -94,9 +96,15 @@ io.on("connection", (socket) => {
 // Start the server
 server.listen(SERVER_PORT, () => {
   // Take ip and port from the server
-  const { address, port } = server.address();
-  log(`Server running on port ${port}`);
-  log(`Server is running at http://127.0.0.1:${port}`);
-  log(`Server is running at http://${address}:${port}`);
+  log(`Server running on port ${SERVER_PORT}`);
+  log(`Server is running at http://127.0.0.1:${SERVER_PORT}`);
+  //const interfaces = os.networkInterfaces();
+  //const addresses = interfaces['Wireless']
+  //  .filter((iface) => iface.family === 'IPv4')
+  //  .map((iface) => iface.address);
+//
+  //addresses.forEach((address) => {
+  //  log(`Server is running at http://${address}:${SERVER_PORT}`);
+  //});
   log(`Open above url to view the app :)`);
 });

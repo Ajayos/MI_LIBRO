@@ -24,5 +24,5 @@ const mongoose = require('mongoose');
 /**
  * Status schema for managing status data.
  */
-const statusSchema = new mongoose.Schema({
+//const statusSchema = new mongoose.Schema({
     

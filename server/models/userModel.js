@@ -44,11 +44,11 @@ const userSchema = new mongoose.Schema(
     },
     // Define the 'dob' field with type Date and it is required
     dob: {
-      type: Date,
+      type: String,
       required: true,
     },
-    // Define the 'img' field with type String and it is required
-    img: {
+    // Define the 'pic' field with type String and it is required
+    pic: {
       type: String,
       required: true,
     },
@@ -76,11 +76,6 @@ const userSchema = new mongoose.Schema(
     // Define the 'contactDetails' field with type String and it is required
     contactDetails: {
       type: String,
-      required: true,
-    },
-    // Define the 'termsAndConditions' field with type Boolean and it is required
-    termsAndConditions: {
-      type: Boolean,
       required: true,
     },
     // Define the 'access' field with type Boolean and it is required

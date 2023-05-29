@@ -20,7 +20,7 @@
 
 // import module
 
-const { Book } = require("../models/");
+const { Book } = require("../Models");
 const asyncHandler = require("express-async-handler");
 
 /**
@@ -72,7 +72,7 @@ exports.createBook = asyncHandler(async (req, res) => {
  * @returns {Object} Response indicating the book details
  * @throws {Object} Response with the error message
  */
-modules.getBook = asyncHandler(async (req, res) => {
+exports.getBook = asyncHandler(async (req, res) => {
 	try {
 		const { ISBN } = req.params;
 
@@ -97,7 +97,7 @@ modules.getBook = asyncHandler(async (req, res) => {
  * @returns {Object} Response indicating the output
  * @throws {Object} Response with the error message
  */
-modules.editBook = asyncHandler(async (req, res) => {
+exports.editBook = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params;
 
@@ -124,7 +124,7 @@ modules.editBook = asyncHandler(async (req, res) => {
  * @returns {Object} Response indicating the output
  * @throws {Object} Response with the error message
  */
-modules.changeStatus = asyncHandler(async (req, res) => {
+exports.changeStatus = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params;
 		const { status } = req.body;
@@ -153,7 +153,7 @@ modules.changeStatus = asyncHandler(async (req, res) => {
  * @returns {Object} Response indicating the output
  * @throws {Object} Response with the error message
  */
-modules.deleteBook = asyncHandler(async (req, res) => {
+exports.deleteBook = asyncHandler(async (req, res) => {
 	try {
 		const { id } = req.params;
 

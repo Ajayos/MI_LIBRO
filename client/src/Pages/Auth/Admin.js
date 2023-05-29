@@ -10,10 +10,11 @@ import {
   Box,
   Avatar,
 } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import useResponsive from "../../hooks/useResponsive";
 import PROFILE from "../../image/logo.png";
 import LOGIN_IMG from "../../image/login.png";
-import LoginForm from "./LoginForm";
+import LoginForm from "./AdminForm";
 
 const StyledRoot = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
@@ -76,23 +77,15 @@ export default function LoginPage() {
               {"Sign in to MI LIBRO"}
             </Typography>
 
-            <Typography variant="body2" >
-              {"Don’t have an account? "}
-              <Button size="medium">
-                <Link href="/create" variant="subtitle2">
-                 {" Get started "}
-                </Link>
+            <Divider sx={{ my: 3 }} />
+            <Typography variant="body2">
+              <Button
+                size="medium"
+                onClick={() => window.location.replace("/login")}
+              >
+                <ArrowBackIcon /> {" Go Back"}
               </Button>
             </Typography>
-            <Typography variant="body2" >
-              {"Are you an "}
-              <Button size="medium">
-                <Link href="/admin" variant="subtitle2">
-                 {" Admin ? "}
-                </Link>
-              </Button>
-            </Typography>
-
             <Divider sx={{ my: 3 }} />
 
             <LoginForm />

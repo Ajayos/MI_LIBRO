@@ -11,7 +11,8 @@ export default function Account() {
   const { isAuthenticated, IsPermit, user } = useAuth();
 
   useEffect(() => {
-    //IsPermit(false);
+    IsPermit(false);
+    
   }, [isAuthenticated]);
 
   return (

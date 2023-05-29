@@ -22,6 +22,7 @@ const express = require("express");
 const router = express.Router();
 const {
 	login,
+	LogeUser,
 	createAccount,
 	editAccount,
 	deleteAccount,
@@ -33,16 +34,22 @@ const {
 	countBooksRented,
 	addBooksRented,
 } = require("../controllers/userController");
-const { protectUser, protectAdmin } = require("../middleware/authMiddleware");
+const { protectUser, protectAdmin, SkipPprotect } = require("../middleware/authMiddleware");
 
 // Route: GET /api/v1/users
-router.get("/", login);
+router.post("/login", SkipPprotect, login);
+
+// Route: GET /api/v1/users
+router.get("/", protectUser, LogeUser);
 
 // Route: POST /api/v1/users
-router.post("/", createAccount);
+router.post("/", SkipPprotect, createAccount);
 
-// Route: PUT /api/v1/users/:id
-router.put("/:id", protectUser, editAccount);
+// Route: PUT /api/v1/users/profile
+router.put("/profile", protectUser, updateUserProfile);
+
+// Route: PUT /api/v1/users/
+router.put("/", protectUser, editAccount);
 
 // Route: DELETE /api/v1/users/:id
 router.delete("/:id", protectAdmin, deleteAccount);
@@ -52,9 +59,6 @@ router.put("/forgotPassword", forgotPassword);
 
 // Route: PUT /api/v1/users/changePassword
 router.put("/changePassword", protectUser, updatePassword);
-
-// Route: PUT /api/v1/users/profile
-router.put("/profile", protectUser, updateUserProfile);
 
 // Route: GET /api/v1/users/:id
 router.get("/:id", protectAdmin, getUserById);
@@ -67,3 +71,6 @@ router.get("/rent", protectUser, countBooksRented);
 
 // Route: PUT /api/v1/users/rent
 router.put("/rent", protectUser, addBooksRented);
+
+
+module.exports = router;

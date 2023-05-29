@@ -25,4 +25,4 @@ const { routes } = require("../controllers/bookController");
 const { protectUser, protectAdmin } = require("../middleware/authMiddleware");
 
 // Route: GET /api/v1/books
-router.get("/", getBook);
+//router.get("/", getBook);
