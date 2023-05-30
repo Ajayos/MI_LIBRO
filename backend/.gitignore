@@ -1,0 +1,23 @@
+# Logs
+logs
+*.log
+*.env
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# remove package-lock.json
+package-lock.json

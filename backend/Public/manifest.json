@@ -1,0 +1,8 @@
+{
+  "short_name": "MI LIBRO",
+  "name": "Bookstore Library & Stock keeping app project from ict kerala",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
