@@ -2,7 +2,6 @@ import { Helmet } from "react-helmet-async";
 import { Link as RouterLink } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { Button, Typography, Container, Box } from "@mui/material";
-import img from "./img.svg";
 
 const StyledContent = styled("div")(({ theme }) => ({
   maxWidth: 480,
@@ -34,7 +33,7 @@ export default function Page404() {
 
           <Box
             component="img"
-            src={`https://raw.githubusercontent.com/Ajayos/MI_LIBRO_TEST/master/src/Pages/404/img.svg`}
+            src={`/Public/static/images/img.svg`}
             sx={{ height: 260, mx: "auto", my: { xs: 5, sm: 10 } }}
           />
 

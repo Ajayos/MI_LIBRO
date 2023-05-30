@@ -6,6 +6,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import OnlinePredictionIcon from "@mui/icons-material/OnlinePrediction";
 import { useAuth } from "../../contexts/AuthContext";
+import { useSocket } from "../../contexts/SocketContext";
 
 import AppWidget from "./Widget";
 import AppVisits from "./Website";
@@ -14,7 +15,7 @@ export default function Dashboard() {
   const theme = useTheme();
   const { isAuthenticated, IsPermit, user, GetDashboradData, adminHomeData } =
     useAuth();
-
+  const { onlineUsers } = useSocket();
   useEffect(() => {
     async function getAllData_() {
       await GetDashboradData();
@@ -54,7 +55,6 @@ export default function Dashboard() {
               icon={<LibraryBooksIcon />}
             />
           </Grid>
-
           <Grid item xs={12} sm={6} md={3}>
             <AppWidget
               title="Rent Books"
@@ -67,7 +67,7 @@ export default function Dashboard() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidget
               title="Online users"
-              total={adminHomeData.online}
+              total={onlineUsers}
               color="error"
               icon={<OnlinePredictionIcon />}
             />

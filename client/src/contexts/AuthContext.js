@@ -24,22 +24,22 @@ export function AuthProvider({ children }) {
 	const [userList, setUserList] = useState([
 		{
 			id: 1,
-            name: "Ajay o s ",
-            email: "ajayos@gmail.com",
-            pic: "https://i.ibb.co/5Y3mJ3Y/john.jpg",
+			name: "Ajay o s ",
+			email: "ajayos@gmail.com",
+			pic: "https://i.ibb.co/5Y3mJ3Y/john.jpg",
 			status: true,
 			phone: "7510",
-			seen: "online"
+			seen: "online",
 		},
 		{
 			id: 2,
-            name: "Ajay o s ",
-            email: "ajayos@gmail.com",
-            pic: "https://i.ibb.co/5Y3mJ3Y/john.jpg",
+			name: "Ajay o s ",
+			email: "ajayos@gmail.com",
+			pic: "https://i.ibb.co/5Y3mJ3Y/john.jpg",
 			status: true,
 			phone: "7510",
-			seen: "online"
-		}
+			seen: "online",
+		},
 	]);
 	const [adminHomeData, setAdminHomeData] = useState({
 		users: 0,
@@ -138,10 +138,13 @@ export function AuthProvider({ children }) {
 	}
 	async function updateUserPasswordFetch(password) {
 		try {
-			const response = await API.put("/users/changePassword", JSON.stringify({password: password}));
+			const response = await API.put(
+				"/users/changePassword",
+				JSON.stringify({ password: password })
+			);
 			if (response.status === 200) {
-				const { token } = response.data
-				console.log(token)
+				const { token } = response.data;
+				console.log(token);
 				localStorage.setItem("@key", token);
 				window.location.reload();
 				return { message: "Password Update successfully", status: 200 };
@@ -169,7 +172,7 @@ export function AuthProvider({ children }) {
 
 			if (response.status === 200) {
 				const { message } = response.data;
-				alert(message)
+				alert(message);
 				return { message: message, status: 201 };
 			} else {
 				return { message: response.data.message, status: response.status };
@@ -215,7 +218,8 @@ export function AuthProvider({ children }) {
 	async function AdminLogin(email, password) {
 		try {
 			const response = await API.post("/admins/login", {
-				email, password
+				email,
+				password,
 			});
 
 			if (response.status === 200) {
@@ -286,14 +290,10 @@ export function AuthProvider({ children }) {
 	async function GetUsersData() {
 		try {
 			const response = await API.get("/admin/users");
-
-			if (response.status === 200) {
-				const data = response.data;
-				console.log(data)
-				setUserList(...data);
-			} else {
-				setError(response.status);
-			}
+			//const response = await API.get("/admins/users");
+			//setUsers(response.data);
+			//setLoading(false); <Skeleton animation="wave" height={50} />
+			return response.data;
 		} catch (error) {
 			if (error.response) {
 				setError({
@@ -314,6 +314,28 @@ export function AuthProvider({ children }) {
 
 			if (response.status === 200) {
 				await GetUsersData();
+			} else {
+				setError(response.status);
+			}
+		} catch (error) {
+			if (error.response) {
+				setError({
+					message: error.response.data.message,
+					status: error.response.status,
+				});
+			} else {
+				setError("An error occurred");
+			}
+		}
+	}
+
+	async function AddNewBook(data) {
+		try {
+			const response = await API.post(`/books`, data);
+
+			if (response.status === 200) {
+				console.log(response.data);
+				//await GetUsersData();
 			} else {
 				setError(response.status);
 			}
@@ -350,7 +372,7 @@ export function AuthProvider({ children }) {
 	const LogOutUser = () => {
 		enqueueSnackbar("Logout successfully", { variant: "success" });
 		setTimeout(async () => {
-			logout()
+			logout();
 		}, 500);
 	};
 
@@ -370,6 +392,7 @@ export function AuthProvider({ children }) {
 				updateUserPasswordFetch,
 				GetBooks,
 				getUserData_,
+				AddNewBook,
 				IsPermit,
 				USERLIST: userList,
 				GetUsersData,

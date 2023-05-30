@@ -12,7 +12,6 @@ import {
 import { styled } from "@mui/material/styles";
 import { fCurrency } from "../../utils/NumberConvert";
 import Label from "../label";
-import { ColorPreview } from "../color-utils";
 
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -29,27 +28,35 @@ const StyledProductImg = styled("img")({
 
 export default function ShopProductCard({ product }) {
 	const {
-		id,
+		_id,
 		name,
 		authorName,
 		cover,
 		price,
 		status,
-		published,
+		publishedDate,
 		priceSale,
 		likeNumber,
 		commentNumber,
+		pic,
+		title,
+		author,
+		publicationDate,
+		genre,
+		isbn,
+		description,
 	} = product;
+
 	const [liked, setLiked] = useState(false);
 	const [openModal, setOpenModal] = useState(false);
 
 	const handleLike = () => {
 		setLiked(!liked);
-		console.log(`Book ID: ${id}, Liked: ${!liked}`);
+		console.log(`Book ID: ${_id}, Liked: ${!liked}`);
 	};
 
 	const handleComment = () => {
-		window.open(`/comments/${id}`, "_blank");
+		window.open(`/comments/${_id}`, "_blank");
 	};
 
 	const handleOpenModal = () => {
@@ -60,13 +67,32 @@ export default function ShopProductCard({ product }) {
 		setOpenModal(false);
 	};
 
+	const isNewProduct = () => {
+		const currentDate = new Date();
+		const publicationDateObj = new Date(publicationDate);
+		const timeDifference = currentDate.getTime() - publicationDateObj.getTime();
+		const daysDifference = timeDifference / (1000 * 3600 * 24);
+
+		// Consider the product "new" if published within the last 2 days
+		const timeLimitDays = 2;
+		return daysDifference <= timeLimitDays;
+	};
+
+	const isNew = isNewProduct();
+
 	return (
 		<Card>
 			<Box sx={{ pt: "100%", position: "relative" }}>
 				{status && (
 					<Label
 						variant='filled'
-						color={(status === "sale" && "error") || "info"}
+						color={
+							status === "Available"
+								? "success"
+								: status === "Rented"
+								? "warning"
+								: "error"
+						}
 						sx={{
 							zIndex: 9,
 							top: 16,
@@ -78,41 +104,14 @@ export default function ShopProductCard({ product }) {
 						{status}
 					</Label>
 				)}
-				<StyledProductImg alt={name} src={cover} />
-				{status === "available" && (
+
+				<StyledProductImg alt={title} src={pic} />
+				{isNew && (
 					<Box
 						sx={{
 							position: "absolute",
-							top: "50%",
-							left: "50%",
-							transform: "translate(-50%, -50%)",
-							bgcolor: "background.default",
-							px: 1,
-						}}
-					>
-						<Typography variant='body2'>Available</Typography>
-					</Box>
-				)}
-				{status === "rented" && (
-					<Box
-						sx={{
-							position: "absolute",
-							top: "50%",
-							left: "50%",
-							transform: "translate(-50%, -50%)",
-							bgcolor: "background.default",
-							px: 1,
-						}}
-					>
-						<Typography variant='body2'>Rented</Typography>
-					</Box>
-				)}
-				{status === "new" && (
-					<Box
-						sx={{
-							position: "absolute",
-							top: "12px",
-							left: "12px",
+							top: 0,
+							left: 0,
 							bgcolor: "primary.main",
 							color: "common.white",
 							p: "2px 8px",
@@ -127,10 +126,10 @@ export default function ShopProductCard({ product }) {
 			<Stack spacing={2} sx={{ p: 3 }}>
 				<Link color='inherit' underline='hover'>
 					<Typography variant='subtitle2' noWrap>
-						{name}
+						{title}
 					</Typography>
 				</Link>
-				<Typography variant='caption'>Author: {authorName}</Typography>
+				<Typography variant='caption'>Author: {author}</Typography>
 
 				<Stack
 					direction='row'
@@ -177,14 +176,14 @@ export default function ShopProductCard({ product }) {
 					<DialogContent>
 						<Box sx={{ p: 3 }}>
 							<Typography variant='h5' mb={2}>
-								{name}
+								{title}
 							</Typography>
 							<Typography variant='body1' mb={2}>
-								Author: {authorName}
+								Author: {author}
 							</Typography>
 							<img
-								src={cover}
-								alt={name}
+								src={pic}
+								alt={title}
 								style={{ width: "100%", height: "auto" }}
 							/>
 							<Typography variant='body1' mt={2}>
@@ -198,7 +197,12 @@ export default function ShopProductCard({ product }) {
 							<Typography variant='body1'>Likes: {likeNumber}</Typography>
 							<Typography variant='body1'>Comments: {commentNumber}</Typography>
 							<Typography variant='body1'>
-								Published Date: {published}
+								Published Date: {publishedDate}
+							</Typography>
+							<Typography variant='body1'>Genre: {genre}</Typography>
+							<Typography variant='body1'>ISBN: {isbn}</Typography>
+							<Typography variant='body1'>
+								Description: {description}
 							</Typography>
 						</Box>
 					</DialogContent>

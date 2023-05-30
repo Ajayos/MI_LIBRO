@@ -10,15 +10,16 @@ export default function ProductsPage() {
 
   useEffect(() => {
     const fetchBooks = async () => {
-      try {
-        const response = await API.get("/Books");
-        setBooks(response.data);
-        setIsLoading(false);
-      } catch (error) {
-        console.log("Error: ", error);
-        setIsLoading(false);
-      }
-    };
+        try {
+          const response = await API.get("/Books");
+          console.log("Books: ", response.data)
+          setBooks(response.data);
+          setIsLoading(false);
+        } catch (error) {
+          console.log("Error: ", error);
+          setIsLoading(false);
+        }
+      };
     fetchBooks();
   }, []);
 
