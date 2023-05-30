@@ -1,15 +1,29 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
-// @mui
-import { Container, Stack, Typography } from '@mui/material';
-// components
+import { useState, useEffect } from 'react';
+import { Container, Stack, Typography, Skeleton } from '@mui/material';
 import { ProductSort, ProductList, ProductCartWidget, ProductFilterSidebar } from '../../components/books';
-// mock
-import PRODUCTS from '../../products';
-
-// ----------------------------------------------------------------------
+import API from "../../utils/api";
 
 export default function ProductsPage() {
+  const [books, setBooks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await API.get("/Books");
+        setBooks(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log("Error: ", error);
+        setIsLoading(false);
+      }
+    };
+    fetchBooks();
+  }, []);
+
+  
+
   const [openFilter, setOpenFilter] = useState(false);
 
   const handleOpenFilter = () => {
@@ -23,7 +37,7 @@ export default function ProductsPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Products | Minimal UI </title>
+        <title>Dashboard: Products | Minimal UI</title>
       </Helmet>
 
       <Container>
@@ -37,7 +51,15 @@ export default function ProductsPage() {
           </Stack>
         </Stack>
 
-        <ProductList products={PRODUCTS} />
+        {isLoading ? (
+          <>
+            <Skeleton variant="rectangular" height={300} sx={{ mb: 2 }} />
+            <Skeleton variant="rectangular" height={300} sx={{ mb: 2 }} />
+            <Skeleton variant="rectangular" height={300} sx={{ mb: 2 }} />
+          </>
+        ) : (
+          <ProductList products={books} />
+        )}
       </Container>
     </>
   );

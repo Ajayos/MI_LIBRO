@@ -1,8 +1,8 @@
 export const TOKEN_KEY = "@key";
 export const AUTH_USER = "@username";
 export const AUTH_ACCESS = "@access";
-export const BACKEND_URL = "http://192.168.1.2:3001/api/v1"
-
+export const BACKEND_URL_ = "http://192.168.43.89:3001"
+export const BACKEND_URL = "/api/v1"
 export const isAuthenticated = () =>
   Boolean(localStorage.getItem(TOKEN_KEY) !== null);
 export const getToken = () => localStorage.getItem(TOKEN_KEY);

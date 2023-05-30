@@ -17,10 +17,9 @@ import {
   Card,
   Popover,
   MenuItem,
+  Skeleton,
 } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import BlockIcon from "@mui/icons-material/Block";
-import PanoramaFishEyeIcon from "@mui/icons-material/PanoramaFishEye";
 import Label from "../../components/label";
 import Scrollbar from "../../components/scrollbar";
 import UserListHead from "./User/UserListHead";
@@ -31,6 +30,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import PopoverContent from "./User/PopoverContent";
+import { useAuth } from "../../contexts/AuthContext";
+import API from "../../utils/api";
 
 const TABLE_HEAD = [
   { id: "name", label: "Name", alignRight: false },
@@ -41,11 +42,10 @@ const TABLE_HEAD = [
   { id: "actions", label: "Actions", alignRight: true },
 ];
 
-const USERLIST = [
-  
-];
+const USERLIST = [];
 
 function UserFetcher() {
+  const { isAuthenticated, IsPermit, user, GetDashboradData, adminHomeData } = useAuth();
   const [users, setUsers] = useState(USERLIST);
   const [searchTerm, setSearchTerm] = useState("");
   const [selected, setSelected] = useState([]);
@@ -55,19 +55,18 @@ function UserFetcher() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [open, setOpen] = useState(null);
   const [popoverContent, setPopoverContent] = useState(null);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
+    IsPermit(true);
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/v1/admins/users");
-        if (response.ok) {
-          const data = await response.json();
-          setUsers(data);
-        } else {
-          console.log("Error: Unable to fetch users");
-        }
+        const response = await API.get("/admins/users");
+        setUsers(response.data);
+        setLoading(false);
       } catch (error) {
         console.log("Error: ", error);
+        setLoading(false);
       }
     };
 
@@ -78,6 +77,25 @@ function UserFetcher() {
     setSearchTerm(event.target.value);
   };
 
+  const handleClick2 = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+
+    setSelected(newSelected);
+  };
   const handleClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
@@ -186,98 +204,110 @@ function UserFetcher() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row) => {
-                      const { id, name, status, pic, phoneNumber, email, seen, access } = row;
-                      const selectedUser = selected.indexOf(name) !== -1;
+                  {isLoading ? (
+                    <TableRow>
+                      <TableCell colSpan={7}>
+                        <Skeleton animation="wave" height={50} />
+                        <Skeleton animation="wave" height={50} />
+                        <Skeleton animation="wave" height={50} />
+                        <Skeleton animation="wave" height={50} />
+                        <Skeleton animation="wave" height={50} />
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    filteredUsers
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((row) => {
+                        const { id, name, status, pic, phoneNumber, email, seen, access } = row;
+                        const selectedUser = selected.indexOf(name) !== -1;
 
-                      return (
-                        <TableRow
-                          hover
-                          key={id}
-                          tabIndex={-1}
-                          role="checkbox"
-                          selected={selectedUser}
-                        >
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={selectedUser}
-                              onChange={(event) => handleClick(event, name)}
-                            />
-                          </TableCell>
+                        return (
+                          <TableRow
+                            hover
+                            key={id}
+                            tabIndex={-1}
+                            role="checkbox"
+                            selected={selectedUser}
+                          >
+                            <TableCell padding="checkbox">
+                              <Checkbox
+                                checked={selectedUser}
+                                onChange={(event) => handleClick(event, name)}
+                              />
+                            </TableCell>
 
-                          <TableCell component="th" scope="row" padding="none">
-                            <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={pic} />
-                              <Typography variant="subtitle2" noWrap>
-                                {name}
-                              </Typography>
-                            </Stack>
-                          </TableCell>
+                            <TableCell component="th" scope="row" padding="none">
+                              <Stack direction="row" alignItems="center" spacing={2}>
+                                <Avatar alt={name} src={pic} />
+                                <Typography variant="subtitle2" noWrap>
+                                  {name}
+                                </Typography>
+                              </Stack>
+                            </TableCell>
 
-                          <TableCell align="left">{email}</TableCell>
-                          <TableCell align="left">{phoneNumber}</TableCell>
-                          <TableCell align="center">
-                            <Label
-                              variant="filled"
-                              color={access ? 'success' : 'error'}
-                            >
-                              {access ? 'Access' : 'Blocked'}
-                            </Label>
-                          </TableCell>
-                          <TableCell align="left">{seen}</TableCell>
-                          <TableCell align="right">
-                            <IconButton
-                              aria-label="View Details"
-                              onClick={() => handleViewDetails(row)}
-                            >
-                              <RemoveRedEyeIcon />
-                            </IconButton>
-                            <IconButton
-                              aria-label="Edit User"
-                              onClick={() => handleEditUser(row)}
-                            >
-                              <EditIcon />
-                            </IconButton>
-                            <IconButton
-                              aria-label="Delete User"
-                              onClick={handleOpenMenu}
-                            >
-                              <MoreVertIcon />
-                            </IconButton>
-                            <Popover
-                              open={open !== null && open === row.id}
-                              anchorEl={open}
-                              onClose={handleCloseMenu}
-                              anchorOrigin={{
-                                vertical: "bottom",
-                                horizontal: "center",
-                              }}
-                              transformOrigin={{
-                                vertical: "top",
-                                horizontal: "center",
-                              }}
-                            >
-                              <MenuItem onClick={() => handleDeleteUser(row)}>
-                                <DeleteIcon color="error" />
-                                Delete User
-                              </MenuItem>
-                            </Popover>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                            <TableCell align="left">{email}</TableCell>
+                            <TableCell align="left">{phoneNumber}</TableCell>
+                            <TableCell align="center">
+                              <Label
+                                variant="filled"
+                                color={access ? "success" : "error"}
+                              >
+                                {access ? "Access" : "Blocked"}
+                              </Label>
+                            </TableCell>
+                            <TableCell align="left">{seen}</TableCell>
+                            <TableCell align="right">
+                              <IconButton
+                                aria-label="View Details"
+                                onClick={() => handleViewDetails(row)}
+                              >
+                                <RemoveRedEyeIcon />
+                              </IconButton>
+                              <IconButton
+                                aria-label="Edit User"
+                                onClick={() => handleEditUser(row)}
+                              >
+                                <EditIcon />
+                              </IconButton>
+                              <IconButton
+                                aria-label="Delete User"
+                                onClick={handleOpenMenu}
+                              >
+                                <MoreVertIcon />
+                              </IconButton>
+                              <Popover
+                                open={open !== null && open === row.id}
+                                anchorEl={open}
+                                onClose={handleCloseMenu}
+                                anchorOrigin={{
+                                  vertical: "bottom",
+                                  horizontal: "center",
+                                }}
+                                transformOrigin={{
+                                  vertical: "top",
+                                  horizontal: "center",
+                                }}
+                              >
+                                <MenuItem onClick={() => handleDeleteUser(row)}>
+                                  <DeleteIcon color="error" />
+                                  Delete User
+                                </MenuItem>
+                              </Popover>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })
+                  )}
 
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
+                      <TableCell colSpan={7} />
                     </TableRow>
                   )}
 
-                  {isNotFound && (
+                  {isNotFound && !isLoading && (
                     <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
                         No users found.
                       </TableCell>
                     </TableRow>
@@ -287,15 +317,17 @@ function UserFetcher() {
             </TableContainer>
           </Scrollbar>
 
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 50, 100]}
-            component="div"
-            count={filteredUsers.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+          {!isNotFound && !isLoading && (
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 50, 100]}
+              component="div"
+              count={filteredUsers.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          )}
         </Card>
       </Container>
 

@@ -36,15 +36,9 @@ const loginSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  // Define the 'token' field with type String and it is required
-  token: {
-    type: String,
-    required: true
-  },
   // Define the 'status' field with type String and default value 'inactive' (possible values: 'active', 'inactive', 'blocked', 'deleted')
   status: {
     type: String,
-    default: 'inactive',
     enum: ['active', 'inactive', 'blocked', 'deleted']
    },
 });

@@ -21,8 +21,13 @@
 const express = require("express");
 const router = express.Router();
 
-const { routes } = require("../controllers/bookController");
+const { createBook, getAllBooks  } = require("../controllers/bookController");
 const { protectUser, protectAdmin } = require("../middleware/authMiddleware");
 
 // Route: GET /api/v1/books
+router.get("/", getAllBooks);
+router.post("/admin", protectAdmin, getAllBooks);
 //router.get("/", getBook);
+router.post("/", protectAdmin, createBook);
+
+module.exports = router;

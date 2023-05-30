@@ -33,9 +33,9 @@ const asyncHandler = require("express-async-handler");
  */
 exports.createBook = asyncHandler(async (req, res) => {
 	try {
-		const { ISBN, title, author, genre, publicationDate, description, pic } =
+		const { isbn, title, author, genre, publicationDate, description, pic } =
 			req.body;
-
+		var ISBN = isbn;
 		// Find the book by ISBN
 		const check = await Book.findOne({ ISBN });
 
@@ -84,6 +84,26 @@ exports.getBook = asyncHandler(async (req, res) => {
 		}
 
 		return res.json(extBook);
+	} catch (error) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+});
+
+/**
+ * Controller for get book from database
+ *
+ * @param {String} req - the request
+ * @param {String} res - the response
+ * @returns {Object} Response indicating the book details
+ * @throws {Object} Response with the error message
+ */
+exports.getAllBooks = asyncHandler(async (req, res) => {
+	try {
+
+		// Check the book exists
+		const extBook = await Book.find();
+
+		return res.send(extBook);
 	} catch (error) {
 		return res.status(500).json({ message: "Internal server error" });
 	}

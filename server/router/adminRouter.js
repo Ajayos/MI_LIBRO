@@ -22,6 +22,7 @@ const express = require("express");
 const router = express.Router();
 const { login, createAccount, getDashboardData, getUsersData } = require("../controllers/adminController");
 const { protectUser, protectAdmin, SkipPprotect } = require("../middleware/authMiddleware");
+const { getAllBooks } = require("../controllers/bookController");
 
 // Route: POST /api/v1/admins
 router.post("/login", login);
@@ -31,5 +32,9 @@ router.post("/", createAccount);
 
 router.post("/dashboard", protectAdmin, getDashboardData)
 
-router.get("/users",  getUsersData)
+router.get("/users", protectAdmin, getUsersData)
+
+router.get("/books", protectAdmin, getAllBooks)
+
 module.exports = router;
+

@@ -24,9 +24,19 @@ const UserEditForm = () => {
 		async function getData() {
 			var data = await getUserData_();
 			setValues(data)
+			var ret = await convertDate(data.dob) 
+			setValues((prevValues) => ({
+				...prevValues,
+				['dob']: ret,
+			}));
 		}
 		getData();
 	}, [user, isAuthenticated]);
+
+	const convertDate = (dateString) => {
+		const [day, month, year] = dateString.split("-");
+		return `${year}-${month}-${day}`;
+	};
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		setValues((prevValues) => ({

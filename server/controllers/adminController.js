@@ -111,3 +111,5 @@ exports.getUsersData = asyncHandler(async (req, res) => {
 	const all = await User.find();
 	res.send(all)
 })
+
+
