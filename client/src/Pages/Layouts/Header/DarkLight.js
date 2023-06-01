@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { DarkContext } from '../../../contexts/ThemeContext';
+import { IconButton } from '@mui/material';
+import { Brightness4, Brightness7 } from '@mui/icons-material';
 
-const DarkLight = () => {
+const ThemeSwitcher = () => {
+  const { themeMode, toggleThemeMode } = useContext(DarkContext);
+
   return (
-    <div>
-      
-    </div>
+    <IconButton color="inherit" onClick={toggleThemeMode}>
+      {themeMode === 'light' ? <Brightness4 /> : <Brightness7 />}
+    </IconButton>
   );
-}
+};
 
-export default DarkLight;
+export default ThemeSwitcher;

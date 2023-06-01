@@ -13,19 +13,15 @@ import AppVisits from "./Website";
 
 export default function Dashboard() {
   const theme = useTheme();
-  const { isAuthenticated, IsPermit, user, GetDashboradData, adminHomeData } =
+  const { GetDashboradData, adminHomeData } =
     useAuth();
   const { onlineUsers } = useSocket();
   useEffect(() => {
     async function getAllData_() {
       await GetDashboradData();
     }
-    IsPermit(true);
-    if(!user) {
-      window.location.href = '/home'
-    }
     getAllData_();
-  }, [isAuthenticated]);
+  }, []);
 
   return (
     <>

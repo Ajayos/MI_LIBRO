@@ -6,45 +6,42 @@ import { useAuth } from "../../contexts/AuthContext";
 import SettingsPassword from "./SettingsPassword";
 
 export default function Account() {
-  const theme = useTheme();
-  const { isAuthenticated, IsPermit, user } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
+	const theme = useTheme();
+	const { user } = useAuth();
+	const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    IsPermit(false);
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setIsLoading(false);
+		}, 2000);
 
-    // Simulating loading time
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
+		return () => clearTimeout(timer);
+	}, []);
 
-    return () => clearTimeout(timer);
-  }, [isAuthenticated]);
+	return (
+		<>
+			<Helmet>
+				<title>Settings | MI LIBRO</title>
+			</Helmet>
+			<Box
+				component='main'
+				sx={{
+					flexGrow: 1,
+					py: 8,
+				}}
+			>
+				<Container maxWidth='lg'>
+					<Stack spacing={3}>
+						{isLoading ? (
+							<Skeleton variant='text' width={200} height={40} />
+						) : (
+							<Typography variant='h4'>Settings</Typography>
+						)}
 
-  return (
-    <>
-      <Helmet>
-        <title>Settings | MI LIBRO</title>
-      </Helmet>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth="lg">
-          <Stack spacing={3}>
-            {isLoading ? (
-              <Skeleton variant="text" width={200} height={40} />
-            ) : (
-              <Typography variant="h4">Settings</Typography>
-            )}
-            
-            <SettingsPassword />
-          </Stack>
-        </Container>
-      </Box>
-    </>
-  );
+						<SettingsPassword />
+					</Stack>
+				</Container>
+			</Box>
+		</>
+	);
 }

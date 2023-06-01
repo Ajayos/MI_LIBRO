@@ -69,7 +69,9 @@ app.use(express.static(publicPath));
 app.get("/Public/static/images/img.svg", (req, res) => {
 	res.sendFile(path.join(publicPath, "/static/images/img.svg"));
 });
-
+app.get("/Public/static/images/500.svg", (req, res) => {
+	res.sendFile(path.join(publicPath, "/static/images/500.svg"));
+});
 app.get("*", (req, res) => {
 	res.sendFile(path.join(publicPath, "/index.html"));
 });

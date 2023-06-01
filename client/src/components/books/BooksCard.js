@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
 	Box,
 	Card,
@@ -8,6 +9,8 @@ import {
 	Button,
 	Modal,
 	DialogContent,
+	Avatar,
+	AvatarGroup,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { fCurrency } from "../../utils/NumberConvert";
@@ -15,8 +18,7 @@ import Label from "../label";
 
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import CommentIcon from "@mui/icons-material/Comment";
-import { useState } from "react";
+import { fDate } from "../../utils/formatTime";
 
 const StyledProductImg = styled("img")({
 	top: 0,
@@ -45,18 +47,14 @@ export default function ShopProductCard({ product }) {
 		genre,
 		isbn,
 		description,
+		usersPics,
 	} = product;
 
 	const [liked, setLiked] = useState(false);
 	const [openModal, setOpenModal] = useState(false);
-
 	const handleLike = () => {
 		setLiked(!liked);
 		console.log(`Book ID: ${_id}, Liked: ${!liked}`);
-	};
-
-	const handleComment = () => {
-		window.open(`/comments/${_id}`, "_blank");
 	};
 
 	const handleOpenModal = () => {
@@ -130,42 +128,33 @@ export default function ShopProductCard({ product }) {
 					</Typography>
 				</Link>
 				<Typography variant='caption'>Author: {author}</Typography>
+				<Typography variant='caption'>Likes: 5 </Typography>
+				<Typography variant='caption'>Comments: {commentNumber}</Typography>
+				<Typography variant='caption'>
+					Published Date: {fDate(publicationDate)}
+				</Typography>
+				<Typography variant='caption'>Genre: {genre}</Typography>
 
 				<Stack
 					direction='row'
 					alignItems='center'
 					justifyContent='space-between'
 				>
-					<Typography variant='subtitle1'>
-						<Typography
-							component='span'
-							variant='body1'
-							sx={{
-								color: "text.disabled",
-								textDecoration: "line-through",
-							}}
-						>
-							{priceSale && fCurrency(priceSale)}
-						</Typography>
-						&nbsp;
-						{fCurrency(price)}
-					</Typography>
-				</Stack>
-
-				<Stack
-					direction='row'
-					alignItems='center'
-					justifyContent='space-between'
-				>
-					<IconButton
-						color={liked ? "primary" : "default"}
-						onClick={handleLike}
-					>
+					<IconButton color={liked ? "error" : "default"} onClick={handleLike}>
 						{liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
 					</IconButton>
-					<IconButton onClick={handleComment}>
-						<CommentIcon />
-					</IconButton>
+					{usersPics && (
+						<AvatarGroup max={12}>
+							{usersPics.map((userPic, index) => (
+								<Avatar
+									key={index}
+									src={userPic}
+									alt={`User ${index + 1}`}
+									sx={{ width: 24, height: 24 }}
+								/>
+							))}
+						</AvatarGroup>
+					)}
 				</Stack>
 
 				<Button variant='contained' onClick={handleOpenModal}>
@@ -184,26 +173,35 @@ export default function ShopProductCard({ product }) {
 							<img
 								src={pic}
 								alt={title}
-								style={{ width: "100%", height: "auto" }}
+								style={{ width: "50%", height: "50%" }}
 							/>
-							<Typography variant='body1' mt={2}>
-								Price: {fCurrency(price)}
+							<Typography variant='body1' mb={2}>
+								Likes: 5{" "}
 							</Typography>
-							{priceSale && (
-								<Typography variant='body1' color='error'>
-									Sale Price: {fCurrency(priceSale)}
-								</Typography>
-							)}
-							<Typography variant='body1'>Likes: {likeNumber}</Typography>
-							<Typography variant='body1'>Comments: {commentNumber}</Typography>
-							<Typography variant='body1'>
-								Published Date: {publishedDate}
+							<Typography variant='body1' mb={2}>
+								Comments: {commentNumber}
+							</Typography>
+							<Typography variant='body1' mb={2}>
+								Published Date: {publicationDate}
 							</Typography>
 							<Typography variant='body1'>Genre: {genre}</Typography>
 							<Typography variant='body1'>ISBN: {isbn}</Typography>
 							<Typography variant='body1'>
 								Description: {description}
 							</Typography>
+
+							{/* Render user avatars */}
+							{usersPics && (
+								<Stack direction='row' spacing={1} mt={2}>
+									{usersPics.map((userPic, index) => (
+										<Avatar
+											key={index}
+											src={userPic}
+											alt={`User ${index + 1}`}
+										/>
+									))}
+								</Stack>
+							)}
 						</Box>
 					</DialogContent>
 				</Modal>

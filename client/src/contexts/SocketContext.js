@@ -1,57 +1,59 @@
 /* eslint-disable default-case */
-import React, { useState, useContext, createContext, useEffect } from 'react'
+import React, { useState, useContext, createContext, useEffect } from "react";
 
-import { useAuth } from './AuthContext'
+import { useAuth } from "./AuthContext";
 import { socket } from "../utils/socket";
 
-const SocketContext = createContext('')
+const SocketContext = createContext("");
 
-export function SocketProvider({ children }) { 
-	const [ isFocused, setIsFocused ] = useState(true)
-	const { user, isAuthenticated, MyToken } = useAuth()
+export function SocketProvider({ children }) {
+	const [isFocused, setIsFocused] = useState(true);
+	const { user, isAuthenticated, MyToken } = useAuth();
 	const [onlineUsers, setOnlineUsers] = useState(0);
-	const [userList, setUserList] = useState([])
+	const [userList, setUserList] = useState([]);
 
 	useEffect(() => {
-		if(!isAuthenticated){ return }
-		if(!user){ return }
+		if (!isAuthenticated) {
+			return;
+		}
+		if (!user) {
+			return;
+		}
 
-		socket.emit('userOnline', {
+		socket.emit("userOnline", {
 			user: user.id,
 			token: MyToken,
 			pic: user.pic,
 			status: true,
-		})
+		});
 		window.onblur = () => {
-			socket.emit('imOnline', { 
+			socket.emit("imOnline", {
 				user: user.id,
 				token: MyToken,
 				status: false,
-			})
-			setIsFocused(false)
-		}
+			});
+			setIsFocused(false);
+		};
 		window.onfocus = () => {
-			socket.emit('imOnline', { 
-				user: user.id, 
+			socket.emit("imOnline", {
+				user: user.id,
 				token: MyToken,
 				status: true,
-			})
-			setIsFocused(true)
-		}
+			});
+			setIsFocused(true);
+		};
 
-		
+		return () => socket.removeAllListeners();
+	}, [isFocused, user, isAuthenticated]);
 
-		return () => socket.removeAllListeners()
-	},[isFocused, user, isAuthenticated])
-
-	socket.on('online', (data) => {
-		setOnlineUsers(data)
-	})
-	socket.on('userOnline', (data) => {
-        setOnlineUsers(data)
-    })
-	return(
-		<SocketContext.Provider 
+	socket.on("online", (data) => {
+		setOnlineUsers(data);
+	});
+	socket.on("userOnline", (data) => {
+		setOnlineUsers(data);
+	});
+	return (
+		<SocketContext.Provider
 			value={{
 				socket,
 				isFocused,
@@ -60,11 +62,11 @@ export function SocketProvider({ children }) {
 				setUserList,
 			}}
 		>
-			{children} 
+			{children}
 		</SocketContext.Provider>
-	)
+	);
 }
 
 export function useSocket() {
-	return useContext(SocketContext)
+	return useContext(SocketContext);
 }

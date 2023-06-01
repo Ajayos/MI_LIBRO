@@ -13,7 +13,7 @@ import {
 import useResponsive from "../../hooks/useResponsive";
 import PROFILE from "../../image/logo.png";
 import LOGIN_IMG from "../../image/login.png";
-import LoginForm from "./ForgotPsswordForm";
+import LoginForm from "./ForgotPasswordForm";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const StyledRoot = styled("div")(({ theme }) => ({

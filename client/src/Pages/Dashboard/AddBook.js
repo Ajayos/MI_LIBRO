@@ -21,7 +21,7 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export default function Account() {
 	const theme = useTheme();
-	const { isAuthenticated, IsPermit, user, AddNewBook } = useAuth();
+	const { AddNewBook } = useAuth();
 	const [isLoading, setIsLoading] = useState(true);
 	const [profilePic, setProfilePic] = useState();
 	const [newProfilePic, setNewProfilePic] = useState(null);
@@ -39,15 +39,12 @@ export default function Account() {
 	const [isFormValid, setIsFormValid] = useState(false);
 
 	useEffect(() => {
-		IsPermit(true);
-
-		// Simulating loading time
 		const timer = setTimeout(() => {
 			setIsLoading(false);
-		}, 2000);
+		}, 1000);
 
 		return () => clearTimeout(timer);
-	}, [isAuthenticated]);
+	}, []);
 
 	const handleProfilePicChange = (event) => {
 		const file = event.target.files[0];
