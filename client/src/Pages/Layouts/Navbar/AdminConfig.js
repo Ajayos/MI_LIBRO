@@ -6,22 +6,22 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 const navConfig = [
   {
     title: "Dashboard",
-    path: "/dashboard/home",
+    path: "/home",
     icon: <DashboardIcon />,
   },
   {
     title: "User",
-    path: "/dashboard/user",
+    path: "/user",
     icon: <GroupIcon />,
   },
   {
     title: "Books",
-    path: "/dashboard/books",
+    path: "/books",
     icon: <LibraryBooksIcon />,
   },
   {
     title: "Add Book",
-    path: "/dashboard/addBook",
+    path: "/addBook",
     icon: <AddBoxIcon />,
   },
 ];

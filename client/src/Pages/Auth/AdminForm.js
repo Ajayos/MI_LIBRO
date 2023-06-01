@@ -29,15 +29,15 @@ export default function LoginForm() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if(isAuthenticated) {
-      if(user) {
-        window.location.href = "/Home"
-      } else {
-        window.location.href = "/home";
-      }
-    }
-  }, [isAuthenticated]);
+  //useEffect(() => {
+  //  if(isAuthenticated) {
+  //    if(user) {
+  //      window.location.href = "/Home"
+  //    } else {
+  //      window.location.href = "/home";
+  //    }
+  //  }
+  //}, [isAuthenticated]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -81,9 +81,10 @@ export default function LoginForm() {
         setLoading(true);
         // Login user
         var { message, status } =  AdminLogin(formData.email, formData.password);
+        console.log(message);
         if (status === 200) {
           enqueueSnackbar(message, { variant: "success" });
-          window.location.href = "/dashboard/home";
+          window.location.href = "/home";
         } else {
           enqueueSnackbar(message, { variant: "error" });
           setErrors({ email: message, password: message });

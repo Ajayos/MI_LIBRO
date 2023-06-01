@@ -6,6 +6,7 @@ import ListIcon from "@mui/icons-material/List";
 import Searchbar from "./Searchbar";
 import AccountPopover from "./AccountPopover";
 import NotificationsPopover from "./NotificationsPopover";
+import Mood from "./DarkLight"
 
 const NAV_WIDTH = 280;
 
@@ -56,6 +57,8 @@ export default function Header({ onOpenNav }) {
             sm: 1,
           }}
         >
+          <Mood />
+          
           {isAuthenticated && <NotificationsPopover />}
           {isAuthenticated && <AccountPopover />}
           {!isAuthenticated && (

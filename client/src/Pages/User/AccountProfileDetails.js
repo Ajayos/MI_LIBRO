@@ -16,22 +16,22 @@ import {
 } from "@mui/material";
 import { useAuth } from "../../contexts/AuthContext";
 const UserEditForm = () => {
-	const { isAuthenticated, user, getUserData_, updateUserDataFetch } = useAuth();
+	const { getUserData_, updateUserDataFetch } = useAuth();
 	const [values, setValues] = useState({});
 	const [errors, setErrors] = useState({});
 	const [dobInputType, setDobInputType] = useState("text");
 	useEffect(() => {
 		async function getData() {
 			var data = await getUserData_();
-			setValues(data)
-			var ret = await convertDate(data.dob) 
+			setValues(data);
+			var ret = await convertDate(data.dob);
 			setValues((prevValues) => ({
 				...prevValues,
-				['dob']: ret,
+				["dob"]: ret,
 			}));
 		}
 		getData();
-	}, [user, isAuthenticated]);
+	}, []);
 
 	const convertDate = (dateString) => {
 		const [day, month, year] = dateString.split("-");
@@ -98,7 +98,7 @@ const UserEditForm = () => {
 
 		if (Object.keys(newErrors).length === 0) {
 			//setValues(values);
-      updateUserDataFetch(values);
+			updateUserDataFetch(values);
 			setErrors({});
 		}
 	};
@@ -112,7 +112,7 @@ const UserEditForm = () => {
 			"education",
 			"address",
 			"place",
-			"contactDetails"
+			"contactDetails",
 		];
 		return requiredFields.every((field) => values[field] !== "");
 	};

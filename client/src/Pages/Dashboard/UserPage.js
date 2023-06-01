@@ -45,7 +45,7 @@ const TABLE_HEAD = [
 const USERLIST = [];
 
 function UserFetcher() {
-  const { isAuthenticated, IsPermit, user, GetDashboradData, adminHomeData } = useAuth();
+  const { GetDashboradData, adminHomeData } = useAuth();
   const [users, setUsers] = useState(USERLIST);
   const [searchTerm, setSearchTerm] = useState("");
   const [selected, setSelected] = useState([]);
@@ -58,7 +58,6 @@ function UserFetcher() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    IsPermit(true);
     const fetchUsers = async () => {
       try {
         const response = await API.get("/admins/users");

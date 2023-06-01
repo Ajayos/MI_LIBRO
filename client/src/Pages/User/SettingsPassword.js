@@ -191,7 +191,12 @@ export default function SettingsPassword() {
 				<Divider />
 				{loading ? (
 					<CardActions sx={{ justifyContent: "flex-end" }}>
-						<Skeleton variant='rectangular' height={40} width={100} sx={{ justifyContent: "flex-end" }}/>
+						<Skeleton
+							variant='rectangular'
+							height={40}
+							width={100}
+							sx={{ justifyContent: "flex-end" }}
+						/>
 					</CardActions>
 				) : (
 					<CardActions sx={{ justifyContent: "flex-end" }}>

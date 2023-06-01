@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import { Button, Typography, Container, Box } from "@mui/material";
 
 const StyledContent = styled("div")(({ theme }) => ({
-  maxWidth: 400,
+  maxWidth: 480,
   margin: "auto",
   minHeight: "100vh",
   display: "flex",
@@ -13,30 +13,33 @@ const StyledContent = styled("div")(({ theme }) => ({
   padding: theme.spacing(12, 0),
 }));
 
-export default function Page404() {
+export default function Page500() {
   return (
     <>
       <Helmet>
-        <title> 404 Page Not Found | MI LIBRO </title>
+        <title> 500 Internal Server Error | MI LIBRO </title>
       </Helmet>
 
       <Container>
         <StyledContent sx={{ textAlign: "center", alignItems: "center" }}>
           <Typography variant="h3" paragraph>
-            Sorry, page not found!
-          </Typography>
-
-          <Typography sx={{ color: "text.secondary" }}>
-            Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve
-            mistyped the URL? Be sure to check your spelling.
+          There was an error, please try again later
           </Typography>
 
           <Box
             component="img"
-            src={`/Public/static/images/img.svg`}
-            sx={{ height: 260, mx: "auto", my: { xs: 5, sm: 10 } }}
+            src={`/public/static/images/500.svg`}
+            sx={{ height: 260, mx: "auto",  marginTop: "-25%"}}
           />
 
+          <Button
+            to="/"
+            size="large"
+            variant="contained"
+            component={RouterLink}
+          >
+            Go to Home
+          </Button>
           <Button
             to="/"
             size="large"
