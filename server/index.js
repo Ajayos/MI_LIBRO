@@ -59,7 +59,7 @@ const io = socketIO(server, {
 
 // Setup app for the data handling
 app.use(cors());
-app.use(express.json()); // to accept json data
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // setup api
@@ -97,18 +97,18 @@ io.on("connection", (socket) => {
 		const { user, status, token, pic } = data;
 		users[socket.id] = user;
     users[socket.id].pic = pic;
-    io.emit("notification", { title: "New user joined", Avatar: pic, createdAt: new Date(), isUnRead: true, });
-		try {
-			await login.findOneAndUpdate(
-				{ user: user },
-				{ status: "active" },
-				{ upsert: true } // Create a new user if it doesn't exist
-			);
-			// Update the user's status and token in the database
-		} catch (error) {
-			// Handle any errors that occur during the update
-			console.error(error);
-		}
+    io.emit("notification", { title: "Ajay o s user joined", Avatar: pic, createdAt: new Date(), isUnRead: true, });
+		//try {
+		//	await login.findOneAndUpdate(
+		//		{ user: user },
+		//		{ status: "active" },
+		//		{ upsert: true } // Create a new user if it doesn't exist
+		//	);
+		//	// Update the user's status and token in the database
+		//} catch (error) {
+		//	// Handle any errors that occur during the update
+		//	console.error(error);
+		//}
 	});
 
 	// Handle client disconnection
@@ -118,24 +118,24 @@ io.on("connection", (socket) => {
 
 		// Emit the updated number of online users to all clients
 		io.emit("online", users.length);
-		try {
-			// Set user status to "inactive" on disconnection
-			const userId = users[socket.id]; // Assuming socket.id represents the user ID
-			login
-				.findOneAndUpdate(
-					{ user: userId },
-					{ status: "inactive" },
-					{ upsert: true } // Create a new user if it doesn't exist
-				)
-				.then(() => {
-					//console.log("User status set to inactive");
-				})
-				.catch((error) => {
-					//console.error("Error setting user status:", error);
-				});
-		} catch (error) {
-			console.error(error);
-		}
+		//try {
+		//	// Set user status to "inactive" on disconnection
+		//	const userId = users[socket.id]; // Assuming socket.id represents the user ID
+		//	login
+		//		.findOneAndUpdate(
+		//			{ user: userId },
+		//			{ status: "inactive" },
+		//			{ upsert: true } // Create a new user if it doesn't exist
+		//		)
+		//		.then(() => {
+		//			//console.log("User status set to inactive");
+		//		})
+		//		.catch((error) => {
+		//			//console.error("Error setting user status:", error);
+		//		});
+		//} catch (error) {
+		//	console.error(error);
+		//}
 	});
 });
 

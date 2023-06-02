@@ -22,25 +22,23 @@ const CreatePage = Load(() => import("./Auth/CreateAccount"));
 const UserAccount = Load(() => import("./User/Account"));
 const Settings = Load(() => import("./User/Settings"));
 const UserBooks = Load(() => import("./User/Books"));
+const UserBook = Load(() => import("./User/Book"));
 
 // ADMIN PAGES
 const DashboardHomePage = Load(() => import("./Dashboard/Dashboard"));
 const DashboardUserPage = Load(() => import("./Dashboard/UserPage"));
 const DashboardAddBook = Load(() => import("./Dashboard/AddBook"));
 const DashboardBooks = Load(() => import("./Dashboard/Books"));
+const DashboardEditBook = Load(() => import("./Dashboard/EditBook"));
 
-// Router
 export default function Router() {
   const { isAuthenticated, access } = useAuth();
 
   const routes = useRoutes([
-    // Auth Routes
     { path: "login", element: <LoginPage /> },
     { path: "admin", element: <AdminLoginPage /> },
     { path: "forgot", element: <ForgotPage /> },
     { path: "create", element: <CreatePage /> },
-
-    // User Routes
     ...(isAuthenticated && !access
       ? [
           {
@@ -50,6 +48,7 @@ export default function Router() {
               { element: <Navigate to="/home" />, index: true },
               { path: "home", element: <UserBooks /> },
               { path: "books", element: <UserBooks /> },
+              { path: "book/:id", element: <UserBook /> },
               { path: "my-books", element: <div /> },
               { path: "liked-books", element: <div /> },
               { path: "account", element: <UserAccount /> },
@@ -58,8 +57,6 @@ export default function Router() {
           },
         ]
       : []),
-
-    // Admin Routes
     ...(isAuthenticated && access
       ? [
           {
@@ -71,12 +68,11 @@ export default function Router() {
               { path: "user", element: <DashboardUserPage /> },
               { path: "books", element: <DashboardBooks /> },
               { path: "addbook", element: <DashboardAddBook /> },
+              { path: "editbook/:id", element: <DashboardEditBook />}
             ],
           },
         ]
       : []),
-
-    // Error Pages
     {
       path: "/500",
       element: <Layout_ />,

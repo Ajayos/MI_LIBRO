@@ -26,11 +26,13 @@ const router = express.Router();
 const adminRouter = require("./adminRouter");
 const userRouter = require("./userRouter");
 const booksRouter = require("./bookRouter");
+const likeRouter = require("./likeRouter");
 
 // Set up routes
 router.use("/admins", adminRouter);
 router.use("/users", userRouter);
 router.use("/books", booksRouter);
+router.use("/likes", likeRouter)
 
 // Export router
 module.exports = router;

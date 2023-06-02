@@ -39,7 +39,13 @@ const protectUser = asyncHandler(async (req, res, next) => {
 
       if (user && user.password === hashedPassword) {
         req.user = user;
-        next();
+        req.id = id;
+        if(user.access) {
+          next();
+        } else {
+          return res.status(403).send("Access Denied");
+        }
+        // if(!user.access) return res.status(403).send("Access Denied");
       } else {
         return res.status(401).json({
           error: "Invalid Token",

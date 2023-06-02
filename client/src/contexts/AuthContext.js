@@ -290,9 +290,6 @@ export function AuthProvider({ children }) {
 	async function GetUsersData() {
 		try {
 			const response = await API.get("/admin/users");
-			//const response = await API.get("/admins/users");
-			//setUsers(response.data);
-			//setLoading(false); <Skeleton animation="wave" height={50} />
 			return response.data;
 		} catch (error) {
 			if (error.response) {
@@ -350,6 +347,27 @@ export function AuthProvider({ children }) {
 			}
 		}
 	}
+	async function EditBook(data) {
+		try {
+			const response = await API.put(`/books`, data);
+
+			if (response.status === 200) {
+				console.log(response.data);
+				//await GetUsersData();
+			} else {
+				setError(response.status);
+			}
+		} catch (error) {
+			if (error.response) {
+				setError({
+					message: error.response.data.message,
+					status: error.response.status,
+				});
+			} else {
+				setError("An error occurred");
+			}
+		}
+	}
 
 	async function IsPermit(user) {
 		if (isAuthenticated) {
@@ -366,8 +384,24 @@ export function AuthProvider({ children }) {
 			navigate("/login", { replace: true });
 		}
 	}
-
-	async function createBook() {}
+	async function LikeBook(id, like) {
+		try {
+			if (like) {
+				await API.post(`/likes`, JSON.stringify({ id: id }));
+			} else {
+				//await API.delete(`/likes/${id}`);
+			}
+		} catch (error) {
+			if (error.response) {
+				setError({
+					message: error.response.data.message,
+					status: error.response.status,
+				});
+			} else {
+				setError("An error occurred");
+			}
+		}
+	}
 
 	const LogOutUser = () => {
 		enqueueSnackbar("Logout successfully", { variant: "success" });
@@ -384,8 +418,8 @@ export function AuthProvider({ children }) {
 				API,
 				user,
 				Forgot,
-				createBook,
 				GetDashboradData,
+				EditBook,
 				adminHomeData,
 				updateUserProfileFetch,
 				updateUserDataFetch,
@@ -394,6 +428,7 @@ export function AuthProvider({ children }) {
 				getUserData_,
 				AddNewBook,
 				IsPermit,
+				LikeBook,
 				USERLIST: userList,
 				GetUsersData,
 				logout: LogOutUser,

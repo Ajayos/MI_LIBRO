@@ -19,7 +19,7 @@ import Label from "../label";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { fDate } from "../../utils/formatTime";
-
+import { useAuth } from "../../contexts/AuthContext";
 const StyledProductImg = styled("img")({
 	top: 0,
 	width: "100%",
@@ -29,6 +29,7 @@ const StyledProductImg = styled("img")({
 });
 
 export default function ShopProductCard({ product }) {
+	const { LikeBook } = useAuth();
 	const {
 		_id,
 		name,
@@ -54,11 +55,11 @@ export default function ShopProductCard({ product }) {
 	const [openModal, setOpenModal] = useState(false);
 	const handleLike = () => {
 		setLiked(!liked);
-		console.log(`Book ID: ${_id}, Liked: ${!liked}`);
+		LikeBook(_id, liked);
 	};
 
 	const handleOpenModal = () => {
-		setOpenModal(true);
+		window.location.href = `/book/${_id}`;
 	};
 
 	const handleCloseModal = () => {
@@ -70,8 +71,6 @@ export default function ShopProductCard({ product }) {
 		const publicationDateObj = new Date(publicationDate);
 		const timeDifference = currentDate.getTime() - publicationDateObj.getTime();
 		const daysDifference = timeDifference / (1000 * 3600 * 24);
-
-		// Consider the product "new" if published within the last 2 days
 		const timeLimitDays = 2;
 		return daysDifference <= timeLimitDays;
 	};
@@ -189,8 +188,6 @@ export default function ShopProductCard({ product }) {
 							<Typography variant='body1'>
 								Description: {description}
 							</Typography>
-
-							{/* Render user avatars */}
 							{usersPics && (
 								<Stack direction='row' spacing={1} mt={2}>
 									{usersPics.map((userPic, index) => (

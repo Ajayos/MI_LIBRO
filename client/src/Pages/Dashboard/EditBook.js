@@ -18,10 +18,13 @@ import {
 	CardHeader,
 } from "@mui/material";
 import { useAuth } from "../../contexts/AuthContext";
+import { useParams } from "react-router-dom";
+import API from "../../utils/api";
 
 export default function Account() {
+	const { id } = useParams();
 	const theme = useTheme();
-	const { AddNewBook } = useAuth();
+	const { EditBook } = useAuth();
 	const [isLoading, setIsLoading] = useState(true);
 	const [profilePic, setProfilePic] = useState();
 	const [newProfilePic, setNewProfilePic] = useState(null);
@@ -32,20 +35,39 @@ export default function Account() {
 		author: "",
 		publicationDate: "",
 		genre: "",
-		isbn: "",
+		ISBN: "",
 		description: "",
 	});
 	const [errors, setErrors] = useState({});
 	const [isFormValid, setIsFormValid] = useState(false);
 
 	useEffect(() => {
-		const timer = setTimeout(() => {
-			setIsLoading(false);
-		}, 1000);
+		const fetchBookData = async () => {
+			try {
+				const response = await API.get(`books/${id}`);
+				setBook(response.data);
+				setProfilePic(response.data.pic);
+				//var ret = await convertDate(response.data.dob);
+				//console.log(ret)
+				//setBook((prevValues) => ({
+				//	...prevValues,
+				//	["dob"]: ret,
+				//  }));
+				setIsLoading(false);
+			} catch (error) {
+				console.error(error);
+			}
+		};
 
-		return () => clearTimeout(timer);
-	}, []);
+		if (id) {
+			fetchBookData();
+		}
+	}, [id]);
 
+	const convertDate = (dateString) => {
+		const [day, month, year] = dateString.split("-");
+		return `${year}-${month}-${day}`;
+	};
 
 	const handleImageChange = (event) => {
 		const file = event.target.files[0];
@@ -90,18 +112,9 @@ export default function Account() {
 		event.preventDefault();
 
 		if (validateForm) {
-			console.log("Submitting form:");
-			await AddNewBook(JSON.stringify(book));
-
-			setBook({
-				pic: null,
-				title: "",
-				author: "",
-				publicationDate: "",
-				genre: "",
-				isbn: "",
-				description: "",
-			});
+            console.log(book)
+			await EditBook(JSON.stringify(book));
+			window.location.href = "/Books";
 			setErrors({});
 			return true;
 		} else {
@@ -142,7 +155,7 @@ export default function Account() {
 			newErrors.genre = "Genre is required";
 		}
 
-		if (book.isbn.trim() === "") {
+		if (book.ISBN.trim() === "") {
 			isValid = false;
 			newErrors.isbn = "ISBN is required";
 		}
@@ -159,7 +172,7 @@ export default function Account() {
 
 	const handleIsbnCheck = () => {
 		//if (book.isbn.trim() !== "") {
-		  // Perform ISBN check logic here
+		// Perform ISBN check logic here
 		//  console.log("Checking ISBN:", book.isbn);
 		//}
 		return true;
@@ -292,22 +305,7 @@ export default function Account() {
 																helperText={errors.author}
 															/>
 														</Grid>
-														<Grid item xs={12}>
-															<Typography>
-																{errors.publicationDate
-																	? errors.publicationDate
-																	: "Publication Date"}
-															</Typography>
-															<TextField
-																fullWidth
-																type='date'
-																name='publicationDate'
-																value={book.publicationDate}
-																onChange={handleInputChange}
-																error={!!errors.publicationDate}
-																helperText={errors.publicationDate}
-															/>
-														</Grid>
+
 														<Grid item xs={12}>
 															<Typography>
 																{errors.genre ? errors.genre : "Genre"}
@@ -327,8 +325,8 @@ export default function Account() {
 															</Typography>
 															<TextField
 																fullWidth
-																name='isbn'
-																value={book.isbn}
+																name='ISBN'
+																value={book.ISBN}
 																onChange={handleInputChange}
 																onBlur={handleIsbnCheck}
 																error={!!errors.isbn}
