@@ -21,7 +21,7 @@
 
 // Import dependencies
 
-const { Admin, User } = require("../Models");
+const { Admin, User, Book } = require("../Models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
@@ -103,7 +103,14 @@ exports.createAccount = asyncHandler(async  (req, res) => {
 
 
 exports.getDashboardData = asyncHandler(async  (req, res) => {
-	res.status(200).json({ message: "Dashboard data", users: 10, rbooks: 50, online: 6 , books: 7});
+	try {
+		const bookConunt = await Book.countDocuments();
+		const userCount = await User.countDocuments();
+		return res.status(200).json({ message: "Dashboard data", users: userCount, rbooks: 50, online: 6 , books: bookConunt});
+		//res.status(200).json({ message: "Dashboard data", users: 10, rbooks: 50, online: 6 , books: 7});
+	} catch (error) {
+		return res.status(500).send("Internal server error")
+	}
 })
 
 

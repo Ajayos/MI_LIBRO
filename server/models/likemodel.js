@@ -45,4 +45,6 @@ const likeSchema = new mongoose.Schema({
 });
 
 // Export the Like model
-module.exports = mongoose.model('Like', likeSchema);
+const Like = mongoose.model('BookLike', likeSchema);
+
+module.exports = Like;

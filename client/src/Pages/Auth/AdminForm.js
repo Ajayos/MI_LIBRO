@@ -29,15 +29,11 @@ export default function LoginForm() {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  //useEffect(() => {
-  //  if(isAuthenticated) {
-  //    if(user) {
-  //      window.location.href = "/Home"
-  //    } else {
-  //      window.location.href = "/home";
-  //    }
-  //  }
-  //}, [isAuthenticated]);
+  useEffect(() => {
+    if(isAuthenticated) {
+        window.location.href = "/Home"
+    }
+  }, [isAuthenticated]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
