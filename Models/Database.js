@@ -32,7 +32,7 @@ const connectDB = async (url) => {
   // Exit the process with a non-zero status code if the URL is not provided
   if (!url) {
     log('MongoDB URL not provided'.red.bold);
-    process.exit();
+    //process.exit();
   }
 
   try {
@@ -48,7 +48,7 @@ const connectDB = async (url) => {
     // Log an error message if the connection failed
     log(`Error: ${error.message}`.red.bold);
     // Exit the process with a non-zero status code
-    process.exit();
+    //process.exit();
   }
 };
 
