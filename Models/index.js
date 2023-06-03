@@ -27,7 +27,7 @@ const Rental = require('./rentalModel');
 const Like = require('./likeModel');
 const Comment = require('./commentModel');
 const Login = require('./loginModel');
-const Req = require('./reqModel');
+//const Req = require('./reqModel');
 
 // Export the models and schemas
 module.exports = {
@@ -39,5 +39,5 @@ module.exports = {
   Like, // Like model for managing like data
   Comment, // Comment model for managing comment data
   Login, // Login model for managing login data
-  Req, // Req model for managing req data
+  //Req, // Req model for managing req data
 };
