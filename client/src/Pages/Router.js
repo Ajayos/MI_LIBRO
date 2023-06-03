@@ -39,32 +39,40 @@ export default function Router() {
     { path: "admin", element: <AdminLoginPage /> },
     { path: "forgot", element: <ForgotPage /> },
     { path: "create", element: <CreatePage /> },
-    {
-      path: "/",
-      element: isAuthenticated && !access ? <Layout /> : <LoginPage />, // Show Layout if authenticated with no access, otherwise show LoginPage
-      children: [
-        { element: <Navigate to="/home" />, index: true },
-        { path: "home", element: <UserBooks /> },
-        { path: "books", element: <UserBooks /> },
-        { path: "book/:id", element: <UserBook /> },
-        { path: "my-books", element: <div /> },
-        { path: "liked-books", element: <div /> },
-        { path: "account", element: <UserAccount /> },
-        { path: "settings", element: <Settings /> },
-      ],
-    },
-    {
-      path: "/",
-      element: isAuthenticated && access ? <Layout /> : <LoginPage />, // Show Layout if authenticated with access, otherwise show LoginPage
-      children: [
-        { element: <Navigate to="/home" />, index: true },
-        { path: "home", element: <DashboardHomePage /> },
-        { path: "user", element: <DashboardUserPage /> },
-        { path: "books", element: <DashboardBooks /> },
-        { path: "addbook", element: <DashboardAddBook /> },
-        { path: "editbook/:id", element: <DashboardEditBook /> },
-      ],
-    },
+    ...(isAuthenticated && !access
+      ? [
+          {
+            path: "/",
+            element: <Layout />,
+            children: [
+              { element: <Navigate to="/home" />, index: true },
+              { path: "home", element: <UserBooks /> },
+              { path: "books", element: <UserBooks /> },
+              { path: "book/:id", element: <UserBook /> },
+              { path: "my-books", element: <div /> },
+              { path: "liked-books", element: <div /> },
+              { path: "account", element: <UserAccount /> },
+              { path: "settings", element: <Settings /> },
+            ],
+          },
+        ]
+      : []),
+    ...(isAuthenticated && access
+      ? [
+          {
+            path: "/",
+            element: <Layout />,
+            children: [
+              { element: <Navigate to="/home" />, index: true },
+              { path: "home", element: <DashboardHomePage /> },
+              { path: "user", element: <DashboardUserPage /> },
+              { path: "books", element: <DashboardBooks /> },
+              { path: "addbook", element: <DashboardAddBook /> },
+              { path: "editbook/:id", element: <DashboardEditBook />}
+            ],
+          },
+        ]
+      : []),
     {
       path: "/500",
       element: <Layout_ />,
@@ -74,6 +82,7 @@ export default function Router() {
       element: <Layout_ />,
       children: [
         { element: <Navigate to="/home" />, index: true },
+        
         { path: "404", element: <Page404 /> },
         { path: "*", element: <Page404 /> },
       ],

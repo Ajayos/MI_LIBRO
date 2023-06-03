@@ -94,6 +94,18 @@ export function AuthProvider({ children }) {
 			return { message: e.message };
 		}
 	}
+	async function AdminGetUserData_(id) {
+		try {
+			const response = await API.get("/admins/users/" + id);
+			if (response.status === 200) {
+				return response.data;
+			} else {
+				return response.status;
+			}
+		} catch (e) {
+			return { message: e.message };
+		}
+	}
 
 	async function updateUserProfileFetch(pic) {
 		try {
@@ -119,6 +131,26 @@ export function AuthProvider({ children }) {
 	async function updateUserDataFetch(data) {
 		try {
 			const response = await API.put("/users", JSON.stringify(data));
+			if (response.status === 200) {
+				window.location.reload();
+				return { message: "Pic Update successfully", status: 200 };
+			} else {
+				return { message: response.data.message, status: response.status };
+			}
+		} catch (error) {
+			if (error.response) {
+				return {
+					message: error.response.data.message,
+					status: error.response.status,
+				};
+			} else {
+				return { message: "An error occurred", status: 500 };
+			}
+		}
+	}
+	async function AdminUpdateUserDataFetch(data) {
+		try {
+			const response = await API.put("/admins/users", JSON.stringify(data));
 			if (response.status === 200) {
 				window.location.reload();
 				return { message: "Pic Update successfully", status: 200 };
@@ -371,15 +403,7 @@ export function AuthProvider({ children }) {
 
 	async function IsPermit(user) {
 		if (isAuthenticated) {
-			if (access) {
-				if (!user) {
-					navigate("/dashboard", { replace: true });
-				}
-			} else {
-				if (user) {
-					navigate("/home", { replace: true });
-				}
-			}
+			//
 		} else {
 			navigate("/login", { replace: true });
 		}
@@ -426,9 +450,11 @@ export function AuthProvider({ children }) {
 				updateUserPasswordFetch,
 				GetBooks,
 				getUserData_,
+				AdminGetUserData_,
 				AddNewBook,
 				IsPermit,
 				LikeBook,
+				AdminUpdateUserDataFetch,
 				USERLIST: userList,
 				GetUsersData,
 				logout: LogOutUser,

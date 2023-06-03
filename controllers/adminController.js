@@ -120,3 +120,39 @@ exports.getUsersData = asyncHandler(async (req, res) => {
 })
 
 
+exports.editAccount = asyncHandler(async (req, res) => {
+	try {
+		const userId = req.body._id;
+		const user = await User.findById(userId);
+		user.name = req.body.name;
+		user.education = req.body.education;
+		user.contactDetails = req.body.contactDetails;
+		user.dob = req.body.dob;
+		user.age = req.body.age;
+		user.place = req.body.place;
+		await user.save();
+
+		return res
+			.status(200)
+			.json({ message: "User account updated successfully" });
+	} catch (error) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+});
+
+exports.updateUserProfile = asyncHandler(async (req, res) => {
+	try {
+		const userId = req.body._id;
+		const { pic } = req.body;
+		// Find the user by ID
+		const user = await User.findById(userId);
+		user.pic = pic;
+		await user.save();
+
+		return res
+			.status(200)
+			.json({ message: "User profile updated successfully" });
+	} catch (error) {
+		return res.status(500).json({ message: "Internal server error" });
+	}
+});
