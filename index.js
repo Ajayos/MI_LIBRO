@@ -32,7 +32,7 @@ const bodyParser = require("body-parser");
 const { log } = require("@ajayos/nodelogger");
 
 // Import local modules
-const setupLogger = require("./lib/logger");
+//const setupLogger = require("./lib/logger");
 const apiRouter = require("./router");
 const { connectDB, login } = require("./Models");
 const errorHandler = require("./middleware/errorHandler");
@@ -44,7 +44,7 @@ const SERVER_PORT = process.env.PORT || 3000;
 const publicPath = path.join(__dirname, "/Public");
 
 // Set up the logger
-setupLogger();
+//setupLogger();
 
 // connect to Database
 connectDB(process.env.MONGO_URL);
