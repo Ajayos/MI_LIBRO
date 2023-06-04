@@ -1,105 +1,71 @@
 import { Helmet } from "react-helmet-async";
-import { useTheme } from "@mui/material/styles";
-import { Grid, Container, Typography } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
-import OnlinePredictionIcon from "@mui/icons-material/OnlinePrediction";
-import { useAuth } from "../../contexts/AuthContext";
+import { useState, useEffect } from "react";
+import { Container, Stack, Typography, Skeleton } from "@mui/material";
+import {
+	ProductSort,
+	ProductList,
+	ProductCartWidget,
+	ProductFilterSidebar,
+} from "../../components/books";
+import API from "../../utils/api";
+import { useCome } from "../../contexts/ComeBackContext";
 
-import AppWidget from "./Widget";
-import AppVisits from "./Website";
+export default function ProductsPage() {
+	const [books, setBooks] = useState([]);
+	const { setTitle } = useCome();
+	const [isLoading, setIsLoading] = useState(true);
 
-export default function Dashboard() {
-	const theme = useTheme();
-	const { adminHomeData } = useAuth();
+	useEffect(() => {
+		const fetchBooks = async () => {
+			try {
+				const response = await API.get("/Books");
+				setBooks(response.data);
+				setIsLoading(false);
+			} catch (error) {
+				console.log("Error: ", error);
+				setIsLoading(false);
+			}
+		};
+		fetchBooks();
+	}, []);
 
+	const [openFilter, setOpenFilter] = useState(false);
+
+	const handleOpenFilter = () => {
+		setOpenFilter(true);
+	};
+
+	const handleCloseFilter = () => {
+		setOpenFilter(false);
+	};
+	setTitle("Books");
 	return (
 		<>
-			<Helmet>
-				<title> Dashboard | MI LIBRO </title>
-			</Helmet>
-
-			<Container maxWidth='xl'>
+			<Container>
 				<Typography variant='h4' sx={{ mb: 5 }}>
-					Hi, Welcome back
+					Books
 				</Typography>
 
-				<Grid container spacing={3}>
-					<Grid item xs={12} sm={6} md={3}>
-						<AppWidget
-							title='Total users'
-							total={adminHomeData.users}
-							icon={<AccountCircleIcon />}
-						/>
-					</Grid>
+				<Stack
+					direction='row'
+					flexWrap='wrap-reverse'
+					alignItems='center'
+					justifyContent='flex-end'
+					sx={{ mb: 5 }}>
+					<Stack direction='row' spacing={1} flexShrink={0} sx={{ my: 1 }}>
+						<ProductSort />
+					</Stack>
+				</Stack>
 
-					<Grid item xs={12} sm={6} md={3}>
-						<AppWidget
-							title='Total Books'
-							total={adminHomeData.books}
-							color='info'
-							icon={<LibraryBooksIcon />}
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={6} md={3}>
-						<AppWidget
-							title='Rent Books'
-							total={adminHomeData.rbooks}
-							color='warning'
-							icon={<LibraryBooksIcon />}
-						/>
-					</Grid>
-
-					<Grid item xs={12} sm={6} md={3}>
-						<AppWidget
-							title='Online users'
-							total={adminHomeData.online}
-							color='error'
-							icon={<OnlinePredictionIcon />}
-						/>
-					</Grid>
-
-					<Grid item xs={12} md={6} lg={8}>
-						<AppVisits
-							title='Website Visits'
-							subheader='Total Unique Visitors'
-							chartLabels={[
-								"01/01/2003",
-								"02/01/2003",
-								"03/01/2003",
-								"04/01/2003",
-								"05/01/2003",
-								"06/01/2003",
-								"07/01/2003",
-								"08/01/2003",
-								"09/01/2003",
-								"10/01/2003",
-								"11/01/2003",
-							]}
-							chartData={[
-								{
-									name: "users",
-									type: "column",
-									fill: "solid",
-									data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-								},
-								{
-									name: "Books",
-									type: "area",
-									fill: "gradient",
-									data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-								},
-								{
-									name: "Logins",
-									type: "line",
-									fill: "solid",
-									data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
-								},
-							]}
-						/>
-					</Grid>
-				</Grid>
+				{isLoading ? (
+					<>
+						<Skeleton variant='rectangular' height={300} sx={{ mb: 2 }} />
+						<Skeleton variant='rectangular' height={300} sx={{ mb: 2 }} />
+						<Skeleton variant='rectangular' height={300} sx={{ mb: 2 }} />
+					</>
+				) : (
+					<ProductList products={books} />
+				)}
 			</Container>
 		</>
 	);

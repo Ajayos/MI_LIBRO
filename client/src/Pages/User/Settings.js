@@ -4,10 +4,12 @@ import { Box, Container, Stack, Typography, Skeleton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import SettingsPassword from "./SettingsPassword";
+import { useCome } from "../../contexts/ComeBackContext";
 
 export default function Account() {
 	const theme = useTheme();
 	const { user } = useAuth();
+	const { setTitle } = useCome();
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -18,18 +20,16 @@ export default function Account() {
 		return () => clearTimeout(timer);
 	}, []);
 
+	setTitle("Settings");
+
 	return (
 		<>
-			<Helmet>
-				<title>Settings | MI LIBRO</title>
-			</Helmet>
 			<Box
 				component='main'
 				sx={{
 					flexGrow: 1,
 					py: 8,
-				}}
-			>
+				}}>
 				<Container maxWidth='lg'>
 					<Stack spacing={3}>
 						{isLoading ? (

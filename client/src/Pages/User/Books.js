@@ -1,75 +1,91 @@
-import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
-import { Container, Stack, Typography, Skeleton } from "@mui/material";
-import {
-	ProductSort,
-	ProductList,
-	ProductCartWidget,
-	ProductFilterSidebar,
-} from "../../components/books";
+import React, { useState, useEffect } from "react";
+import { Avatar, IconButton, Card } from "@mui/material";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import Container from "@mui/material/Container";
 import API from "../../utils/api";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { fDate } from "../../utils/formatTime";
+import { useCome } from "../../contexts/ComeBackContext";
 
-export default function ProductsPage() {
+const BookFetcher = () => {
+	const { setTitle } = useCome();
 	const [books, setBooks] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		const fetchBooks = async () => {
+		const fetchBook = async () => {
 			try {
-				const response = await API.get("/Books");
-				setBooks(response.data);
-				setIsLoading(false);
+				const response = await API.get("/books");
+				const books_ = response.data.map((book) => ({ id: book._id, ...book }));
+				setBooks(books_);
 			} catch (error) {
 				console.log("Error: ", error);
-				setIsLoading(false);
 			}
 		};
-		fetchBooks();
+
+		fetchBook();
 	}, []);
 
-	const [openFilter, setOpenFilter] = useState(false);
-
-	const handleOpenFilter = () => {
-		setOpenFilter(true);
+	const handleViewDetails = (book) => {
+		console.log(book);
+		window.location.href = "/book/" + book._id
 	};
 
-	const handleCloseFilter = () => {
-		setOpenFilter(false);
-	};
-
+	const columns = [
+		{
+			field: "image",
+			headerName: "Avatar",
+			flex: 0.5,
+			renderCell: (params) => (
+				<Avatar src={params.row.pic} alt={params.row.title} />
+			),
+		},
+		{
+			field: "title",
+			headerName: "Title",
+			flex: 1,
+		},
+		{ field: "author", headerName: "Author", flex: 1 },
+		{ field: "genre", headerName: "Genre", flex: 1 },
+		{
+			field: "status",
+			headerName: "Status",
+			flex: 1,
+		},
+		{
+			field: "publicationDate",
+			headerName: "Published Date",
+			flex: 2,
+			valueGetter: (params) => fDate(params.row.publicationDate),
+		},
+		{
+			field: "actions",
+			headerName: "Actions",
+			flex: 1,
+			renderCell: (params) => (
+				<IconButton
+					onClick={() => handleViewDetails(params.row)}
+					color='primary'>
+					<RemoveRedEyeIcon />
+				</IconButton>
+			),
+		},
+	];
+	setTitle("Books");
 	return (
 		<>
-			<Helmet>
-				<title>Dashboard: Books | Minimal UI</title>
-			</Helmet>
-
 			<Container>
-				<Typography variant='h4' sx={{ mb: 5 }}>
-					Books
-				</Typography>
-
-				<Stack
-					direction='row'
-					flexWrap='wrap-reverse'
-					alignItems='center'
-					justifyContent='flex-end'
-					sx={{ mb: 5 }}
-				>
-					<Stack direction='row' spacing={1} flexShrink={0} sx={{ my: 1 }}>
-						<ProductSort />
-					</Stack>
-				</Stack>
-
-				{isLoading ? (
-					<>
-						<Skeleton variant='rectangular' height={300} sx={{ mb: 2 }} />
-						<Skeleton variant='rectangular' height={300} sx={{ mb: 2 }} />
-						<Skeleton variant='rectangular' height={300} sx={{ mb: 2 }} />
-					</>
-				) : (
-					<ProductList products={books} />
-				)}
+				<Card>
+					<DataGrid
+						rows={books}
+						columns={columns}
+						components={{
+							Toolbar: GridToolbar,
+						}}
+					/>
+				</Card>
 			</Container>
 		</>
 	);
-}
+};
+
+export default BookFetcher;

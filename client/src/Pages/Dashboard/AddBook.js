@@ -18,9 +18,11 @@ import {
 	CardHeader,
 } from "@mui/material";
 import { useAuth } from "../../contexts/AuthContext";
+import { useCome } from "../../contexts/ComeBackContext";
 
 export default function Account() {
 	const theme = useTheme();
+	const { setTitle } = useCome();
 	const { AddNewBook } = useAuth();
 	const [isLoading, setIsLoading] = useState(true);
 	const [profilePic, setProfilePic] = useState();
@@ -45,7 +47,6 @@ export default function Account() {
 
 		return () => clearTimeout(timer);
 	}, []);
-
 
 	const handleImageChange = (event) => {
 		const file = event.target.files[0];
@@ -159,24 +160,20 @@ export default function Account() {
 
 	const handleIsbnCheck = () => {
 		//if (book.isbn.trim() !== "") {
-		  // Perform ISBN check logic here
+		// Perform ISBN check logic here
 		//  console.log("Checking ISBN:", book.isbn);
 		//}
 		return true;
 	};
-
+	setTitle("Add Book");
 	return (
 		<>
-			<Helmet>
-				<title>Account | MI LIBRO</title>
-			</Helmet>
 			<Box
 				component='main'
 				sx={{
 					flexGrow: 1,
 					py: 8,
-				}}
-			>
+				}}>
 				<Container maxWidth='lg'>
 					<Stack spacing={3}>
 						{isLoading ? (
@@ -197,8 +194,7 @@ export default function Account() {
 													alignItems: "center",
 													display: "flex",
 													flexDirection: "column",
-												}}
-											>
+												}}>
 												<Avatar
 													src={
 														profilePic
@@ -220,8 +216,7 @@ export default function Account() {
 													fullWidth
 													variant='text'
 													component='label'
-													disabled={isSaving}
-												>
+													disabled={isSaving}>
 													{isSaving ? "Saving..." : "Update Picture"}
 													<input
 														type='file'
@@ -237,16 +232,14 @@ export default function Account() {
 														fullWidth
 														variant='text'
 														onClick={handleSave}
-														disabled={isSaving}
-													>
+														disabled={isSaving}>
 														Save
 													</Button>
 													<Button
 														fullWidth
 														variant='text'
 														onClick={handleCancel}
-														disabled={isSaving}
-													>
+														disabled={isSaving}>
 														Cancel
 													</Button>
 												</>

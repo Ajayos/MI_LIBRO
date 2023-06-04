@@ -65,7 +65,7 @@ app.use(bodyParser.json());
 // setup api
 // v1 api
 app.use("/api/v1/", apiRouter);
-app.use(express.static(publicPath));
+app.use(express.static(path.join(__dirname, "/client/build")));
 app.get("/Public/static/images/img.svg", (req, res) => {
 	res.sendFile(path.join(publicPath, "/static/images/img.svg"));
 });
@@ -73,7 +73,7 @@ app.get("/Public/static/images/500.svg", (req, res) => {
 	res.sendFile(path.join(publicPath, "/static/images/500.svg"));
 });
 app.get("*", (req, res) => {
-	res.sendFile(path.join(publicPath, "/index.html"));
+	res.sendFile(path.join(__dirname, "/client/build/index.html"));
 });
 
 // Error handler middleware

@@ -5,11 +5,11 @@ import { useCome } from "../../contexts/ComeBackContext"
 import Reviews from "./BookData/Reviews";
 import History from "./BookData/History";
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import API from "../../utils/api";
 
 const Book = () => {
   const { id } = useParams();
+	const { setTitle } = useCome();
   const [bookData, setBookData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -52,7 +52,7 @@ const Book = () => {
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-
+  setTitle("Book");
   return (
     <Box>
       <Tabs value={selectedTab} onChange={handleTabChange} centered>

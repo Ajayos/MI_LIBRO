@@ -22,7 +22,10 @@ const CreatePage = Load(() => import("./Auth/CreateAccount"));
 const UserAccount = Load(() => import("./User/Account"));
 const Settings = Load(() => import("./User/Settings"));
 const UserBooks = Load(() => import("./User/Books"));
+const UserHome = Load(() => import("./User/Home"));
 const UserBook = Load(() => import("./User/Book"));
+const LikedBooks = Load(() => import("./User/LikedBooks"));
+const UserMyBooks = Load(() => import("./User/UserBooks"));
 
 // ADMIN PAGES
 const DashboardHomePage = Load(() => import("./Dashboard/Dashboard"));
@@ -46,11 +49,11 @@ export default function Router() {
             element: <Layout />,
             children: [
               { element: <Navigate to="/home" />, index: true },
-              { path: "home", element: <UserBooks /> },
+              { path: "home", element: <UserHome /> },
               { path: "books", element: <UserBooks /> },
               { path: "book/:id", element: <UserBook /> },
-              { path: "my-books", element: <div /> },
-              { path: "liked-books", element: <div /> },
+              { path: "my-books", element: <UserMyBooks /> },
+              { path: "liked-books", element: <LikedBooks /> },
               { path: "account", element: <UserAccount /> },
               { path: "settings", element: <Settings /> },
             ],
