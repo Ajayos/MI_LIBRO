@@ -59,7 +59,7 @@ export default function LoginPage() {
             left: { xs: 16, sm: 24, md: 40 },
           }}
         >
-          <Avatar src={PROFILE} />  {"MI LIBRO"}
+          <Avatar src={PROFILE} /> {"MI LIBRO"}
         </Box>
 
         {mdUp && (

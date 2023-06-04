@@ -8,9 +8,9 @@ const api = axios.create({
 	},
 });
 
-const token = localStorage.getItem(TOKEN_KEY);
+const token = atob(localStorage.getItem(TOKEN_KEY));
 if (token) {
-	api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
 
 const handleErrors = (error) => {

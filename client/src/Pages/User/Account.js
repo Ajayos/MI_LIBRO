@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Helmet } from "react-helmet-async";
 import { useTheme } from "@mui/material/styles";
 import {
 	Grid,
@@ -10,27 +9,26 @@ import {
 	Skeleton,
 } from "@mui/material";
 import { useAuth } from "../../contexts/AuthContext";
+import { useCome } from "../../contexts/ComeBackContext"
 import AccountProfile from "./AccountProfile";
 import AccountProfileDetails from "./AccountProfileDetails";
 
 export default function Account() {
 	const theme = useTheme();
 	const { user } = useAuth();
+	const { setTitle } = useCome();
 	const [isLoading, setIsLoading] = React.useState(true);
 
 	useEffect(() => {
+		setTitle("Account");
 		const timer = setTimeout(() => {
 			setIsLoading(false);
 		}, 2000);
 
 		return () => clearTimeout(timer);
 	}, []);
-
 	return (
 		<>
-			<Helmet>
-				<title>Account | MI LIBRO</title>
-			</Helmet>
 			<Box
 				component='main'
 				sx={{
