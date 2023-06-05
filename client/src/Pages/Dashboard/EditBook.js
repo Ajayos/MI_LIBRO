@@ -46,7 +46,7 @@ export default function Account() {
 	useEffect(() => {
 		const fetchBookData = async () => {
 			try {
-				const response = await API.get(`books/${id}`);
+				const response = await API.get(`/admins/books/${id}`);
 				setBook(response.data);
 				setProfilePic(response.data.pic);
 				//var ret = await convertDate(response.data.dob);

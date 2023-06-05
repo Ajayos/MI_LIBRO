@@ -2,14 +2,14 @@
  * Admin Model
  *
  * @project : MI LIBRO
- * @version : 1.0.1
+ * @version : 1.0.2
  * @link : https://github.com/Ajayos/MI_LIBRO
  * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 10:19:06
- * @modified : 2023-05-20 13:06:25
+ * @modified : 2023-06-03 13:06:25
  * @editor : Ajayos
  * @file : adminModel.js
- * @path : models/adminModel.js
+ * @path : /Models/adminModel.js
  *
  * Description: Model for the Admin entity.
  *

@@ -14,7 +14,7 @@ const BookFetcher = () => {
 	useEffect(() => {
 		const fetchBook = async () => {
 			try {
-				const response = await API.get("/books");
+				const response = await API.post("/users/books");
 				const books_ = response.data.map((book) => ({ id: book._id, ...book }));
 				setBooks(books_);
 			} catch (error) {

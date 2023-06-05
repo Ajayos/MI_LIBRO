@@ -2,14 +2,14 @@
  * Module for connecting to the MongoDB database using Mongoose.
  *
  * @project : MI LIBRO
- * @version : 1.0.1
+ * @version : 1.0.2
  * @link : https://github.com/Ajayos/MI_LIBRO
  * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 10:11:19
- * @modified : 2023-05-17 10:14:10
+ * @modified : 2023-06-03 10:14:10
  * @editor : Ajayos
  * @file : Database.js
- * @path : models/Database.js
+ * @path : /Models/Database.js
  *
  * Description: This module exports a function to connect to the MongoDB database using Mongoose.
  *

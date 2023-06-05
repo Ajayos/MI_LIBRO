@@ -55,7 +55,7 @@ export default function ShopProductCard({ product }) {
 	const [openModal, setOpenModal] = useState(false);
 	const handleLike = () => {
 		setLiked(!liked);
-		LikeBook(_id, liked);
+		LikeBook(_id, !liked);
 	};
 
 	const handleOpenModal = () => {

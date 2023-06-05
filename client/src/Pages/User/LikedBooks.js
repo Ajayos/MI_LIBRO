@@ -19,7 +19,7 @@ const UserFetcher = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await API.get("/books");
+        const response = await API.get("/users/books/liked");
         const users = response.data.map((user) => ({ id: user._id, ...user }));
         setUsers(users);
         setLoading(false);

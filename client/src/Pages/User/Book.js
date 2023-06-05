@@ -16,7 +16,8 @@ const Book = () => {
   useEffect(() => {
     const fetchBookData = async () => {
       try {
-        const response = await API.get(`books/${id}`);
+        const response = await API.get(`/users/book/${id}`);
+        console.log(response.data)
         setBookData(response.data);
         setLoading(false);
       } catch (error) {

@@ -2,14 +2,14 @@
  * User Model
  *
  * @project : MI LIBRO
- * @version : 1.0.1
+ * @version : 1.0.2
  * @link : https://github.com/Ajayos/MI_LIBRO
  * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 10:14:13
- * @modified : 2023-05-20 14:11:12
+ * @modified : 2023-06-03 14:11:12
  * @editor : Ajayos
  * @file : userModel.js
- * @path : /models/userModel.js
+ * @path : /Models/userModel.js
  *
  * Description: Model for the User entity.
  *
@@ -83,6 +83,11 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    // Define the 'delete' field with type Boolean and it is required
+    delete: {
+      type: Boolean,
+      default: false,
+    },
     // Define the 'booksRented' field with type Number and default value 0
     booksRented: {
       type: Number,
@@ -92,6 +97,16 @@ const userSchema = new mongoose.Schema(
     created: {
       type: Date,
       default: Date.now,
+    },
+    // Define the 'lastLogin' field with type Date and default value Date.now
+    lastLogin: {
+      type: Date,
+      default: Date.now,
+    },
+    // Define the 'status' field with type String and default value 'inactive' (possible values: 'active', 'inactive', 'blocked', 'deleted')
+    status: {
+      type: String,
+      enum: ["active", "inactive", "blocked", "deleted"],
     },
     // Define the 'updated' field with type Date and default value Date.now
     updated: {
@@ -124,7 +139,10 @@ const userSchema = new mongoose.Schema(
  * @param {String} contactDetails.emailId - The email ID of the user. (required)
  * @param {Boolean} termsAndConditions - The acceptance status of terms and conditions by the user. (required)
  * @param {Boolean} access - The access status of the user. (required)
+ * @param {Boolean} delete - The user deleted or not. (default false)
  * @param {Number} booksRented - The number of how many books rented. (default 0)
+ * @param {Date} lastLogin - The user last seen. (default Date.now)
+ * @param {String} status - The status of the user. (default active)
  * @param {Date} created - The date when the user was created. (default Date.now)
  * @param {Date} updated - The date when the user was updated. (default Date.now)
  *

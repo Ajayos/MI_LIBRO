@@ -2,14 +2,14 @@
  * Authentication Middleware
  *
  * @project : MI LIBRO
- * @version : 1.0.1
+ * @version : 1.0.2
  * @link : https://github.com/Ajayos/MI_LIBRO
  * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-18 18:23:36
- * @modified : 2023-05-20 14:25:36
+ * @modified : 2023-06-03 14:25:36
  * @editor : Ajayos
  * @file : authMiddleware.js
- * @path : middleware/authMiddleware.js
+ * @path : /middleware/authMiddleware.js
  *
  * Description: Middleware to authenticate user or admin requests.
  *
@@ -17,6 +17,7 @@
  *
  * All rights reserved. (C) 2023 Ajayos and co-authors (Akarsh, Abinas, Saran, Yasir)
  */
+
 const jwt = require("jsonwebtoken");
 const { User, Admin } = require("../Models");
 const asyncHandler = require("express-async-handler");
@@ -40,27 +41,34 @@ const protectUser = asyncHandler(async (req, res, next) => {
       if (user && user.password === hashedPassword) {
         req.user = user;
         req.id = id;
-        if(user.access) {
+        if (user.delete) {
+          return res
+            .status(204)
+            .json({ error: true, message: "Account Deleted!" });
+        }
+        if (user.access) {
           next();
         } else {
-          return res.status(403).send("Access Denied");
+          return res
+            .status(403)
+            .json({ error: true, message: "Access Denied" });
         }
         // if(!user.access) return res.status(403).send("Access Denied");
       } else {
         return res.status(401).json({
-          error: "Invalid Token",
+          error: true,
           message: "Not authorized, token failed",
         });
       }
     } catch (error) {
       return res.status(401).json({
-        error: "Invalid Token",
+        error: true,
         message: "Not authorized, token failed",
       });
     }
   } else {
     return res.status(401).json({
-      error: "Access Denied",
+      error: true,
       message: "Not authorized, no token",
     });
   }
@@ -87,30 +95,25 @@ const protectAdmin = asyncHandler(async (req, res, next) => {
         next();
       } else {
         return res.status(401).json({
-          error: "Invalid Token",
+          error: true,
           message: "Not authorized, token failed",
         });
       }
     } catch (error) {
       return res.status(401).json({
-        error: "Invalid Token",
+        error: true,
         message: "Not authorized, token failed",
       });
     }
   } else {
     return res.status(401).json({
-      error: "Access Denied",
+      error: true,
       message: "Not authorized, no token",
     });
   }
 });
 
-const SkipPprotect = asyncHandler(async (req, res, next) => {
-        next();
-});
-
 module.exports = {
   protectUser,
   protectAdmin,
-  SkipPprotect
 };

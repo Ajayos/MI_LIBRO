@@ -2,14 +2,14 @@
  * Book Model
  *
  * @project : MI LIBRO
- * @version : 1.0.1
+ * @version : 1.0.2
  * @link : https://github.com/Ajayos/MI_LIBRO
  * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 11:12:02
- * @modified : 2023-05-20 23:19:14
+ * @modified : 2023-06-03 23:19:14
  * @editor : Ajayos
  * @file : bookModel.js
- * @path : models/bookModel.js
+ * @path : /Models/bookModel.js
  *
  * Description: This module exports a Mongoose model for managing book data in the database. It defines a book schema
  * with fields such as title, author, genre, publication date, description, status, rented by, buy info, likes, comments, requests, and buyers.
@@ -66,7 +66,7 @@ const bookSchema = new mongoose.Schema({
 	// Define the 'status' field with type String, it has enum values 'Available', 'Rented', 'Sold', and default value 'Available'
 	status: {
 		type: String,
-		enum: ["Available", "Rented", "Sold"],
+		enum: ["Available", "Rented", "Processin", "Unavailable"],
 		default: "Available",
 	},
 	// Define the 'comments' field as an array of Comment objects

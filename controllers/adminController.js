@@ -2,14 +2,14 @@
  * Admin controller for handling admin-related operations.
  *
  * @project : MI LIBRO
- * @version : 1.0.1
+ * @version : 1.0.2
  * @link : https://github.com/Ajayos/MI_LIBRO
  * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 10:04:13
- * @modified : 2023-05-17 21:15:30
+ * @modified : 2023-06-03 21:15:30
  * @editor : Ajayos
  * @file : adminController.js
- * @path : controllers/adminController.js
+ * @path : /Controllers/adminController.js
  *
  * Description: This file define the Admin control for connect to database and authentications
  *
@@ -21,11 +21,11 @@
 
 // Import dependencies
 
-const { Admin, User, Book } = require("../Models");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
-const generateAuthToken = require("../lib/generateToken");
+const Admin = require("../lib/Admin");
+const User = require("../lib/User");
+const Book = require("../lib/Book");
+
 /**
  * Controller function to handle admin login.
  * @param {Object} req - The request object.
@@ -36,36 +36,17 @@ const generateAuthToken = require("../lib/generateToken");
 
 exports.login = asyncHandler(async (req, res) => {
 	try {
-		const { email, password } = req.body;
+		const { status, message, error, data } = await Admin.login(req.body);
 
-		// Find the admin by username
-		const admin = await Admin.findOne({ email });
-		// If admin not found, return error
-		if (!admin) {
-			return res.status(404).json({ message: "Admin not found" });
+		if (error) {
+			return res.status(status).json({ error: true, message });
 		}
 
-		// Compare the provided password with the hashed password in the database
-		const isMatch = await bcrypt.compare(password, admin.password);
-
-		// If passwords don't match, return error
-		if (!isMatch) {
-			return res.status(401).json({ message: "Invalid credentials" });
-		}
-
-		// Generate and return a token for authentication
-		const token = generateAuthToken(admin._id, admin.email, admin.password);
-
-		res
-			.status(200)
-			.json({
-				token: token,
-				name: admin.name,
-				email: admin.email,
-				pic: admin.pic,
-			});
+		return res.status(status).json(data);
 	} catch (error) {
-		res.status(500).json({ message: "Internal server error" });
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error" });
 	}
 });
 
@@ -78,81 +59,366 @@ exports.login = asyncHandler(async (req, res) => {
  * @returns {Object} Response indicating successful admin account creation.
  * @throws {Object} Error object if an error occurs during the account creation process.
  */
-exports.createAccount = asyncHandler(async  (req, res) => {
-	//try {
-		const { email, name, password, pic } = req.body;
+exports.createAccount = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await Admin.createAccount(
+			req.body
+		);
 
-		// Check if the admin already exists
-		//const existingAdmin = await Admin.findOne({ email });
-		//if (existingAdmin) {
-		//	return res.status(409).json({ message: "Admin already exists" });
-		//}
+		if (error) {
+			return res.status(status).json({ error: true, message });
+		}
 
-		// Hash the password
-		const hashedPassword = await bcrypt.hash(password, 10);
-
-		// Create the new admin account
-		const newAdmin = new Admin({ email, name, pic, password: hashedPassword });
-		await newAdmin.save();
-
-		res.status(201).json({ message: "Admin account created successfully" });
-	//} catch (error) {
-	//	res.status(500).json({ message: "Internal server error" });
-	//}
+		return res.status(status).json(data);
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error" });
+	}
 });
 
-
-exports.getDashboardData = asyncHandler(async  (req, res) => {
-	try {
-		const bookConunt = await Book.countDocuments();
-		const userCount = await User.countDocuments();
-		return res.status(200).json({ message: "Dashboard data", users: userCount, rbooks: 50, online: 6 , books: bookConunt});
-		//res.status(200).json({ message: "Dashboard data", users: 10, rbooks: 50, online: 6 , books: 7});
-	} catch (error) {
-		return res.status(500).send("Internal server error")
-	}
-})
-
-
-exports.getUsersData = asyncHandler(async (req, res) => {
-	const all = await User.find();
-	res.send(all)
-})
-
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
 
 exports.editAccount = asyncHandler(async (req, res) => {
 	try {
-		const userId = req.body._id;
-		const user = await User.findById(userId);
-		user.name = req.body.name;
-		user.education = req.body.education;
-		user.contactDetails = req.body.contactDetails;
-		user.dob = req.body.dob;
-		user.age = req.body.age;
-		user.place = req.body.place;
-		await user.save();
+		const { status, message, error, data } = await User.editAccount(req.body);
 
-		return res
-			.status(200)
-			.json({ message: "User account updated successfully" });
+		if (error) {
+			return res.status(status).json({ error: true, message });
+		}
+
+		return res.status(status).json(data);
 	} catch (error) {
-		return res.status(500).json({ message: "Internal server error" });
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error" });
 	}
 });
 
-exports.updateUserProfile = asyncHandler(async (req, res) => {
-	try {
-		const userId = req.body._id;
-		const { pic } = req.body;
-		// Find the user by ID
-		const user = await User.findById(userId);
-		user.pic = pic;
-		await user.save();
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
 
-		return res
-			.status(200)
-			.json({ message: "User profile updated successfully" });
+exports.editAccountPic = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await User.editAccountPic({
+			userId: req.body.id,
+			pic: req.body.pic,
+		});
+
+		if (error) {
+			return res.status(status).json({ error: true, message });
+		}
+
+		return res.status(status).json(data);
 	} catch (error) {
-		return res.status(500).json({ message: "Internal server error" });
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error" });
 	}
+});
+
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+
+exports.updateUserAccess = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await User.editAccess({
+			userID: req.body.id,
+			access: req.body.access,
+		});
+
+		if (error) {
+			return res.status(status).json({ error: true, message });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error" });
+	}
+});
+
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+
+exports.deleteAccount = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await User.deleteAccount({
+			userId: req.params.id,
+		});
+
+		if (error) {
+			return res.status(status).json({ error: true, message });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error" });
+	}
+});
+
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+
+exports.dashBoard = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await Admin.dashBoard();
+
+		if (error) {
+			return res.status(status).json({ error: true, message });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error" });
+	}
+});
+
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+
+exports.getAllUsers = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await User.getAllUsers();
+
+		if (error) {
+			return res.status(status).json({ error: true, message });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error" });
+	}
+});
+
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+
+exports.getUserData = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await User.getUserData({
+			userId: req.body.id,
+		});
+
+		if (error) {
+			return res.status(status).json({ error: true, message });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error" });
+	}
+});
+
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+
+exports.AllBooks = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await Book.AllBooks();
+
+		if (error) {
+			return res.status(status).json({ error: true, message });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error" });
+	}
+});
+
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+
+exports.getBook = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await User.GetBook(req.body);
+
+		if (error) {
+			return res.status(status).json({ error: true, message });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error" });
+	}
+});
+
+/**
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+exports.addBook = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await Book.addBook(req.body);
+
+		if (error) {
+			return res.status(status).json({ error: true, message });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error", error });
+	}
+});
+
+/**
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+exports.updateBook = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await Book.editBook(req.body);
+
+		if (error) {
+			return res.status(status).json({ error: true, message, error });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		return res.status(500).json({
+			error: true,
+			message: "Internal server error",
+			error,
+		});
+	}
+});
+
+/**
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+exports.deleteBook = asyncHandler(async (req, res) => {
+  try {
+    const { status, message, error, data } = await Book.deleteBook(req.body);
+
+    if (error) {
+      return res.status(status).json({ error: true, message, error });
+    }
+
+    return res.status(status).json(data);
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      error,
+    });
+  }
+}
+);
+
+/**
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+exports.acceptBook = asyncHandler(async (req, res) => {
+  try {
+    const { status, message, error, data } = await Book.acceptBook(req.body);
+
+    if (error) {
+      return res.status(status).json({ error: true, message, error });
+    }
+
+    return res.status(status).json(data);
+  } catch (error) {
+    return res.status(500).json({
+      error: true,
+      message: "Internal server error",
+      error,
+    });
+  }
+}
+);
+
+/**
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+exports.createBook = asyncHandler(async (req, res) => {
+	  try {
+	const { status, message, error, data } = await Book.createBook(req.body);
+
+	if (error) {
+	  return res.status(status).json({ error: true, message, error });
+	}
+
+	return res.status(status).json(data);
+  } catch (error) {
+	return res.status(500).json({
+	  error: true,
+	  message: "Internal server error",
+	  error,
+	});
+  }
 });

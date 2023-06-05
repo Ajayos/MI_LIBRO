@@ -1,22 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Stack, TextField, Button, Divider } from "@mui/material";
+import API from "../../../utils/api";
+import { useAuth } from "../../../contexts/AuthContext";
 
-const Reviews = () => {
+const Reviews = ({bookData}) => {
 	const [comment, setComment] = useState("");
+	const { user } = useAuth();
 	const [comments, setComments] = useState([]);
 
 	const handleCommentInputChange = (event) => {
 		setComment(event.target.value);
 	};
+	
 
-	const handleSendComment = () => {
+	const handleSendComment = async () => {
 		// Handle sending comment to backend
 		const newComment = {
-			user: "John Doe",
+			id: bookData._id,
+			user: user.name,
+			pic: user.pic,
 			comment: comment,
 			time: new Date().toLocaleString(),
 		};
 		setComments((prevComments) => [...prevComments, newComment]);
+		await API.post("/users/books/comment", JSON.stringify(newComment))
 		setComment("");
 	};
 
@@ -26,8 +33,8 @@ const Reviews = () => {
 				<Box display='flex' alignItems='center'>
 					<Box marginRight={1}>
 						<img
-							src='https://github.com/Ajayos.png'
-							alt='User Profile'
+							src={user.pic}
+							alt={user.name}
 							style={{ width: "40px", height: "40px", borderRadius: "50%" }}
 						/>
 					</Box>
@@ -65,8 +72,8 @@ const Reviews = () => {
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <img
-          src="https://github.com/Ajayos.png"
-          alt="User Profile"
+          src={comment.pic}
+          alt={comment.user}
           style={{ width: "40px", height: "40px", borderRadius: "50%" }}
         />
         <Box sx={{ marginLeft: 1 }}>{comment.user}</Box>

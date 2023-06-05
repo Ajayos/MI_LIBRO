@@ -111,7 +111,7 @@ export function AuthProvider({ children }) {
 		try {
 			const response = await API.put("/users/profile", { pic: pic });
 			if (response.status === 200) {
-				localStorage.setItem("@pic", pic);
+				localStorage.setItem("QHBpYw==", pic);
 				window.location.reload();
 				return { message: "Pic Update successfully", status: 200 };
 			} else {
@@ -177,7 +177,7 @@ export function AuthProvider({ children }) {
 			if (response.status === 200) {
 				const { token } = response.data;
 				console.log(token);
-				localStorage.setItem("@key", token);
+				localStorage.setItem("QGtleQ==", token);
 				window.location.reload();
 				return { message: "Password Update successfully", status: 200 };
 			} else {
@@ -255,8 +255,9 @@ export function AuthProvider({ children }) {
 			});
 
 			if (response.status === 200) {
-				const { token, name, email, id, pic } = response.data;
-				login(token, name, email, id, pic, "admin");
+				const { token, admin } = response.data;
+				const { name, email, _id, pic } = admin;
+				login(token, name, email, _id, pic, "admin");
 				setIsAuthenticated(true);
 				setMyToken(token);
 				setAccess(true);
@@ -278,7 +279,7 @@ export function AuthProvider({ children }) {
 
 	async function GetBooks() {
 		try {
-			const response = await API.get("/books");
+			const response = await API.get("/users/books");
 
 			if (response.status === 200) {
 				const data = response.data;
@@ -303,8 +304,9 @@ export function AuthProvider({ children }) {
 			const response = await API.post("/admins/dashboard");
 
 			if (response.status === 200) {
+				console.log(response.data)
 				const data = response.data;
-				setAdminHomeData(data);
+				setAdminHomeData({ users: data.user, books: data.books, rbooks: data.req + 1  });
 			} else {
 				setError(response.status);
 			}
@@ -321,7 +323,7 @@ export function AuthProvider({ children }) {
 	}
 	async function GetUsersData() {
 		try {
-			const response = await API.get("/admin/users");
+			const response = await API.get("/admins/users");
 			return response.data;
 		} catch (error) {
 			if (error.response) {
@@ -337,7 +339,7 @@ export function AuthProvider({ children }) {
 
 	async function UpdateUserPermition(select) {
 		try {
-			const response = await API.put(`/user/access:${select.id}`, {
+			const response = await API.put(`/admins/access/${select.id}`, {
 				access: select.access,
 			});
 
@@ -360,10 +362,9 @@ export function AuthProvider({ children }) {
 
 	async function AddNewBook(data) {
 		try {
-			const response = await API.post(`/books`, data);
+			const response = await API.post(`/admins/books`, data);
 
 			if (response.status === 200) {
-				console.log(response.data);
 				//await GetUsersData();
 			} else {
 				setError(response.status);
@@ -381,7 +382,7 @@ export function AuthProvider({ children }) {
 	}
 	async function EditBook(data) {
 		try {
-			const response = await API.put(`/books`, data);
+			const response = await API.put(`/admins/books`, data);
 
 			if (response.status === 200) {
 				console.log(response.data);
@@ -411,9 +412,9 @@ export function AuthProvider({ children }) {
 	async function LikeBook(id, like) {
 		try {
 			if (like) {
-				await API.post(`/likes`, JSON.stringify({ id: id }));
+				await API.post(`/users/books/liked`, JSON.stringify({ id: id }));
 			} else {
-				//await API.delete(`/likes/${id}`);
+				await API.delete(`/users/books/liked`,JSON.stringify({ id: id }));
 			}
 		} catch (error) {
 			if (error.response) {
