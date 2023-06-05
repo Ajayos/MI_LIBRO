@@ -45,11 +45,15 @@ router.get("/books", protectAdmin, Admin.AllBooks)
 
 router.get("/books/:id", protectAdmin, Admin.getBook)
 
-router.post("/books", protectAdmin, Admin.createBook)
+router.post("/books", protectAdmin, Admin.createBook);
 
-router.put("/books", protectAdmin, Admin.updateBook)
+router.put("/books", protectAdmin, Admin.updateBook);
 
+router.post("/books/request", protectAdmin, Admin.requestData);
 
+router.post("/books/accept", protectAdmin, Admin.approveRequest);
+
+router.post("/books/reject", protectAdmin, Admin.RejectRequest);
 
 
 module.exports = router;

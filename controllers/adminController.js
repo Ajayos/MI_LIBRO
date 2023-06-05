@@ -87,7 +87,18 @@ exports.createAccount = asyncHandler(async (req, res) => {
 
 exports.editAccount = asyncHandler(async (req, res) => {
 	try {
-		const { status, message, error, data } = await User.editAccount(req.body);
+		const { status, message, error, data } = await User.editAdminAccount({
+			userId: req.body._id,
+			name: req.body.name,
+			dob: req.body.dob,
+			age: req.body.age,
+			address: req.body.address,
+			education: req.body.education,
+			place: req.body.place,
+			contactDetails: req.body.contactDetails,
+
+			pic: req.body.pic,
+		});
 
 		if (error) {
 			return res.status(status).json({ error: true, message });
@@ -289,7 +300,7 @@ exports.AllBooks = asyncHandler(async (req, res) => {
 
 exports.getBook = asyncHandler(async (req, res) => {
 	try {
-		const { status, message, error, data } = await User.GetBook(req.body);
+		const { status, message, error, data } = await Book.getBook();
 
 		if (error) {
 			return res.status(status).json({ error: true, message });
@@ -300,28 +311,6 @@ exports.getBook = asyncHandler(async (req, res) => {
 		return res
 			.status(500)
 			.json({ error: true, message: "Internal server error" });
-	}
-});
-
-/**
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @returns {Object} Response containing the output.
- * @throws {Object} Error object if an error occurs during the process.
- */
-exports.addBook = asyncHandler(async (req, res) => {
-	try {
-		const { status, message, error, data } = await Book.addBook(req.body);
-
-		if (error) {
-			return res.status(status).json({ error: true, message });
-		}
-
-		return res.status(status).json(data);
-	} catch (error) {
-		return res
-			.status(500)
-			.json({ error: true, message: "Internal server error", error });
 	}
 });
 
@@ -373,15 +362,70 @@ exports.deleteBook = asyncHandler(async (req, res) => {
 	}
 });
 
+
+
 /**
  * @param {Object} req - Express request object.
  * @param {Object} res - Express response object.
  * @returns {Object} Response containing the output.
  * @throws {Object} Error object if an error occurs during the process.
  */
-exports.acceptBook = asyncHandler(async (req, res) => {
+exports.createBook = asyncHandler(async (req, res) => {
 	try {
-		const { status, message, error, data } = await Book.acceptBook(req.body);
+		const { status, message, error, data } = await Book.createBook(req.body);
+
+		if (error) {
+			console.log(error);
+			return res.status(status).json({ error: true, message, error });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			error: true,
+			message: "Internal server error",
+			error,
+		});
+	}
+});
+
+
+/**
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+exports.RejectRequest = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await Book.RejectRequest(req.body);
+
+		if (error) {
+			console.log(error);
+			return res.status(status).json({ error: true, message, error });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			error: true,
+			message: "Internal server error",
+			error,
+		});
+	}
+});
+
+/**
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+exports.approveRequest = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await Book.approveRequest(req.body);
 
 		if (error) {
 			return res.status(status).json({ error: true, message, error });
@@ -397,15 +441,16 @@ exports.acceptBook = asyncHandler(async (req, res) => {
 	}
 });
 
+
 /**
  * @param {Object} req - Express request object.
  * @param {Object} res - Express response object.
  * @returns {Object} Response containing the output.
  * @throws {Object} Error object if an error occurs during the process.
  */
-exports.createBook = asyncHandler(async (req, res) => {
+exports.requestData = asyncHandler(async (req, res) => {
 	try {
-		const { status, message, error, data } = await Book.createBook(req.body);
+		const { status, message, error, data } = await Admin.requestData(req.body);
 
 		if (error) {
 			console.log(error);

@@ -440,3 +440,28 @@ exports.commentBook = asyncHandler(async (req, res) => {
 			.json({ error: true, message: "Internal server error" });
 	}
 });
+
+/**
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+exports.requestBook = asyncHandler(async (req, res) => {
+	try {
+		const { status, message, error, data } = await Book.requestBook({
+			user: req.user,
+			id: req.body.id,
+		});
+
+		if (error) {
+			return res.status(status).json({ error: true, message });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		return res
+			.status(500)
+			.json({ error: true, message: "Internal server error" });
+	}
+});

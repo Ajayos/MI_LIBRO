@@ -69,8 +69,8 @@ app.use(bodyParser.json());
 app.use("/", apiRouter);
 app.use(express.static(publicPath));
 app.get("*", (req, res) => {
-  res.sendFile(path.join(publicPath, "index.html"));
-  });
+	res.sendFile(path.join(publicPath, "index.html"));
+});
 // Error handler middleware
 app.use(errorHandler);
 
@@ -78,42 +78,50 @@ const users = {}; // Object to store online users
 
 // Set up Socket.IO for real-time updates
 io.on("connection", (socket) => {
+	io.emit("online", users.length)
+	socket.on("hehe", () => {
+        io.emit("online", users.length)
+    });
 	// Add new user to the users list and notify other users
 	socket.on("userOnline", async (data) => {
-		if (!data || !data.user || data.user === "undefined") return;
-
-		const { user, token, pic } = data;
-		let ho = await User.findById(user);
-		// Add the user to the users object with socket ID as the key
-		users[socket.id] = { user, pic };
-
-		// Emit a notification to all connected clients about the new user
-		if (ho) {
-			socket.broadcast.emit("notification", {
-				title: ho.name + ` has joined`,
-				avatar: ho.pic,
-				createdAt: new Date(),
-				isUnread: true,
-			});
-		}
-		// Update the user's status in the database (assuming you have a model named 'User')
 		try {
-			const updatedUser = await User.findByIdAndUpdate(
-				user._id,
-				{ status: "active" },
-				{ new: true }
-			);
-			if (updatedUser) {
-				// Emit the updated user data to the current client
-				socket.emit("userData", updatedUser);
+			if (!data || !data.user || data.user === "undefined") return;
+			const { user, token, pic } = data;
+			let ho = await User.findById(user);
+			// Add the user to the users object with socket ID as the key
+			users[socket.id] = { user, pic };
+
+			// Emit a notification to all connected clients about the new user
+			if (ho) {
+				socket.broadcast.emit("notification", {
+					title: ho.name + ` has joined`,
+					avatar: ho.pic,
+					createdAt: new Date(),
+					isUnread: true,
+				});
+			}
+			// Update the user's status in the database (assuming you have a model named 'User')
+			try {
+				const updatedUser = await User.findByIdAndUpdate(
+					user._id,
+					{ status: "active" },
+					{ new: true }
+				);
+				if (updatedUser) {
+					// Emit the updated user data to the current client
+					socket.emit("userData", updatedUser);
+				}
+			} catch (error) {
+				console.error(error);
 			}
 		} catch (error) {
-			console.error(error);
+			// Ignore
 		}
 	});
 
 	// Handle client disconnection
 	socket.on("disconnect", async () => {
+		io.emit("online", users.length)
 		// Get the user associated with the disconnected socket
 		const user = users[socket.id];
 
@@ -136,7 +144,7 @@ io.on("connection", (socket) => {
 					socket.emit("userData", updatedUser);
 				}
 			} catch (error) {
-				console.error(error);
+				//console.error(error);
 			}
 		}
 	});

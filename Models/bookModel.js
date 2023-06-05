@@ -67,7 +67,7 @@ const bookSchema = new mongoose.Schema({
 	// Define the 'status' field with type String, it has enum values 'Available', 'Rented', 'Sold', and default value 'Available'
 	status: {
 		type: String,
-		enum: ["Available", "Rented", "Processin", "Unavailable"],
+		enum: ["Available", "Rented", "Processing", "Unavailable"],
 		default: "Available",
 	},
 	// Define the 'comments' field as an array of Comment objects
@@ -100,7 +100,7 @@ const bookSchema = new mongoose.Schema({
 		id: {
 			type: String,
 		},
-		userid: {
+		user: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
 		},
@@ -128,18 +128,12 @@ const bookSchema = new mongoose.Schema({
 			id: {
 				type: String,
 			},
-			userid: {
+			user: {
 				type: mongoose.Schema.Types.ObjectId,
 				ref: "User",
 			},
-			name: {
-				type: String,
-			},
-			email: {
-				type: String,
-			},
-			phone: {
-				type: String,
+			stars: {
+				type: Number,
 			},
 			rentDate: {
 				type: Date,

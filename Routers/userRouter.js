@@ -51,8 +51,10 @@ router.get("/books/liked", protectUser, User.getLikedBooks);
 
 router.post("/books/liked", protectUser, User.likeBook);
 
-router.delete("/books/liked/:id", protectUser, User.unlikeBook);
+router.put("/books/liked", protectUser, User.unlikeBook);
 
 router.post("/books/comment", protectUser, User.commentBook);
+
+router.post("/book/request", protectUser, User.requestBook);
 
 module.exports = router;
