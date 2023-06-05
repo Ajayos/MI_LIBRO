@@ -36,10 +36,14 @@ router.put("/user/access", protectAdmin, Admin.updateUserAccess);
 
 router.put("/user", protectAdmin, Admin.editAccount);
 
-router.post("/dashboard", protectAdmin, Admin.dashBoard)
+router.post("/dashboard", protectAdmin, Admin.dashBoard);
 
-router.get("/users", protectAdmin, Admin.getAllUsers)
+router.get("/users", protectAdmin, Admin.getAllUsers);
+
+router.get("/users/:id", protectAdmin, Admin.getUserData);
 
 router.get("/books", protectAdmin, Admin.AllBooks)
+
+//
 
 module.exports = router;
