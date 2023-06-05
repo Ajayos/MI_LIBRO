@@ -23,6 +23,7 @@
 // Import the mongoose package
 const mongoose = require("mongoose");
 
+
 /**
  * Book schema for managing book data.
  */
@@ -72,26 +73,21 @@ const bookSchema = new mongoose.Schema({
 	// Define the 'comments' field as an array of Comment objects
 	comments: [
 		{
-			id: {
-				type: String,
-				required: true,
-				unique: true,
-			},
-			message: {
-				type: String,
-				required: true,
-			},
-			user: {
-				type: mongoose.Schema.Types.ObjectId,
-				ref: "User",
-				required: true,
-			},
-			commentDate: {
-				type: Date,
-				default: Date.now,
-			},
+		  id: {
+			type: String,
+		  },
+		  message: {
+			type: String,
+		  },
+		  user: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User",
+		  },
+		  commentDate: {
+			type: Date,
+		  },
 		},
-	],
+	  ],
 	// Define the 'likes' field as an array of Like objects
 	likes: [
 		{
@@ -103,7 +99,6 @@ const bookSchema = new mongoose.Schema({
 	rented: {
 		id: {
 			type: String,
-			unique: true,
 		},
 		userid: {
 			type: mongoose.Schema.Types.ObjectId,
@@ -120,7 +115,6 @@ const bookSchema = new mongoose.Schema({
 		},
 		rentDate: {
 			type: Date,
-			default: Date.now,
 		},
 	},
 	// Define the 'request' field as an array of Request objects
@@ -133,7 +127,6 @@ const bookSchema = new mongoose.Schema({
 		{
 			id: {
 				type: String,
-				unique: true,
 			},
 			userid: {
 				type: mongoose.Schema.Types.ObjectId,

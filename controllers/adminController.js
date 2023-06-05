@@ -356,23 +356,22 @@ exports.updateBook = asyncHandler(async (req, res) => {
  * @throws {Object} Error object if an error occurs during the process.
  */
 exports.deleteBook = asyncHandler(async (req, res) => {
-  try {
-    const { status, message, error, data } = await Book.deleteBook(req.body);
+	try {
+		const { status, message, error, data } = await Book.deleteBook(req.body);
 
-    if (error) {
-      return res.status(status).json({ error: true, message, error });
-    }
+		if (error) {
+			return res.status(status).json({ error: true, message, error });
+		}
 
-    return res.status(status).json(data);
-  } catch (error) {
-    return res.status(500).json({
-      error: true,
-      message: "Internal server error",
-      error,
-    });
-  }
-}
-);
+		return res.status(status).json(data);
+	} catch (error) {
+		return res.status(500).json({
+			error: true,
+			message: "Internal server error",
+			error,
+		});
+	}
+});
 
 /**
  * @param {Object} req - Express request object.
@@ -381,23 +380,22 @@ exports.deleteBook = asyncHandler(async (req, res) => {
  * @throws {Object} Error object if an error occurs during the process.
  */
 exports.acceptBook = asyncHandler(async (req, res) => {
-  try {
-    const { status, message, error, data } = await Book.acceptBook(req.body);
+	try {
+		const { status, message, error, data } = await Book.acceptBook(req.body);
 
-    if (error) {
-      return res.status(status).json({ error: true, message, error });
-    }
+		if (error) {
+			return res.status(status).json({ error: true, message, error });
+		}
 
-    return res.status(status).json(data);
-  } catch (error) {
-    return res.status(500).json({
-      error: true,
-      message: "Internal server error",
-      error,
-    });
-  }
-}
-);
+		return res.status(status).json(data);
+	} catch (error) {
+		return res.status(500).json({
+			error: true,
+			message: "Internal server error",
+			error,
+		});
+	}
+});
 
 /**
  * @param {Object} req - Express request object.
@@ -406,19 +404,21 @@ exports.acceptBook = asyncHandler(async (req, res) => {
  * @throws {Object} Error object if an error occurs during the process.
  */
 exports.createBook = asyncHandler(async (req, res) => {
-	  try {
-	const { status, message, error, data } = await Book.createBook(req.body);
+	try {
+		const { status, message, error, data } = await Book.createBook(req.body);
 
-	if (error) {
-	  return res.status(status).json({ error: true, message, error });
+		if (error) {
+			console.log(error);
+			return res.status(status).json({ error: true, message, error });
+		}
+
+		return res.status(status).json(data);
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({
+			error: true,
+			message: "Internal server error",
+			error,
+		});
 	}
-
-	return res.status(status).json(data);
-  } catch (error) {
-	return res.status(500).json({
-	  error: true,
-	  message: "Internal server error",
-	  error,
-	});
-  }
 });
