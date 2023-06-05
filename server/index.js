@@ -34,8 +34,9 @@ const { log } = require("@ajayos/nodelogger");
 // Import local modules
 //const setupLogger = require("./lib/Logger");
 const apiRouter = require("./Routers");
-const { connectDB, login } = require("./Models");
+const { connectDB, User } = require("./Models");
 const errorHandler = require("./middleware/errorHandler");
+const sendEmail = require("./lib/Email");
 // config env file
 dotenv.config();
 
@@ -111,7 +112,7 @@ io.on("connection", (socket) => {
   });
 
   // Handle client disconnection
-  socket.on("disconnect", () => {
+  socket.on("disconnect", async() => {
     // Get the user associated with the disconnected socket
     const user = users[socket.id];
 
@@ -141,7 +142,7 @@ io.on("connection", (socket) => {
 });
 
 // Function to check online users and update their status
-const checkOnlineUsers = () => {
+const checkOnlineUsers = async() => {
   for (const socketId in users) {
     const user = users[socketId].user;
     // Check if the user is online in the socket.io
@@ -199,11 +200,61 @@ const sendRentMessages = async () => {
         io.to(userSocket.socketId).emit("notification", notification);
       }
     }
+
+    // Check if the book is 30 days away from completion
+    if (daysRemaining === 30) {
+      const message = `Your rented book "${book.title}" will expire in 1 day. Please return the book to avoid late fees.`;
+
+      // Send the message to the user's email
+      sendEmail(book.user.email, "Rent Expiration Warning", message);
+
+      // Check if the user associated with the book is online
+      const userSocket = Object.values(users).find(
+        (u) => u.user._id === book.user._id
+      );
+      if (userSocket) {
+        // Send a notification message through Socket.IO
+        const notification = {
+          title: "Rent Expiration Warning",
+          message: message,
+          createdAt: new Date(),
+          isUnread: true,
+        };
+        io.to(userSocket.socketId).emit("notification", notification);
+      }
+    }
+
+    // Check if the book is overdue by 30 days or more
+    if (daysRemaining < 0) {
+      const daysOverdue = Math.abs(daysRemaining);
+      const lateFee = daysOverdue * 1; // Assuming late fee is 1 rs per day
+
+      const message = `Your rented book "${book.title}" is ${daysOverdue} days overdue. Please return the book and pay the late fee of ${lateFee} rs.`;
+
+      // Send the message to the user's email
+      sendEmail(book.user.email, "Rent Overdue", message);
+
+      // Check if the user associated with the book is online
+      const userSocket = Object.values(users).find(
+        (u) => u.user._id === book.user._id
+      );
+      if (userSocket) {
+        // Send a notification message through Socket.IO
+        const notification = {
+          title: "Rent Overdue",
+          message: message,
+          createdAt: new Date(),
+          isUnread: true,
+        };
+        io.to(userSocket.socketId).emit("notification", notification);
+      }
+    }
   }
 };
 
 // Run the sendRentMessages function every day at a specific time (adjust the time as needed)
 const sendRentMessagesJob = schedule.scheduleJob("0 0 * * *", sendRentMessages);
+
 
 // Start the server
 server.listen(SERVER_PORT, () => {

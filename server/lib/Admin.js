@@ -20,7 +20,7 @@
  */
 
 // Import dependencies
-const { Admin } = require("../Models");
+const { Admin, User, Book } = require("../Models");
 
 exports.login = async (data) => {
   try {

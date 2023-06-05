@@ -24,6 +24,7 @@
 const asyncHandler = require("express-async-handler");
 const Admin = require("../lib/Admin");
 const User = require("../lib/User");
+const Book = require("../lib/Book");
 
 /**
  * Controller function to handle admin login.
@@ -110,7 +111,7 @@ exports.editAccount = asyncHandler(async (req, res) => {
 
 exports.updateUserAccess = asyncHandler(async (req, res) => {
   try {
-    const { status, message, error, data } = await User.editAccess(req.body);
+    const { status, message, error, data } = await User.editAccess({userID: req.body.id, access: req.body.access});
 
     if (error) {
       return res.status(status).json({ error: true, message });
@@ -134,7 +135,104 @@ exports.updateUserAccess = asyncHandler(async (req, res) => {
 
 exports.deleteAccount = asyncHandler(async (req, res) => {
   try {
-    const { status, message, error, data } = await User.deleteAccount(req.body);
+    const { status, message, error, data } = await User.deleteAccount({userId: req.params.id});
+
+    if (error) {
+      return res.status(status).json({ error: true, message });
+    }
+
+    return res.status(status).json(data);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
+  }
+});
+
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+
+exports.dashBoard = asyncHandler(async (req, res) => {
+  try {
+    const { status, message, error, data } = await Admin.dashBoard();
+
+    if (error) {
+      return res.status(status).json({ error: true, message });
+    }
+
+    return res.status(status).json(data);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
+  }
+});
+
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+
+exports.getAllUsers = asyncHandler(async (req, res) => {
+  try {
+    const { status, message, error, data } = await User.getAllUsers();
+
+    if (error) {
+      return res.status(status).json({ error: true, message });
+    }
+
+    return res.status(status).json(data);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
+  }
+});
+
+
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+
+exports.AllBooks = asyncHandler(async (req, res) => {
+  try {
+    const { status, message, error, data } = await Book.AllBooks();
+
+    if (error) {
+      return res.status(status).json({ error: true, message });
+    }
+
+    return res.status(status).json(data);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal server error" });
+  }
+});
+
+/**
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Response containing the output.
+ * @throws {Object} Error object if an error occurs during the process.
+ */
+
+exports.GetBook = asyncHandler(async (req, res) => {
+  try {
+    const { status, message, error, data } = await User.GetBook(req.body);
 
     if (error) {
       return res.status(status).json({ error: true, message });

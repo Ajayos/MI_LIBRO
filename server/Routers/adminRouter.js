@@ -20,21 +20,26 @@
 
 const express = require("express");
 const router = express.Router();
-const { login, createAccount, getDashboardData, getUsersData } = require("../Controllers/adminController");
-const { protectUser, protectAdmin, SkipPprotect } = require("../middleware/authMiddleware");
+const Admin = require("../Controllers/adminController");
+const { protectUser, protectAdmin, } = require("../middleware/authMiddleware");
 const { getAllBooks } = require("../Controllers/bookController");
 
 // Route: POST /api/v1/admins
-router.post("/login", login);
+router.post("/login", Admin.login);
 
 // Route: POST /api/v1/admins
-router.post("/new", createAccount);
+router.post("/new", Admin.createAccount);
 
-router.post("/dashboard", protectAdmin, getDashboardData)
+router.delete("/user/delete/:id", protectAdmin, Admin.deleteAccount);
 
-router.get("/users", protectAdmin, getUsersData)
+router.put("/user/access", protectAdmin, Admin.updateUserAccess);
 
-router.get("/books", protectAdmin, getAllBooks)
+router.put("/user", protectAdmin, Admin.editAccount);
+
+router.post("/dashboard", protectAdmin, Admin.dashBoard)
+
+router.get("/users", protectAdmin, Admin.getAllUsers)
+
+router.get("/books", protectAdmin, Admin.AllBooks)
 
 module.exports = router;
-

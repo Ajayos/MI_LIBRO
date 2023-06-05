@@ -676,3 +676,55 @@ exports.returnBook = async (data) => {
   }
 };
 
+/** 
+ *
+ * @returns {Object} Response indicating the status, error, message, and data of the process.
+ */
+exports.AllBooks = async () => {
+  try {
+    const book = await Book.find();
+
+    
+
+    return {
+      status: 200,
+      error: false,
+      message: undefined,
+      data: book,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      error: true,
+      message: "Internal server error",
+      data: undefined,
+    };
+  }
+};
+
+/** 
+ *
+ * @returns {Object} Response indicating the status, error, message, and data of the process.
+ */
+exports.GetBook = async (data) => {
+  const { id } = data;
+  try {
+    const book = await Book.findById(id);
+
+    
+
+    return {
+      status: 200,
+      error: false,
+      message: undefined,
+      data: book,
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      error: true,
+      message: "Internal server error",
+      data: undefined,
+    };
+  }
+};
