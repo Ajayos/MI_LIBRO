@@ -91,18 +91,17 @@ export default function Account() {
 		event.preventDefault();
 
 		if (validateForm) {
-			console.log("Submitting form:" + book);
 			await AddNewBook(JSON.stringify(book));
 
-			//setBook({
-			//	pic: null,
-			//	title: "",
-			//	author: "",
-			//	publicationDate: "",
-			//	genre: "",
-			//	isbn: "",
-			//	description: "",
-			//});
+			setBook({
+				pic: null,
+				title: "",
+				author: "",
+				publicationDate: "",
+				genre: "",
+				isbn: "",
+				description: "",
+			});
 			setErrors({});
 			return true;
 		} else {

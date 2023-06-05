@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { styled } from "@mui/material/styles";
 import {
 	Link,
@@ -16,7 +15,6 @@ import LOGIN_IMG from "../../image/login.png";
 import LoginForm from "./LoginForm";
 import { useCome } from "../../contexts/ComeBackContext";
 import { useAuth } from "../../contexts/AuthContext";
-import { isAuthenticated } from './../../utils/handleAuth';
 import { useEffect } from "react";
 
 const StyledRoot = styled("div")(({ theme }) => ({

@@ -2,7 +2,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupIcon from "@mui/icons-material/Group";
 import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import AddBoxIcon from "@mui/icons-material/AddBox";
-
+import CommentBankIcon from '@mui/icons-material/CommentBank';
 const navConfig = [
   {
     title: "Dashboard",
@@ -13,6 +13,11 @@ const navConfig = [
     title: "User",
     path: "/user",
     icon: <GroupIcon />,
+  },
+  {
+    title: "Request Books",
+    path: "/req-books",
+    icon: <CommentBankIcon />,
   },
   {
     title: "Books",

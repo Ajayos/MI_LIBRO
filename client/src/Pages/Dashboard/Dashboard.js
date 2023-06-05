@@ -46,7 +46,7 @@ export default function Dashboard() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidget
               title="Total Books"
-              total={adminHomeData.books}
+              total={adminHomeData.books === 0 ? '0' : adminHomeData.books}
               color="info"
               icon={<LibraryBooksIcon />}
             />
@@ -54,7 +54,7 @@ export default function Dashboard() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidget
               title="Rent Books"
-              total={adminHomeData.rbooks}
+              total={adminHomeData.rbooks === 0 ? '0' : adminHomeData.rbooks}
               color="warning"
               icon={<LibraryBooksIcon />}
             />
@@ -63,7 +63,7 @@ export default function Dashboard() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidget
               title="Online users"
-              total={onlineUsers}
+              total={onlineUsers === 0 ? '0' : onlineUsers}
               color="error"
               icon={<OnlinePredictionIcon />}
             />

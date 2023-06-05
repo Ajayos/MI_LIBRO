@@ -61,7 +61,6 @@ export default function NotificationsPopover() {
   };
 
   socket.on("notification", (data) => {
-	console.log(data)
 	setNotifications([data, ...notifications]);
     notificationAudioRef.current.play(); // Play the notification sound from the ref
   });

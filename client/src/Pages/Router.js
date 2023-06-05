@@ -33,6 +33,7 @@ const DashboardUserPage = Load(() => import("./Dashboard/UserPage"));
 const DashboardAddBook = Load(() => import("./Dashboard/AddBook"));
 const DashboardBooks = Load(() => import("./Dashboard/Books"));
 const DashboardEditBook = Load(() => import("./Dashboard/EditBook"));
+const DashboardReqBooks = Load(() => import("./Dashboard/RequestedBooks"));
 
 export default function Router() {
   const { isAuthenticated, access } = useAuth();
@@ -71,6 +72,7 @@ export default function Router() {
               { path: "user", element: <DashboardUserPage /> },
               { path: "books", element: <DashboardBooks /> },
               { path: "addbook", element: <DashboardAddBook /> },
+              { path: "req-books", element: <DashboardReqBooks /> },
               { path: "editbook/:id", element: <DashboardEditBook />}
             ],
           },

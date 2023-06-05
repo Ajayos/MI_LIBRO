@@ -1,12 +1,6 @@
-import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { Container, Stack, Typography, Skeleton } from "@mui/material";
-import {
-	ProductSort,
-	ProductList,
-	ProductCartWidget,
-	ProductFilterSidebar,
-} from "../../components/books";
+import { ProductSort, ProductList } from "../../components/books";
 import API from "../../utils/api";
 import { useCome } from "../../contexts/ComeBackContext";
 import { useAuth } from "../../contexts/AuthContext";
@@ -14,40 +8,29 @@ import { useAuth } from "../../contexts/AuthContext";
 export default function ProductsPage() {
 	const [books, setBooks] = useState([]);
 	const { setTitle } = useCome();
-	const { isAuthenticated } = useAuth();
+	const { isAuthenticated, user} = useAuth();
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		if(!isAuthenticated) return window.location.href = "/login";
+		if (!isAuthenticated) return (window.location.href = "/login");
 		const fetchBooks = async () => {
 			try {
 				const response = await API.post("/users/books");
 				setBooks(response.data);
-				console.log(response.data)
 				setIsLoading(false);
 			} catch (error) {
-				console.log("Error: ", error);
 				setIsLoading(false);
 			}
 		};
 		fetchBooks();
 	}, [isAuthenticated]);
 
-	const [openFilter, setOpenFilter] = useState(false);
-
-	const handleOpenFilter = () => {
-		setOpenFilter(true);
-	};
-
-	const handleCloseFilter = () => {
-		setOpenFilter(false);
-	};
 	setTitle("Books");
 	return (
 		<>
 			<Container>
 				<Typography variant='h4' sx={{ mb: 5 }}>
-					Books
+					Welcome {user.name}
 				</Typography>
 
 				<Stack
@@ -55,7 +38,8 @@ export default function ProductsPage() {
 					flexWrap='wrap-reverse'
 					alignItems='center'
 					justifyContent='flex-end'
-					sx={{ mb: 5 }}>
+					sx={{ mb: 5 }}
+				>
 					<Stack direction='row' spacing={1} flexShrink={0} sx={{ my: 1 }}>
 						<ProductSort />
 					</Stack>

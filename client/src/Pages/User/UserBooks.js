@@ -21,7 +21,7 @@ const UserFetcher = () => {
       try {
         const response = await API.post("/users/mybooks");
         console.log("Response: ", response.data)
-        const users = response.data.map((user) => ({ id: user._id, ...user }));
+        const users = response.data.requestedBooks.map((user) => ({ id: user._id, ...user }));
         setUsers(users);
         setLoading(false);
       } catch (error) {

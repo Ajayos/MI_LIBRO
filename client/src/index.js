@@ -13,6 +13,7 @@ import ThemeProvider from "./theme";
 import { StyledChart } from "./components/chart";
 import ScrollToTop from "./ScrollToTop";
 import { ComeProvider } from "./contexts/ComeBackContext";
+import { ToastProvider } from "./contexts/Toast";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -24,15 +25,13 @@ root.render(
 					<BrowserRouter>
 						<AuthProvider>
 							<SocketProvider>
-								<SnackbarProvider
-									maxSnack={3}
-									anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+								<ToastProvider>
 									<ThemeProvider>
 										<ScrollToTop />
 										<StyledChart />
 										<Router />
 									</ThemeProvider>
-								</SnackbarProvider>
+								</ToastProvider>
 							</SocketProvider>
 						</AuthProvider>
 					</BrowserRouter>

@@ -7,7 +7,7 @@ import History from "./BookData/History";
 import { useParams } from 'react-router-dom';
 import API from "../../utils/api";
 
-const Book = () => {
+const Book = ({dat}) => {
   const { id } = useParams();
 	const { setTitle } = useCome();
   const [bookData, setBookData] = useState(null);
@@ -16,6 +16,7 @@ const Book = () => {
   useEffect(() => {
     const fetchBookData = async () => {
       try {
+        console.log(id)
         const response = await API.get(`/users/book/${id}`);
         console.log(response.data)
         setBookData(response.data);
@@ -66,7 +67,7 @@ const Book = () => {
           {loading ? (
             <Skeleton variant="rectangular" height={200} />
           ) : (
-            <Details bookData={bookData} />
+            <Details bookData={dat} />
           )}
         </Container>
       )}
@@ -75,7 +76,7 @@ const Book = () => {
           {loading ? (
             <Skeleton variant="rectangular" height={200} />
           ) : (
-            <Reviews bookData={bookData} />
+            <Reviews bookData={dat} />
           )}
         </Container>
       )}
@@ -84,7 +85,7 @@ const Book = () => {
           {loading ? (
             <Skeleton variant="rectangular" height={200} />
           ) : (
-            <History historyData={historyData} />
+            <History historyData={dat} />
           )}
         </Container>
       )}

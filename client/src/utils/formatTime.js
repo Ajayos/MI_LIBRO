@@ -6,6 +6,7 @@ export function fDate(date, newFormat) {
 	return date ? format(new Date(date), fm) : "";
 }
 
+
 export function fDateTime(date, newFormat) {
 	const fm = newFormat || "dd MMM yyyy p";
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	Box,
 	Card,
@@ -11,15 +11,22 @@ import {
 	DialogContent,
 	Avatar,
 	AvatarGroup,
+	Tabs,
+	Tab,
+	Skeleton,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { fCurrency } from "../../utils/NumberConvert";
 import Label from "../label";
 
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { fDate } from "../../utils/formatTime";
 import { useAuth } from "../../contexts/AuthContext";
+import Details from "./Details";
+import Review from "./Reviews";
+import History from "./History";
+
+import { Container } from "@mui/system";
 const StyledProductImg = styled("img")({
 	top: 0,
 	width: "100%",
@@ -29,7 +36,7 @@ const StyledProductImg = styled("img")({
 });
 
 export default function ShopProductCard({ product }) {
-	const { LikeBook } = useAuth();
+	const { LikeBook, user } = useAuth();
 	const {
 		_id,
 		name,
@@ -53,13 +60,26 @@ export default function ShopProductCard({ product }) {
 
 	const [liked, setLiked] = useState(false);
 	const [openModal, setOpenModal] = useState(false);
+	const [selectedTab, setSelectedTab] = useState(0);
+
+	useEffect(() => {
+		for (var i = 0; i < product.likes.length; i++) {
+			if (product.likes[i]._id === user.id) {
+				setLiked(true);
+			}
+		}
+	}, []);
+	const handleTabChange = (event, newValue) => {
+		setSelectedTab(newValue);
+	};
 	const handleLike = () => {
 		setLiked(!liked);
 		LikeBook(_id, !liked);
 	};
 
 	const handleOpenModal = () => {
-		window.location.href = `/book/${_id}`;
+		//window.location.href = `/book/${_id}`;
+		setOpenModal(true);
 	};
 
 	const handleCloseModal = () => {
@@ -75,6 +95,39 @@ export default function ShopProductCard({ product }) {
 		return daysDifference <= timeLimitDays;
 	};
 
+	const IsUserLiked = () => {
+		if (liked) return true;
+		var is = false;
+		for (var i = 0; i < product.likes.length; i++) {
+			if (product.likes[i]._id === user.id) {
+				is = true;
+			}
+		}
+		return is;
+	};
+
+	const bookStatus = () => {
+		let status = product.status;
+		if (status === "Available") {
+			return "Available";
+		} else if (status === "Rented") {
+			if (product.rented.user === user._id) {
+				return "Return Book";
+			}
+			return "Rented";
+		} else if (status === "Processing") {
+			if (product.request === user._id) {
+				return "Request send";
+			} else {
+				return "Book on a request";
+			}
+		} else if (status === "Unavailable") {
+			return "Book unavailable";
+		} else {
+			return "Book not available";
+		}
+	};
+
 	const isNew = isNewProduct();
 
 	return (
@@ -84,7 +137,7 @@ export default function ShopProductCard({ product }) {
 					<Label
 						variant='filled'
 						color={
-							status === "Available"
+							bookStatus() === "Available"
 								? "success"
 								: status === "Rented"
 								? "warning"
@@ -98,7 +151,7 @@ export default function ShopProductCard({ product }) {
 							textTransform: "uppercase",
 						}}
 					>
-						{status}
+						{bookStatus()}
 					</Label>
 				)}
 
@@ -127,11 +180,7 @@ export default function ShopProductCard({ product }) {
 					</Typography>
 				</Link>
 				<Typography variant='caption'>Author: {author}</Typography>
-				<Typography variant='caption'>Likes: 5 </Typography>
-				<Typography variant='caption'>Comments: {commentNumber}</Typography>
-				<Typography variant='caption'>
-					Published Date: {fDate(publicationDate)}
-				</Typography>
+
 				<Typography variant='caption'>Genre: {genre}</Typography>
 
 				<Stack
@@ -160,47 +209,51 @@ export default function ShopProductCard({ product }) {
 					View Details
 				</Button>
 
-				<Modal open={openModal} onClose={handleCloseModal}>
-					<DialogContent>
-						<Box sx={{ p: 3 }}>
-							<Typography variant='h5' mb={2}>
-								{title}
-							</Typography>
-							<Typography variant='body1' mb={2}>
-								Author: {author}
-							</Typography>
-							<img
-								src={pic}
-								alt={title}
-								style={{ width: "50%", height: "50%" }}
-							/>
-							<Typography variant='body1' mb={2}>
-								Likes: 5{" "}
-							</Typography>
-							<Typography variant='body1' mb={2}>
-								Comments: {commentNumber}
-							</Typography>
-							<Typography variant='body1' mb={2}>
-								Published Date: {publicationDate}
-							</Typography>
-							<Typography variant='body1'>Genre: {genre}</Typography>
-							<Typography variant='body1'>ISBN: {isbn}</Typography>
-							<Typography variant='body1'>
-								Description: {description}
-							</Typography>
-							{usersPics && (
-								<Stack direction='row' spacing={1} mt={2}>
-									{usersPics.map((userPic, index) => (
-										<Avatar
-											key={index}
-											src={userPic}
-											alt={`User ${index + 1}`}
-										/>
-									))}
-								</Stack>
+				<Modal
+					open={openModal}
+					onClose={handleCloseModal}
+					aria-labelledby='parent-modal-title'
+					aria-describedby='parent-modal-description'
+				>
+					<Box
+						sx={{
+							position: "absolute",
+							top: "50%",
+							left: "50%",
+							transform: "translate(-50%, -50%)",
+							height: "90%",
+							width: "90%",
+							bgcolor: "background.paper",
+							border: "2px solid #000",
+							boxShadow: 24,
+							pt: 2,
+							px: 4,
+							pb: 3,
+						}}
+					>
+						<Box>
+							<Tabs value={selectedTab} onChange={handleTabChange} centered>
+								<Tab label='Details' />
+								<Tab label='Review' />
+								<Tab label='History' />
+							</Tabs>
+							{selectedTab === 0 && (
+								<Container sx={{ marginTop: 5, marginBlockEnd: 10 }}>
+									<Details bookData={product} />
+								</Container>
+							)}
+							{selectedTab === 1 && (
+								<Container>
+									<Review bookData={product} />
+								</Container>
+							)}
+							{selectedTab === 2 && (
+								<Container>
+									<History bookData={product} />
+								</Container>
 							)}
 						</Box>
-					</DialogContent>
+					</Box>
 				</Modal>
 			</Stack>
 		</Card>

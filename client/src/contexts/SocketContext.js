@@ -9,10 +9,11 @@ const SocketContext = createContext("");
 export function SocketProvider({ children }) {
 	const [isFocused, setIsFocused] = useState(true);
 	const { user, access, isAuthenticated, MyToken } = useAuth();
-	const [onlineUsers, setOnlineUsers] = useState(0);
+	const [onlineUsers, setOnlineUsers] = useState(1);
 	const [userList, setUserList] = useState([]);
 
 	useEffect(() => {
+		socket.emit("hehe")
 		if (!isAuthenticated)  return;
 		if (access)  return;
 

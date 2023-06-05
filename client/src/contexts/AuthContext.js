@@ -9,6 +9,7 @@ import {
 import { useSnackbar } from "notistack";
 import API from "../utils/api";
 import { useNavigate } from "react-router-dom";
+import Toast from "../Toast";
 
 const AuthContext = createContext({});
 
@@ -304,9 +305,40 @@ export function AuthProvider({ children }) {
 			const response = await API.post("/admins/dashboard");
 
 			if (response.status === 200) {
-				console.log(response.data)
+				console.log(response.data);
 				const data = response.data;
-				setAdminHomeData({ users: data.user, books: data.books, rbooks: data.req + 1  });
+				setAdminHomeData({
+					users: data.user,
+					books: data.books,
+					rbooks: data.req,
+				});
+			} else {
+				setError(response.status);
+			}
+		} catch (error) {
+			if (error.response) {
+				setError({
+					message: error.response.data.message,
+					status: error.response.status,
+				});
+			} else {
+				setError("An error occurred");
+			}
+		}
+	}
+
+	async function CommentBook(data) {
+		try {
+			const response = await API.post("/users/books/comment", JSON.stringify(data));
+
+			if (response.status === 200) {
+				console.log(response.data);
+				const data = response.data;
+				setAdminHomeData({
+					users: data.user,
+					books: data.books,
+					rbooks: data.req,
+				});
 			} else {
 				setError(response.status);
 			}
@@ -402,20 +434,12 @@ export function AuthProvider({ children }) {
 		}
 	}
 
-	async function IsPermit(user) {
-		if (isAuthenticated) {
-			//
-		} else {
-			navigate("/login", { replace: true });
-		}
-	}
-	async function LikeBook(id, like) {
+	async function UpdateUserAdmin(data) {
 		try {
-			if (like) {
-				await API.post(`/users/books/liked`, JSON.stringify({ id: id }));
-			} else {
-				await API.delete(`/users/books/liked`,JSON.stringify({ id: id }));
-			}
+			const response = await API.put(`/admins/user`, data);
+			return response.data;
+			//await GetUsersData();
+			//setError(response.status);
 		} catch (error) {
 			if (error.response) {
 				setError({
@@ -426,6 +450,146 @@ export function AuthProvider({ children }) {
 				setError("An error occurred");
 			}
 		}
+	}
+
+	async function BlockUser(data) {
+		try {
+			const response = await API.put(`/admins/user/access`, data);
+			return response.data;
+		} catch (error) {
+			if (error.response) {
+				setError({
+					message: error.response.data.message,
+					status: error.response.status,
+				});
+			} else {
+				setError("An error occurred");
+			}
+		}
+	}
+
+	async function DeleteUser(id) {
+		try {
+			const response = await API.put(`/admins/user/delete/${id}`);
+			return response.data;
+		} catch (error) {
+			if (error.response) {
+				setError({
+					message: error.response.data.message,
+					status: error.response.status,
+				});
+			} else {
+				setError("An error occurred");
+			}
+		}
+	}
+
+	async function IsPermit(user) {
+		if (isAuthenticated) {
+			//
+		} else {
+			navigate("/login", { replace: true });
+		}
+	}
+	async function sendRequest(request) {
+		try {
+            const response = await API.post(`/users/book/request`,JSON.stringify(request));
+            return response.data;
+        } catch (error) {
+            if (error.response) {
+                setError({
+                    message: error.response.data.message,
+                    status: error.response.status,
+                });
+            } else {
+                setError("An error occurred");
+            }
+        }
+    }
+	async function getRequest() {
+		try {
+            const response = await API.post(`/admins/books/request`);
+            return response.data;
+        } catch (error) {
+            if (error.response) {
+                setError({
+                    message: error.response.data.message,
+                    status: error.response.status,
+                });
+            } else {
+                setError("An error occurred");
+            }
+        }
+    }
+	async function RequestAp(id) {
+		try {
+            const response = await API.post(`/admins/books/accept`, JSON.stringify({id:id}));
+            return response.data;
+        } catch (error) {
+            if (error.response) {
+                setError({
+                    message: error.response.data.message,
+                    status: error.response.status,
+                });
+            } else {
+                setError("An error occurred");
+            }
+        }
+    }
+	async function RequestCn(id) {
+		try {
+            const response = await API.post(`/admins/books/reject`, JSON.stringify({id:id}));
+            return response.data;
+        } catch (error) {
+            if (error.response) {
+                setError({
+                    message: error.response.data.message,
+                    status: error.response.status,
+                });
+            } else {
+                setError("An error occurred");
+            }
+        }
+    }
+	async function LikeBook(id, like) {
+			if (like) {
+				await API.post(`/users/books/liked`, JSON.stringify({ id: id })).catch(
+					(error) => {
+						if (error.statusCode === 500) {
+							return <Toast open={true} message='Hello, Toast!' severity='success' />;
+							// Redirect to the 500 error page using your preferred method
+						} else if (error.statusCode === 401) {
+							return <Toast open={true} message='Hello, Toast!' severity='success' />;
+							// Redirect to the 401 error page using your preferred method
+						} else if (error.statusCode === 404) {
+							return <Toast open={true} message='Hello, Toast!' severity='success' />;
+							// Redirect to the 404 error page using your preferred method
+						} else {
+							console.error(error);
+							// Handle other errors if needed
+						}
+					}
+				);
+			} else {
+				await API.put(`/users/books/liked`, JSON.stringify({ id: id })).catch(
+					(error) => {
+						if (error.statusCode === 500) {
+							enqueueSnackbar(error.message, { variant: "error" });
+							// Redirect to the 500 error page using your preferred method
+						} else if (error.statusCode === 401) {
+							enqueueSnackbar(error.message, { variant: "error" });
+							// Redirect to the 401 error page using your preferred method
+						} else if (error.statusCode === 404) {
+							enqueueSnackbar(error.message, { variant: "error" });
+							// Redirect to the 404 error page using your preferred method
+						} else {
+							console.error(error);
+							// Handle other errors if needed
+						}
+					}
+				);
+			}
+		
 	}
 
 	const LogOutUser = () => {
@@ -445,15 +609,23 @@ export function AuthProvider({ children }) {
 				Forgot,
 				GetDashboradData,
 				EditBook,
+				sendRequest,
+				RequestAp,
+				RequestCn,
 				adminHomeData,
 				updateUserProfileFetch,
 				updateUserDataFetch,
 				updateUserPasswordFetch,
 				GetBooks,
+				BlockUser,
+				DeleteUser,
+				getRequest,
 				getUserData_,
 				AdminGetUserData_,
+				UpdateUserAdmin,
 				AddNewBook,
 				IsPermit,
+				CommentBook,
 				LikeBook,
 				AdminUpdateUserDataFetch,
 				USERLIST: userList,
@@ -465,6 +637,7 @@ export function AuthProvider({ children }) {
 				MyToken,
 			}}
 		>
+			{error && enqueueSnackbar(error, { variant: "error" })}
 			{children}
 		</AuthContext.Provider>
 	);
