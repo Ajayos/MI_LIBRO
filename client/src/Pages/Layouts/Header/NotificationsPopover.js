@@ -24,19 +24,17 @@ import Scrollbar from "../../../components/scrollbar";
 import { useSocket } from "../../../contexts/SocketContext";
 
 import notificationSound from "../../../audio/ting.mp3"; // Import the notification sound file
+import { set } from "mongoose";
 
-const NOTIFICATIONS = [
-  {
+
+export default function NotificationsPopover() {
+  const { socket } = useSocket();
+  const [notifications, setNotifications] = useState([{
     title: "Welcome to Mi LIBRO",
     avatar: "https://github.com/Ajayos.png",
     createdAt: sub(new Date(), { hours: 3, minutes: 30 }),
     isUnRead: true,
-  },
-];
-
-export default function NotificationsPopover() {
-  const { socket } = useSocket();
-  const [notifications, setNotifications] = useState(NOTIFICATIONS);
+  }]);
 
   const totalUnRead = notifications.filter(
     (item) => item.isUnRead === true
@@ -47,7 +45,6 @@ export default function NotificationsPopover() {
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
-    notificationAudioRef.current.play(); // Play the notification sound from the ref
   };
 
   const handleClose = () => {
@@ -64,9 +61,9 @@ export default function NotificationsPopover() {
   };
 
   socket.on("notification", (data) => {
-    NOTIFICATIONS.push(data);
+	console.log(data)
+	setNotifications([data, ...notifications]);
     notificationAudioRef.current.play(); // Play the notification sound from the ref
-    setNotifications(NOTIFICATIONS);
   });
 
 

@@ -8,17 +8,13 @@ const SocketContext = createContext("");
 
 export function SocketProvider({ children }) {
 	const [isFocused, setIsFocused] = useState(true);
-	const { user, isAuthenticated, MyToken } = useAuth();
+	const { user, access, isAuthenticated, MyToken } = useAuth();
 	const [onlineUsers, setOnlineUsers] = useState(0);
 	const [userList, setUserList] = useState([]);
 
 	useEffect(() => {
-		if (!isAuthenticated) {
-			return;
-		}
-		if (!user) {
-			return;
-		}
+		if (!isAuthenticated)  return;
+		if (access)  return;
 
 		socket.emit("userOnline", {
 			user: user.id,
@@ -26,24 +22,7 @@ export function SocketProvider({ children }) {
 			pic: user.pic,
 			status: true,
 		});
-		window.onblur = () => {
-			socket.emit("imOnline", {
-				user: user.id,
-				token: MyToken,
-				status: false,
-			});
-			setIsFocused(false);
-		};
-		window.onfocus = () => {
-			socket.emit("imOnline", {
-				user: user.id,
-				token: MyToken,
-				status: true,
-			});
-			setIsFocused(true);
-		};
 
-		return () => socket.removeAllListeners();
 	}, [isFocused, user, isAuthenticated]);
 
 	socket.on("online", (data) => {
