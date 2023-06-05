@@ -33,7 +33,7 @@ export default function Page404() {
 
           <Box
             component="img"
-            src={`/Public/static/images/img.svg`}
+            src={`/public/img.svg`}
             sx={{ height: 260, mx: "auto", my: { xs: 5, sm: 10 } }}
           />
 

@@ -20,7 +20,7 @@
 
 const express = require("express");
 const router = express.Router();
-const Admin = require("../Controllers/adminController");
+const Admin = require("../controllers/adminController");
 const { protectUser, protectAdmin, } = require("../middleware/authMiddleware");
 
 // Route: POST /api/v1/admins

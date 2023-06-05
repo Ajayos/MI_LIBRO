@@ -28,7 +28,7 @@ export default function Page500() {
 
           <Box
             component="img"
-            src={`/public/static/images/500.svg`}
+            src={`/public/500.svg`}
             sx={{ height: 260, mx: "auto",  marginTop: "-25%"}}
           />
 
