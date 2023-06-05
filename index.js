@@ -255,7 +255,6 @@ const sendRentMessages = async () => {
 // Run the sendRentMessages function every day at a specific time (adjust the time as needed)
 const sendRentMessagesJob = schedule.scheduleJob("0 0 * * *", sendRentMessages);
 
-
 // Start the server
 server.listen(SERVER_PORT, () => {
   log(`Server running on port ${SERVER_PORT}`, "i");
