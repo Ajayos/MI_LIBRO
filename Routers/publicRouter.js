@@ -21,7 +21,7 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
-const public = path.join(__dirname, "..", "Public")
+const public = path.join(__dirname, "..", "images")
 
 router.get("/img.svg", (req, res) => {
     res.sendFile(path.join(public, "/img.svg"));

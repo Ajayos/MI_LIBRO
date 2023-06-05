@@ -43,7 +43,7 @@ dotenv.config();
 
 // Define
 const SERVER_PORT = process.env.PORT || 3000;
-const publicPath = path.join(__dirname, "/Public");
+const publicPath = path.join(__dirname, "/client/build");
 
 // Set up the logger
 //setupLogger();
@@ -68,7 +68,9 @@ app.use(bodyParser.json());
 // v1 api
 app.use("/", apiRouter);
 app.use(express.static(publicPath));
-
+app.get("*", (req, res) => {
+  res.sendFile(path.join(publicPath, "index.html"));
+  });
 // Error handler middleware
 app.use(errorHandler);
 

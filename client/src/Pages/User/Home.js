@@ -9,13 +9,16 @@ import {
 } from "../../components/books";
 import API from "../../utils/api";
 import { useCome } from "../../contexts/ComeBackContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function ProductsPage() {
 	const [books, setBooks] = useState([]);
 	const { setTitle } = useCome();
+	const { isAuthenticated } = useAuth();
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
+		if(!isAuthenticated) return window.location.href = "/login";
 		const fetchBooks = async () => {
 			try {
 				const response = await API.post("/users/books");
@@ -28,7 +31,7 @@ export default function ProductsPage() {
 			}
 		};
 		fetchBooks();
-	}, []);
+	}, [isAuthenticated]);
 
 	const [openFilter, setOpenFilter] = useState(false);
 
