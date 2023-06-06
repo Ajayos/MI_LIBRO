@@ -184,13 +184,8 @@ export default function Account({ userData }) {
 			>
 				<Container maxWidth='lg'>
 					<Stack>
-						{isLoading ? (
-							<Skeleton variant='text' width={200}  />
-						) : (
-							<Typography variant='h4'>Account</Typography>
-						)}
-						<br />
-						<Grid container spacing={5}>
+					
+						<Grid container spacing={2}>
 							<Grid item xs={12} md={6} lg={4}>
 								{isLoading ? (
 									<Skeleton variant='rectangular' height={400} />
@@ -347,17 +342,7 @@ export default function Account({ userData }) {
 																autoFocus
 															/>
 														</Grid>
-														<Grid item xs={12}>
-															<Typography>Address</Typography>
-															<TextField
-																fullWidth
-																name='contactDetails'
-																onChange={handleChange}
-																required
-																value={values.contactDetails}
-																autoFocus
-															/>
-														</Grid>
+														
 													</Grid>
 												</Box>
 											</CardContent>

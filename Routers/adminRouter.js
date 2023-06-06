@@ -29,7 +29,7 @@ router.post("/login", Admin.login);
 // Route: POST /api/v1/admins
 router.post("/new", Admin.createAccount);
 
-router.delete("/user/delete/:id", protectAdmin, Admin.deleteAccount);
+router.delete("/user/delete", protectAdmin, Admin.deleteAccount);
 
 router.put("/user/access", protectAdmin, Admin.updateUserAccess);
 

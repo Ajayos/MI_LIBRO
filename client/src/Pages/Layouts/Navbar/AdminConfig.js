@@ -15,7 +15,7 @@ const navConfig = [
     icon: <GroupIcon />,
   },
   {
-    title: "Request Books",
+    title: "Requested Books",
     path: "/req-books",
     icon: <CommentBankIcon />,
   },

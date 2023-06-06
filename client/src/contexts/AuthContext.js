@@ -224,15 +224,16 @@ export function AuthProvider({ children }) {
 	async function SignUp(data) {
 		try {
 			const response = await API.post("/users", data);
-
-			if (response.status === 201) {
+			console.log(response.data)
+			if (response.status === 200) {
 				const { token, name, email, id, pic } = response.data;
+				console.log(response.data)
 				login(token, name, email, id, pic, "user");
 				setAccess(false);
 				setMyToken(token);
 				setIsAuthenticated(true);
 
-				return { message: "Signed up successfully", status: 201 };
+				return { message: "Signed up successfully", status: 200 };
 			} else {
 				return { message: response.data.message, status: response.status };
 			}
@@ -305,7 +306,6 @@ export function AuthProvider({ children }) {
 			const response = await API.post("/admins/dashboard");
 
 			if (response.status === 200) {
-				console.log(response.data);
 				const data = response.data;
 				setAdminHomeData({
 					users: data.user,

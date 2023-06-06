@@ -21,6 +21,7 @@ import { LoadingButton } from "@mui/lab";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
 import { useAuth } from "../../contexts/AuthContext";
+import Toast from "../../Toast";
 
 export default function LoginForm() {
   const { enqueueSnackbar } = useSnackbar();
@@ -196,18 +197,17 @@ export default function LoginForm() {
     if (validateForm()) {
       try {
         setLoading(true);
-        console.log(formData)
         const { message, status } = SignUp(formData);
         
         if (status === 200) {
-          enqueueSnackbar(message, { variant: "success" });
+          Toast(message, { variant: "success" });
           window.location.href = "/home";
         } else {
           enqueueSnackbar(message, { variant: "error" });
           setErrors({ email: message, password: message });
         }
 
-        window.location.reload()
+        //window.location.reload()
         setLoading(false);
       } catch (error) {
         setLoading(false);

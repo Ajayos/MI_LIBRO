@@ -6,9 +6,10 @@ import Container from "@mui/material/Container";
 import API from "../../utils/api";
 import { fDateTime } from "../../utils/formatTime";
 import { useCome } from "../../contexts/ComeBackContext";
-import Details from "../../components/books/Details";
-import Review from "../../components/books/Reviews";
-import History from "../../components/books/History";
+import Details from "./Books/Details";
+import Review from "./Books/Reviews";
+import History from "./Books/History";
+import Edit from "./Books/edit"
 
 const BookFetcher = () => {
 	const { setTitle } = useCome();
@@ -131,6 +132,7 @@ const BookFetcher = () => {
 								<Tab label='Details' />
 								<Tab label='Review' />
 								<Tab label='History' />
+								<Tab label='Edit' />
 							</Tabs>
 							{selectedTab === 0 && (
 								<Container sx={{ marginTop: 5, marginBlockEnd: 10 }}>
@@ -145,6 +147,11 @@ const BookFetcher = () => {
 							{selectedTab === 2 && (
 								<Container>
 									<History bookData={openBook} />
+								</Container>
+							)}
+							{selectedTab === 3 && (
+								<Container>
+									<Edit userData={openBook} />
 								</Container>
 							)}
 						</Box>

@@ -11,6 +11,7 @@ import { useSocket } from "../../contexts/SocketContext";
 import AppWidget from "./Widget";
 import AppVisits from "./Website";
 
+
 export default function Dashboard() {
   const theme = useTheme();
   const { GetDashboradData, adminHomeData } =
@@ -38,7 +39,7 @@ export default function Dashboard() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidget
               title="Total users"
-              total={adminHomeData.users}
+              total={adminHomeData.users === 0 ? '0' : adminHomeData.users}
               icon={<AccountCircleIcon />}
             />
           </Grid>

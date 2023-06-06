@@ -16,14 +16,19 @@ import {
 	CardActions,
 	TextField,
 	CardHeader,
+	FormControl,
+	OutlinedInput,
+	Select,
+	MenuItem,
 } from "@mui/material";
-import { useAuth } from "../../contexts/AuthContext";
-import { useCome } from "../../contexts/ComeBackContext";
+import { useAuth } from "../../../contexts/AuthContext";
+import { useCome } from "../../../contexts/ComeBackContext";
 
-export default function Account() {
+export default function Account({ userData }) {
+	console.log(userData);
 	const theme = useTheme();
 	const { setTitle } = useCome();
-	const { AddNewBook } = useAuth();
+	const { EditBook } = useAuth();
 	const [isLoading, setIsLoading] = useState(true);
 	const [profilePic, setProfilePic] = useState();
 	const [newProfilePic, setNewProfilePic] = useState(null);
@@ -32,9 +37,9 @@ export default function Account() {
 		pic: null,
 		title: "",
 		author: "",
-		publicationDate: "",
+		status: "",
 		genre: "",
-		isbn: "",
+		ISBN: "",
 		description: "",
 	});
 	const [errors, setErrors] = useState({});
@@ -87,21 +92,32 @@ export default function Account() {
 		}
 	};
 
+	useEffect(() => {
+		async function getData() {
+			setBook(userData);
+			setProfilePic(userData.pic);
+		}
+		getData();
+	}, []);
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
 		if (validateForm) {
-			await AddNewBook(JSON.stringify(book));
-
-			setBook({
-				pic: null,
-				title: "",
-				author: "",
-				publicationDate: "",
-				genre: "",
-				isbn: "",
-				description: "",
-			});
+			await EditBook(
+				JSON.stringify({
+					id: book.id,
+					pic: profilePic,
+					title: book.title,
+					author: book.author,
+					status: book.status,
+					genre: book.genre,
+					ISBN: book.ISBN,
+					description: book.description,
+				})
+			);
+			
+			window.location.reload();
 			setErrors({});
 			return true;
 		} else {
@@ -132,17 +148,12 @@ export default function Account() {
 			newErrors.author = "Author is required";
 		}
 
-		if (book.publicationDate.trim() === "") {
-			isValid = false;
-			newErrors.publicationDate = "Publication date is required";
-		}
-
 		if (book.genre.trim() === "") {
 			isValid = false;
 			newErrors.genre = "Genre is required";
 		}
 
-		if (book.isbn.trim() === "") {
+		if (book.ISBN.trim() === "") {
 			isValid = false;
 			newErrors.isbn = "ISBN is required";
 		}
@@ -164,24 +175,12 @@ export default function Account() {
 		//}
 		return true;
 	};
-	setTitle("Add Book");
+	setTitle("Edit Book");
 	return (
 		<>
-			<Box
-				component='main'
-				sx={{
-					flexGrow: 1,
-					py: 8,
-				}}
-			>
+			<Box component='main'>
 				<Container maxWidth='lg'>
-					<Stack spacing={3}>
-						{isLoading ? (
-							<Skeleton variant='text' width={200} height={40} />
-						) : (
-							<Typography variant='h4'>Account</Typography>
-						)}
-						<br />
+					<Stack>
 						<Grid container spacing={5}>
 							<Grid item xs={12} md={6} lg={4}>
 								{isLoading ? (
@@ -252,59 +251,47 @@ export default function Account() {
 									</Card>
 								)}
 							</Grid>
-							<Grid item xs={12} md={6} lg={8}>
+							<Grid item xs={5} md={3} lg={8}>
 								{isLoading ? (
 									<Skeleton variant='rectangular' height={400} />
 								) : (
 									<form autoComplete='off' noValidate onSubmit={handleSubmit}>
 										<Card>
-											<CardHeader
-												defaultExpanded
-												subheader='Enter book details'
-												title='Book Data Inserter'
-											/>
 											<br />
 											<CardContent sx={{ pt: 0 }}>
 												<Box>
-													<Grid container spacing={3}>
+													<Grid container spacing={1}>
 														<Grid item xs={12}>
-															<Typography>Title</Typography>
-															<TextField
-																fullWidth
-																name='title'
-																value={book.title}
-																onChange={handleInputChange}
-																error={!!errors.title}
-																helperText={errors.title}
-															/>
+															<Stack direction='row' spacing={1}>
+																<FormControl fullWidth>
+																	<TextField
+																		name='title'
+																		value={book.title}
+																		onChange={handleInputChange}
+																		error={!!errors.title}
+																		helperText={errors.title}
+																	/>
+																</FormControl>
+																<FormControl fullWidth>
+																	<TextField
+																		name='author'
+																		value={book.author}
+																		onChange={handleInputChange}
+																		error={!!errors.author}
+																		helperText={errors.author}
+																	/>
+																	{errors.dob && (
+																		<Typography
+																			variant='body2'
+																			sx={{ color: "#f80202" }}
+																		>
+																			{errors.dob}
+																		</Typography>
+																	)}
+																</FormControl>
+															</Stack>
 														</Grid>
-														<Grid item xs={12}>
-															<Typography>Author</Typography>
-															<TextField
-																fullWidth
-																name='author'
-																value={book.author}
-																onChange={handleInputChange}
-																error={!!errors.author}
-																helperText={errors.author}
-															/>
-														</Grid>
-														<Grid item xs={12}>
-															<Typography>
-																{errors.publicationDate
-																	? errors.publicationDate
-																	: "Publication Date"}
-															</Typography>
-															<TextField
-																fullWidth
-																type='date'
-																name='publicationDate'
-																value={book.publicationDate}
-																onChange={handleInputChange}
-																error={!!errors.publicationDate}
-																helperText={errors.publicationDate}
-															/>
-														</Grid>
+
 														<Grid item xs={12}>
 															<Typography>
 																{errors.genre ? errors.genre : "Genre"}
@@ -324,8 +311,8 @@ export default function Account() {
 															</Typography>
 															<TextField
 																fullWidth
-																name='isbn'
-																value={book.isbn}
+																name='ISBN'
+																value={book.ISBN}
 																onChange={handleInputChange}
 																onBlur={handleIsbnCheck}
 																error={!!errors.isbn}
@@ -347,13 +334,38 @@ export default function Account() {
 																helperText={errors.description}
 															/>
 														</Grid>
+														<Grid item xs={12} md={6}>
+															<FormControl
+																required
+																fullWidth
+																variant='outlined'
+															>
+																<Select
+																	id='status'
+																	name='status'
+																	value={book.status}
+																	onChange={handleInputChange}
+																>
+																	<MenuItem value='Available'>
+																		{"Available"}
+																	</MenuItem>
+																	<MenuItem value='Rented'>{"Rented"}</MenuItem>
+																	<MenuItem value='Processing'>
+																		{"Processing"}
+																	</MenuItem>
+																	<MenuItem value='Unavailable'>
+																		{"Unavailable"}
+																	</MenuItem>
+																</Select>
+															</FormControl>
+														</Grid>
 													</Grid>
 												</Box>
 											</CardContent>
 											<Divider />
 											<CardActions sx={{ justifyContent: "flex-end" }}>
 												<Button variant='contained' type='submit'>
-													Save Book
+													Update book
 												</Button>
 											</CardActions>
 										</Card>
