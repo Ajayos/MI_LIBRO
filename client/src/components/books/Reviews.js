@@ -29,7 +29,7 @@ const Reviews = ({ bookData }) => {
       time: fDateTime(newComment.commentDate),
     }));
 
-    setComments((prevComments) => [...prevComments, ...updatedComments]);
+    setComments((prevComments) => [ ...updatedComments]);
   }, [bookData.comments]);
 
   const handleSendComment = async () => {

@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, Avatar, Card } from "@mui/material";
+import { Box, Container, Avatar, Card, Rating } from "@mui/material";
 import { fDate, fDateTime } from "../../utils/formatTime";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useAuth } from "../../contexts/AuthContext";
 const History = ({ bookData }) => {
 	const [bookData_, setBookData] = useState([]);
-	const { user } = useAuth();
+const { user } = useAuth();
 
-	useEffect(() => {
-		bookData.buyers.map((buyer, i) => {
-			var his = {
-				id: buyer.id,
-				name: buyer.user.name,
-				pic: buyer.user.pic,
-				rentDate: fDateTime(buyer.rentDate),
-				returnDate: fDateTime(buyer.returnDate),
-				stars: buyer.stars,
-				itsYou: buyer.user._id === user.id ? true : false,
-			};
-			return setBookData((prev) => [...prev, his]);
-		});
-    return 
-    //return setBookData((prev) => [...prev, {id: bookData.rented.id, name: bookData.rented.user.name, pic: bookData.rented.user.pic, rentDate:fDateTime(bookData.rented.rentDate), returnDate: "...."}]);
-	}, []);
+useEffect(() => {
+  if (bookData && bookData.buyers && Array.isArray(bookData.buyers)) {
+    const updatedBookData = bookData.buyers.map((buyer) => ({
+      id: buyer.id,
+      name: buyer.user.name,
+      pic: buyer.user.pic,
+      rentDate: fDateTime(buyer.rentDate),
+      returnDate: fDateTime(buyer.returnDate),
+      stars: buyer.stars,
+      itsYou: buyer.user._id === user.id ? true : false,
+    }));
+    setBookData((prev) => [...updatedBookData]);
+  }
+}, []);
+
 
 	const columns = [
 		{
@@ -55,8 +54,11 @@ const History = ({ bookData }) => {
 			field: "stars",
 			headerName: "stars",
 			flex: 1,
+			renderCell: (params) => (
+				<Rating name="read-only" value={params.row.stars} readOnly />
+			),
 		},
-	];
+	]; //
 
 	return (
 		<Box>

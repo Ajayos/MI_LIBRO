@@ -12,7 +12,6 @@ export default function ProductsPage() {
     const fetchBooks = async () => {
         try {
           const response = await API.get("/Books");
-          console.log("Books: ", response.data)
           setBooks(response.data);
           setIsLoading(false);
         } catch (error) {

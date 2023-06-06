@@ -2,6 +2,8 @@
 
 MI LIBRO is a book management system built with `Node.js`, `Express` and `Reactjs` with `MUI` Theme.
 
+[![Docker Repository on Quay](https://quay.io/repository/ajay_o_s/mi_libro/status "Docker Repository on Quay")](https://quay.io/repository/ajay_o_s/mi_libro)
+
 ## Project Information
 
 - Version: 1.0.1
