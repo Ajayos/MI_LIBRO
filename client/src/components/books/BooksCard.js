@@ -55,18 +55,26 @@ export default function ShopProductCard({ product }) {
 		genre,
 		isbn,
 		description,
-		usersPics,
+		
 	} = product;
-
 	const [liked, setLiked] = useState(false);
 	const [openModal, setOpenModal] = useState(false);
 	const [selectedTab, setSelectedTab] = useState(0);
+	const [isPic, setIsPic] = useState(false);
+	const [usersPics, setUsersPics] = useState([]);
 
 	useEffect(() => {
 		for (var i = 0; i < product.likes.length; i++) {
 			if (product.likes[i]._id === user.id) {
 				setLiked(true);
 			}
+		}
+		const std = product.buyers.map((by) => {
+			return {pic: by.user.pic, name: by.user.name}
+		})
+		if(std) {
+			setIsPic(true);
+			setUsersPics(std);
 		}
 	}, []);
 	const handleTabChange = (event, newValue) => {
@@ -191,13 +199,13 @@ export default function ShopProductCard({ product }) {
 					<IconButton color={liked ? "error" : "default"} onClick={handleLike}>
 						{liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
 					</IconButton>
-					{usersPics && (
+					{isPic && (
 						<AvatarGroup max={12}>
 							{usersPics.map((userPic, index) => (
 								<Avatar
 									key={index}
-									src={userPic}
-									alt={`User ${index + 1}`}
+									src={userPic.pic}
+									alt={userPic.name}
 									sx={{ width: 24, height: 24 }}
 								/>
 							))}

@@ -29,7 +29,7 @@ router.post("/login", Admin.login);
 // Route: POST /api/v1/admins
 router.post("/new", Admin.createAccount);
 
-router.delete("/user/delete", protectAdmin, Admin.deleteAccount);
+router.put("/user/delete/:id", protectAdmin, Admin.deleteAccount);
 
 router.put("/user/access", protectAdmin, Admin.updateUserAccess);
 
@@ -44,6 +44,8 @@ router.get("/users/:id", protectAdmin, Admin.getUserData);
 router.get("/books", protectAdmin, Admin.AllBooks)
 
 router.get("/books/:id", protectAdmin, Admin.getBook)
+
+router.delete("/books/:id", protectAdmin, Admin.deleteBook);
 
 router.post("/books", protectAdmin, Admin.createBook);
 

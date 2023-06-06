@@ -551,6 +551,36 @@ export function AuthProvider({ children }) {
             }
         }
     }
+	async function returnBook(id, star) {
+		try {
+            const response = await API.post(`/users/books/return`, JSON.stringify({id:id, stars:star}));
+            return response.data;
+        } catch (error) {
+            if (error.response) {
+                setError({
+                    message: error.response.data.message,
+                    status: error.response.status,
+                });
+            } else {
+                setError("An error occurred");
+            }
+        }
+    }
+	async function DeleteBook(id,) {
+		try {
+            const response = await API.delete(`/admins/books/` + id,);
+            return response.data;
+        } catch (error) {
+            if (error.response) {
+                setError({
+                    message: error.response.data.message,
+                    status: error.response.status,
+                });
+            } else {
+                setError("An error occurred");
+            }
+        }
+    }
 	async function LikeBook(id, like) {
 			if (like) {
 				await API.post(`/users/books/liked`, JSON.stringify({ id: id })).catch(
@@ -607,6 +637,8 @@ export function AuthProvider({ children }) {
 				API,
 				user,
 				Forgot,
+				returnBook,
+				DeleteBook,
 				GetDashboradData,
 				EditBook,
 				sendRequest,

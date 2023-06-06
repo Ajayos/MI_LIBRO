@@ -2,13 +2,10 @@ import React from "react";
 import { Box, Button } from "@mui/material";
 import { useAuth } from "../../../contexts/AuthContext";
 const Settings = ({ userData }) => {
-    const { BlockUser, DeleteUser } = useAuth();
-	const handleBlockUser = async() => {
-		await BlockUser({ id: userData.id, access: !userData.access})
-        window.location.reload()
-	};
-	const handleDeleteUser = async() => {
-		await DeleteUser(userData._id);
+    const { DeleteBook } = useAuth();
+	
+	const handleDelete = async() => {
+		await DeleteBook(userData._id);
         window.location.reload()
 	};
 
@@ -17,23 +14,13 @@ const Settings = ({ userData }) => {
 			{/* Render the block user button */}
 			<Button
 				variant='contained'
-				color={!userData.access ? "error" : "success"}
-				onClick={handleBlockUser}
-				disabled={userData.delete}
+				color={"success"}
+				onClick={handleDelete}
 			>
-				{!userData.access ? "Unblock User" : "Block User"}
+				{"Delete Book"}
 			</Button>
 
 			<Box sx={{ padding: 2 }} />
-
-			{/* Render the delete user button */}
-			<Button
-				variant='contained'
-				color={userData.delete ? "error" : "success"}
-				onClick={handleDeleteUser}
-			>
-				Delete User
-			</Button>
 		</Box>
 	);
 };

@@ -57,4 +57,6 @@ router.post("/books/comment", protectUser, User.commentBook);
 
 router.post("/book/request", protectUser, User.requestBook);
 
+router.post("/books/return", protectUser, User.returnBook);
+
 module.exports = router;

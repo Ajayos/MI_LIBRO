@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, IconButton, Popover, Card } from "@mui/material";
+import { Avatar, IconButton, Popover, Card, Tabs, Tab, Modal, Box } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { Helmet } from "react-helmet-async";
 import Container from "@mui/material/Container";
-import PopoverContent from "./User/PopoverContent";
 import { useAuth } from "../../contexts/AuthContext";
 import API from "../../utils/api"; 
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { fDate } from "../../utils/formatTime";
+
+import Details from "../../components/books/Details";
+import Review from "../../components/books/Reviews";
+import History from "../../components/books/History";
 
 const UserFetcher = () => {
   const { GetDashboradData, adminHomeData } = useAuth();
@@ -15,13 +18,13 @@ const UserFetcher = () => {
   const [popoverContent, setPopoverContent] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
+	const [selectedTab, setSelectedTab] = useState(0);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await API.post("/users/mybooks");
-        console.log("Response: ", response.data)
-        const users = response.data.requestedBooks.map((user) => ({ id: user._id, ...user }));
+        const users = response.data.rentedBooks.map((user) => ({ id: user._id, ...user }));
         setUsers(users);
         setLoading(false);
       } catch (error) {
@@ -32,21 +35,12 @@ const UserFetcher = () => {
 
     fetchUsers();
   }, []);
+  const handleTabChange = (event, newValue) => {
+		setSelectedTab(newValue);
+	};
+ 
 
-  const handleViewDetails = (user) => {
-    setPopoverContent(user);
-  };
-
-  const handleEditUser = (user) => {
-    // Handle edit action here
-    console.log("Edit user:", user);
-  };
-
-  const handleDeleteUser = (user) => {
-    // Handle delete action here
-    console.log("Delete user:", user);
-  };
-
+ 
   const handlePopoverClose = () => {
     setPopoverContent(null);
   };
@@ -59,14 +53,18 @@ const UserFetcher = () => {
     setOpenModal(false);
   }; //lastSeen
 
-const TABLE_HEAD = [
-	{ id: "image", label: "Image", alignRight: false },
-	{ id: "title", label: "Title", alignRight: false },
-	{ id: "author", label: "Author", alignRight: false },
-	{ id: "publishedDate", label: "Published Date", alignRight: false },
-	{ id: "genre", label: "Genre", alignRight: false },
-	{ id: "actions", label: "Actions", alignRight: false },
-];
+
+  const handleViewDetails = (user) => {
+    setPopoverContent(user);
+    setOpenModal(true);
+  };
+
+ const handleCloseModal = () => {
+		setOpenModal(false);
+    setPopoverContent(null);
+	};
+
+
 const columns = [
     {
       field: "image",
@@ -122,21 +120,52 @@ const columns = [
         </Card>
       </Container>
 
-      <Popover
-        open={popoverContent !== null}
-        anchorEl={popoverContent}
-        onClose={handlePopoverClose}
-        anchorOrigin={{
-          vertical: "center",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "center",
-          horizontal: "center",
-        }}
-      >
-        {popoverContent && <PopoverContent user={popoverContent} />}
-      </Popover>
+      <Modal
+					open={openModal}
+					onClose={handleCloseModal}
+					aria-labelledby='parent-modal-title'
+					aria-describedby='parent-modal-description'
+				>
+					<Box
+						sx={{
+							position: "absolute",
+							top: "50%",
+							left: "50%",
+							transform: "translate(-50%, -50%)",
+							height: "90%",
+							width: "90%",
+							bgcolor: "background.paper",
+							border: "2px solid #000",
+							boxShadow: 24,
+							pt: 2,
+							px: 4,
+							pb: 3,
+						}}
+					>
+						<Box>
+							<Tabs value={selectedTab} onChange={handleTabChange} centered>
+								<Tab label='Details' />
+								<Tab label='Review' />
+								<Tab label='History' />
+							</Tabs>
+							{selectedTab === 0 && (
+								<Container sx={{ marginTop: 5, marginBlockEnd: 10 }}>
+									<Details bookData={popoverContent} />
+								</Container>
+							)}
+							{selectedTab === 1 && (
+								<Container>
+									<Review bookData={popoverContent} />
+								</Container>
+							)}
+							{selectedTab === 2 && (
+								<Container>
+									<History bookData={popoverContent} />
+								</Container>
+							)}
+						</Box>
+					</Box>
+				</Modal>
     </>
   );
 };

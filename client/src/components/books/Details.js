@@ -15,6 +15,9 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
+	Modal,
+	Typography,
+	Rating,
 } from "@mui/material";
 import Toast from "../../Toast";
 import { ToastContext } from "../../contexts/Toast";
@@ -23,12 +26,6 @@ const BookDetailsTable = ({ bookData }) => {
 	return (
 		<TableContainer>
 			<Table>
-				<TableHead>
-					<TableRow>
-						<TableCell></TableCell>
-						<TableCell></TableCell>
-					</TableRow>
-				</TableHead>
 				<TableBody>
 					<TableRow>
 						<TableCell component='th' scope='row'>
@@ -67,14 +64,15 @@ const BookDetailsTable = ({ bookData }) => {
 };
 
 const Book = ({ bookData }) => {
-	const { user, LikeBook, sendRequest } = useAuth();
+	const { user, LikeBook, sendRequest , returnBook} = useAuth();
 	const { showToast } = useContext(ToastContext);
 	const [bookStatus_, setBookStatus] = useState();
+	const [openModal, setOpenModal] = useState(false);
+	const [value, setValue] = React.useState(0);
 
 	useEffect(() => {
-		setBookStatus(bookStatus())
-	})
-	
+		setBookStatus(bookStatus());
+	}, []);
 
 	const handleLikeButtonClick = () => {
 		LikeBook(bookData._id, IsUserLiked ? false : true);
@@ -82,8 +80,10 @@ const Book = ({ bookData }) => {
 
 	const handleActionButtonClick = () => {
 		if (bookData.status === "Available") {
-			sendRequest({id: bookData._id})
-			return showToast("Hello, Toast!", "success");
+			sendRequest({ id: bookData._id });
+			return showToast("Requested !", "success");
+		} else if (bookStatus() === "Return Book") {
+			setOpenModal(true);
 		} else {
 			return showToast("Book Not Available for rend!", "error");
 		}
@@ -98,12 +98,26 @@ const Book = ({ bookData }) => {
 		return is;
 	};
 
+	const handleOpenModal = () => {
+		//window.location.href = `/book/${_id}`;
+		setOpenModal(true);
+	};
+	const handelSubmit = async () => {
+		await returnBook(bookData._id, value);
+		setOpenModal(false);
+		window.location.reload();
+    };
+
+	const handleCloseModal = () => {
+		setOpenModal(false);
+	};
+
 	const bookStatus = () => {
 		let status = bookData.status;
 		if (status === "Available") {
 			return "Available";
 		} else if (status === "Rented") {
-			if (bookData.rented.user === user._id) {
+			if (bookData.rented.user === user.id) {
 				return "Return Book";
 			}
 			return "Rented";
@@ -169,7 +183,18 @@ const Book = ({ bookData }) => {
 						justifyContent='flex-end'
 						sx={{ marginTop: 3 }}
 					>
-						<Button color={bookStatus_ === "Available" ?  "primary" : (bookStatus_ === "Request send" || bookStatus_ ===  "Book on a request") ? "warning" : "error" } variant='contained' onClick={handleActionButtonClick} >
+						<Button
+							color={
+								bookStatus_ === "Available" || bookStatus_ === "Return Book"
+									? "primary"
+									: bookStatus_ === "Request send" ||
+									  bookStatus_ === "Book on a request"
+									? "warning"
+									: "error"
+							}
+							variant='contained'
+							onClick={handleActionButtonClick}
+						>
 							{bookStatus_}
 						</Button>
 					</Stack>
@@ -189,6 +214,53 @@ const Book = ({ bookData }) => {
 					</Container>
 				</Box>
 			</Stack>
+			<Modal
+				open={openModal}
+				onClose={handleCloseModal}
+				aria-labelledby='parent-modal-title'
+				aria-describedby='parent-modal-description'
+			>
+				<Box
+					sx={{
+						position: "absolute",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
+						height: "50%",
+						width: "50%",
+						bgcolor: "background.paper",
+						border: "2px solid #000",
+						boxShadow: 24,
+						pt: 2,
+						px: 4,
+						pb: 3,
+					}}
+				>
+					<Box>
+						<Typography>Do you want to Return ?</Typography>
+						<br />
+						<br />
+						<Typography component='legend'>Rate</Typography>
+						<Rating
+							name='simple-controlled'
+							value={value}
+							onChange={(event, newValue) => {
+								setValue(newValue);
+							}}
+						/>
+						<br />
+						<br />
+						<br />
+						<Button variant='contained' onClick={handleCloseModal}>
+							Cancel
+						</Button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<Button variant='contained' onClick={handelSubmit}>
+							Yes
+						</Button>
+					</Box>
+				</Box>
+			</Modal>
 		</Box>
 	);
 };

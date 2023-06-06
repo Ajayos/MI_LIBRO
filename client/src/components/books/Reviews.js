@@ -20,7 +20,6 @@ const Reviews = ({ bookData }) => {
         newComment.message !== "" &&
         !comments.some((comment) => comment.id === newComment._id)
     );
-	
 
     const updatedComments = filteredComments.map((newComment) => ({
       id: newComment._id,

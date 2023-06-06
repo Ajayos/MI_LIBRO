@@ -8,6 +8,7 @@ import {
 	Tab,
 	Box,
 	Skeleton,
+	Button,
 } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -23,25 +24,24 @@ import Settings from "./edit/settings";
 const UserFetcher = () => {
 	const { setTitle } = useCome();
 	const [users, setUsers] = useState([]);
-	const [isSet, setIsSet] = useState(false);
-	const [openBook, setOpenBook] = useState([]);
+	const [openBook, setOpenBook] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
 	const [selectedTab, setSelectedTab] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
-
+	const fetchUsers = async () => {
+		try {
+			const response = await API.get("/admins/users");
+			setIsLoading(false);
+			const userData = response.data.map((user) => ({
+				id: user._id,
+				...user,
+			}));
+			setUsers(userData);
+		} catch (error) {
+			console.log("Error: ", error);
+		}
+	};
 	useEffect(() => {
-		
-		const fetchUsers = async () => {
-			try {
-				const response = await API.get("/admins/users");
-				const users = response.data.map((user) => ({ id: user._id, ...user }));
-				setUsers(users);
-				setIsLoading(false);
-			} catch (error) {
-				console.log("Error: ", error);
-			}
-		};
-
 		fetchUsers();
 	}, []);
 
@@ -49,12 +49,12 @@ const UserFetcher = () => {
 		setOpenBook(book);
 		setOpenModal(true);
 	};
+
 	const handleTabChange = (event, newValue) => {
 		setSelectedTab(newValue);
 	};
 
 	const handleOpenModal = () => {
-		//window.location.href = `/book/${_id}`;
 		setOpenModal(true);
 	};
 
@@ -63,9 +63,14 @@ const UserFetcher = () => {
 		setOpenBook(null);
 	};
 
+	const handleRefresh = () => {
+		setIsLoading(true);
+		fetchUsers();
+	};
+
 	const columns = [
 		{
-			field: "image",
+			field: "pic",
 			headerName: "Avatar",
 			flex: 0.5,
 			renderCell: (params) => (
@@ -110,10 +115,19 @@ const UserFetcher = () => {
 			),
 		},
 	];
+
 	setTitle("User");
 
 	return (
 		<>
+			<Button
+				variant='outlined'
+				color='primary'
+				onClick={handleRefresh}
+				sx={{ top: 5, right:-900, m: 2 }}
+			>
+				Refresh
+			</Button>
 			<Container>
 				<Card>
 					{isLoading ? (
@@ -166,12 +180,12 @@ const UserFetcher = () => {
 							)}
 							{selectedTab === 1 && (
 								<Container>
-									<Info userData={openBook}  />
+									<Info userData={openBook} />
 								</Container>
 							)}
 							{selectedTab === 2 && (
 								<Container>
-									<Edit userData={openBook}/>
+									<Edit userData={openBook} />
 								</Container>
 							)}
 							{selectedTab === 3 && (
