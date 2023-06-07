@@ -6,7 +6,7 @@
  * @link : https://github.com/Ajayos/MI_LIBRO
  * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 11:12:02
- * @modified : 2023-06-03 23:19:14
+ * @modified : 2023-06-07 23:19:14
  * @editor : Ajayos
  * @file : bookModel.js
  * @path : /Models/bookModel.js
@@ -22,7 +22,6 @@
 
 // Import the mongoose package
 const mongoose = require("mongoose");
-
 
 /**
  * Book schema for managing book data.
@@ -73,21 +72,21 @@ const bookSchema = new mongoose.Schema({
 	// Define the 'comments' field as an array of Comment objects
 	comments: [
 		{
-		  id: {
-			type: String,
-		  },
-		  message: {
-			type: String,
-		  },
-		  user: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "User",
-		  },
-		  commentDate: {
-			type: Date,
-		  },
+			id: {
+				type: String,
+			},
+			message: {
+				type: String,
+			},
+			user: {
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "User",
+			},
+			commentDate: {
+				type: Date,
+			},
 		},
-	  ],
+	],
 	// Define the 'likes' field as an array of Like objects
 	likes: [
 		{

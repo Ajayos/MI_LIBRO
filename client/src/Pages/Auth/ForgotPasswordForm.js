@@ -16,6 +16,7 @@ import { LoadingButton } from "@mui/lab";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useSnackbar } from "notistack";
 import { useAuth } from "../../contexts/AuthContext";
+import { login } from "../../utils/handleAuth";
 
 export default function LoginForm() {
 	const navigate = useNavigate();
@@ -89,27 +90,29 @@ export default function LoginForm() {
 		event.preventDefault();
 
 		if (validateForm()) {
-			try {
-				setLoading(true);
-				var { message, status } = Forgot(
-					formData.email,
-					formData.dob,
-					formData.newPassword
-				);
-				if (status === 200) {
-					enqueueSnackbar("Password changed successfully", {
-						variant: "success",
-					});
-					window.location.href = "/home";
-				} else {
-					enqueueSnackbar(message, { variant: "error" });
-					setErrors({ email: message, password: message });
-				}
-				setLoading(false);
-			} catch (error) {
-				setLoading(false);
-				setErrors({ email: "Invalid email/username or password" });
-			}
+			setLoading(true);
+			await Forgot(formData.email, formData.dob, formData.newPassword)
+				.then((response) => {
+					console.log("h")
+					enqueueSnackbar(response.data.message, { variant: "error" });
+					setLoading(false);
+				})
+				.catch((error) => {
+					console.log("hv")
+					setLoading(false);
+					if (error.response) {
+						setErrors({
+							email: error.response.data.message,
+							password: error.response.data.message,
+						});
+						enqueueSnackbar(error.response.data.message, {
+							variant: "error",
+						});
+					} else {
+						setErrors({ email: "An error occurred" });
+						enqueueSnackbar("An error occurred", { variant: "error" });
+					}
+				});
 		}
 	};
 

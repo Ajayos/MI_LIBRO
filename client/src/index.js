@@ -24,15 +24,20 @@ root.render(
 				<ComeProvider>
 					<BrowserRouter>
 						<AuthProvider>
-							<SocketProvider>
-								<ToastProvider>
-									<ThemeProvider>
-										<ScrollToTop />
-										<StyledChart />
-										<Router />
-									</ThemeProvider>
-								</ToastProvider>
-							</SocketProvider>
+						<SnackbarProvider
+								maxSnack={3}
+								anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+							>
+								<SocketProvider>
+									<ToastProvider>
+										<ThemeProvider>
+											<ScrollToTop />
+											<StyledChart />
+											<Router />
+										</ThemeProvider>
+									</ToastProvider>
+								</SocketProvider>
+							</SnackbarProvider>
 						</AuthProvider>
 					</BrowserRouter>
 				</ComeProvider>

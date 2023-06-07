@@ -6,7 +6,7 @@
  * @link : https://github.com/Ajayos/MI_LIBRO
  * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 10:19:06
- * @modified : 2023-06-03 13:06:25
+ * @modified : 2023-06-07 13:06:25
  * @editor : Ajayos
  * @file : adminModel.js
  * @path : /Models/adminModel.js
@@ -19,32 +19,32 @@
  */
 
 // Import the mongoose package
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 /**
  * Admin schema for managing admin data.
  */
 const adminSchema = new mongoose.Schema({
-  // Define the 'username' field with type String and it is required and should be unique
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  // Define the 'name' field with type String
-  name: {
-    type: String,
-  },
-  // Define the 'pic' field with type String and it is required
-  pic: {
-    type: String,
-    required: true,
-  },
-  // Define the 'password' field with type String and it is required
-  password: {
-    type: String,
-    required: true,
-  },
+	// Define the 'username' field with type String and it is required and should be unique
+	email: {
+		type: String,
+		required: true,
+		unique: true,
+	},
+	// Define the 'name' field with type String
+	name: {
+		type: String,
+	},
+	// Define the 'pic' field with type String and it is required
+	pic: {
+		type: String,
+		required: true,
+	},
+	// Define the 'password' field with type String and it is required
+	password: {
+		type: String,
+		required: true,
+	},
 });
 
 /**
@@ -56,6 +56,6 @@ const adminSchema = new mongoose.Schema({
  * @param {String} password - The password of the admin. (required)
  * @returns {Model} The Admin model.
  */
-const Admins = mongoose.model('Admin', adminSchema);
+const Admins = mongoose.model("Admin", adminSchema);
 
 module.exports = Admins;

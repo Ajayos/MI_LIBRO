@@ -195,24 +195,40 @@ export default function LoginForm() {
     event.preventDefault();
 
     if (validateForm()) {
-      try {
         setLoading(true);
-        const { message, status } = SignUp(formData);
-        
-        if (status === 200) {
-          Toast(message, { variant: "success" });
-          window.location.href = "/home";
-        } else {
-          enqueueSnackbar(message, { variant: "error" });
-          setErrors({ email: message, password: message });
-        }
-
-        //window.location.reload()
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        setErrors({ email: "Invalid email/username or password" });
-      }
+        await SignUp(formData).then((response) => {
+          console.log("hi")
+          enqueueSnackbar(response.status, { variant: "success" });
+          if (response.status === 200) {
+            const { token, name, email, id, pic } = response.data;
+            console.log(response.data);
+            //login(token, name, email, id, pic, "user");
+            //setAccess(false);
+            //setMyToken(token);
+            //setIsAuthenticated(true);
+    
+            return { message: "Signed up successfully", status: 200 };
+          } else {
+            return { message: response.data.message, status: response.status };
+          }
+        })
+        .catch((error) => {
+          console.log("hii")
+          enqueueSnackbar(error.response.status, { variant: "success" });
+          if (error.response) {
+            return { message: error.response.data.message, status: error.response.status}
+          } else {
+            return { message: "An error occurred", status: error.response.status}
+          }
+        });
+//console.log(status)
+       // if (status === 200) {
+       //   enqueueSnackbar(message, { variant: "success" });
+       //   window.location.href = "/home";
+       // } else {
+       //   enqueueSnackbar(message, { variant: "error" });
+       //   setErrors({ email: message, password: message });
+       // }
     }
   };
 

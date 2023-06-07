@@ -6,7 +6,7 @@
  * @link : https://github.com/Ajayos/MI_LIBRO
  * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 10:14:13
- * @modified : 2023-06-03 14:11:12
+ * @modified : 2023-06-07 14:11:12
  * @editor : Ajayos
  * @file : userModel.js
  * @path : /Models/userModel.js
@@ -25,101 +25,101 @@ const mongoose = require("mongoose");
  * User schema for managing user data.
  */
 const userSchema = new mongoose.Schema(
-  {
-    // Define the 'password' field with type String and it is required
-    password: {
-      type: String,
-      required: true,
-    },
-    // Define the 'name' field with type String and it is required
-    name: {
-      type: String,
-      required: true,
-    },
-    // Define the 'phoneNumber' field with type String and it is required, and should be unique
-    phoneNumber: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    // Define the 'dob' field with type Date and it is required
-    dob: {
-      type: String,
-      required: true,
-    },
-    // Define the 'pic' field with type String and it is required
-    pic: {
-      type: String,
-      required: true,
-    },
-    // Define the 'place' field with type String and it is required
-    place: {
-      type: String,
-      required: true,
-    },
-    // Define the 'age' field with type Number and it is required
-    age: {
-      type: Number,
-      required: true,
-    },
-    // Define the 'email' field with type String, it is required, and should be unique
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    // Define the 'education' field with type String and it is required
-    education: {
-      type: String,
-      required: true,
-    },
-    // Define the 'contactDetails' field with type String and it is required
-    contactDetails: {
-      type: String,
-      required: true,
-    },
-    // Define the 'access' field with type Boolean and it is required
-    access: {
-      type: Boolean,
-      default: true,
-    },
-    // Define the 'delete' field with type Boolean and it is required
-    delete: {
-      type: Boolean,
-      default: false,
-    },
-    // Define the 'booksRented' field with type Number and default value 0
-    booksRented: {
-      type: Number,
-      default: 0,
-    },
-    // Define the 'created' field with type Date and default value Date.now
-    created: {
-      type: Date,
-      default: Date.now,
-    },
-    // Define the 'lastLogin' field with type Date and default value Date.now
-    lastLogin: {
-      type: Date,
-      default: Date.now,
-    },
-    // Define the 'status' field with type String and default value 'inactive' (possible values: 'active', 'inactive', 'blocked', 'deleted')
-    status: {
-      type: String,
-      enum: ["active", "inactive", "blocked", "deleted"],
-    },
-    // Define the 'updated' field with type Date and default value Date.now
-    updated: {
-      type: Date,
-      default: Date.now,
-    },
-  },
-  {
-    timestamps: {
-      createdAt: "created",
-      updatedAt: "updated",
-    },
-  }
+	{
+		// Define the 'password' field with type String and it is required
+		password: {
+			type: String,
+			required: true,
+		},
+		// Define the 'name' field with type String and it is required
+		name: {
+			type: String,
+			required: true,
+		},
+		// Define the 'phoneNumber' field with type String and it is required, and should be unique
+		phoneNumber: {
+			type: String,
+			required: true,
+			unique: true,
+		},
+		// Define the 'dob' field with type Date and it is required
+		dob: {
+			type: String,
+			required: true,
+		},
+		// Define the 'pic' field with type String and it is required
+		pic: {
+			type: String,
+			required: true,
+		},
+		// Define the 'place' field with type String and it is required
+		place: {
+			type: String,
+			required: true,
+		},
+		// Define the 'age' field with type Number and it is required
+		age: {
+			type: Number,
+			required: true,
+		},
+		// Define the 'email' field with type String, it is required, and should be unique
+		email: {
+			type: String,
+			required: true,
+			unique: true,
+		},
+		// Define the 'education' field with type String and it is required
+		education: {
+			type: String,
+			required: true,
+		},
+		// Define the 'contactDetails' field with type String and it is required
+		contactDetails: {
+			type: String,
+			required: true,
+		},
+		// Define the 'access' field with type Boolean and it is required
+		access: {
+			type: Boolean,
+			default: true,
+		},
+		// Define the 'delete' field with type Boolean and it is required
+		delete: {
+			type: Boolean,
+			default: false,
+		},
+		// Define the 'booksRented' field with type Number and default value 0
+		booksRented: {
+			type: Number,
+			default: 0,
+		},
+		// Define the 'created' field with type Date and default value Date.now
+		created: {
+			type: Date,
+			default: Date.now,
+		},
+		// Define the 'lastLogin' field with type Date and default value Date.now
+		lastLogin: {
+			type: Date,
+			default: Date.now,
+		},
+		// Define the 'status' field with type String and default value 'inactive' (possible values: 'active', 'inactive', 'blocked', 'deleted')
+		status: {
+			type: String,
+			enum: ["active", "inactive", "blocked", "deleted"],
+		},
+		// Define the 'updated' field with type Date and default value Date.now
+		updated: {
+			type: Date,
+			default: Date.now,
+		},
+	},
+	{
+		timestamps: {
+			createdAt: "created",
+			updatedAt: "updated",
+		},
+	}
 );
 
 /**

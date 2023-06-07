@@ -18,7 +18,7 @@
     "homepage": "https://github.com/Ajayos/MI_LIBRO#readme",
     "dependencies": {
         "@ajayos/nodelog": "^1.0.2",
-        "@ajayos/nodelogger": "^1.0.3",
+        "@ajayos/nodelogger": "^1.0.6",
         "@ajayos/nodemon": "^0.0.5",
         "axios": "^1.4.0",
         "bcryptjs": "^2.4.3",

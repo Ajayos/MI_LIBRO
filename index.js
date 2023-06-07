@@ -6,7 +6,7 @@
  * @link : https://github.com/Ajayos/MI_LIBRO
  * @authors : Ajay, Akarsh, Abinas, Saran, Yasir
  * @created : 2023-05-17 10:02:42
- * @modified : 2023-05-20 15:25:38
+ * @modified : 2023-06-07 15:25:38
  * @editor : Ajayos
  * @file : index.js
  * @path : /index.js
@@ -33,7 +33,7 @@ const schedule = require("node-schedule");
 const { log } = require("@ajayos/nodelogger");
 
 // Import local modules
-//const setupLogger = require("./lib/Logger");
+const setupLogger = require("./lib/Logger");
 const apiRouter = require("./Routers");
 const { connectDB, User, Book, Admin } = require("./Models");
 const errorHandler = require("./middleware/errorHandler");
@@ -46,7 +46,7 @@ const SERVER_PORT = process.env.PORT || 3000;
 const publicPath = path.join(__dirname, "/client/build");
 
 // Set up the logger
-//setupLogger();
+setupLogger();
 
 // connect to Database
 connectDB(process.env.MONGO_URL);

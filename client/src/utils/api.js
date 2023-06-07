@@ -16,10 +16,10 @@ if (token) {
 }
 
 const API = {
-	post: (url, data) => api.post(url, data).catch(handleErrors),
-	put: (url, data) => api.put(url, data).catch(handleErrors),
-	get: (url, data = null) => api.get(url, { params: data }).catch(handleErrors),
-	delete: (url, data = null) => api.delete(url, { data }).catch(handleErrors),
+	post: (url, data) => api.post(url, data),
+	put: (url, data) => api.put(url, data),
+	get: (url, data = null) => api.get(url, { params: data }),
+	delete: (url, data = null) => api.delete(url, { data }),
 };
 
 const handleErrors = (error) => {
@@ -27,18 +27,18 @@ const handleErrors = (error) => {
 		if (error.response) {
 			const { status } = error.response;
 			if (status === 500) {
-				reject({ message: error.response.data.message, statusCode: 500 });
-				return <Toast open={true} message='Hello, Toast!' severity='success' />;
+				//reject({ message: error.response.data.message, statusCode: 500 });
+				return 
 			} else if (status === 401) {
 				return <Toast open={true} message='Hello, Toast!' severity='success' />;
 				//reject({ message: "Unauthorized", statusCode: 401 });
 			} else if (status === 404) {
-				reject({ message: "Page not found", statusCode: 404 });
+				//reject({ message: "Page not found", statusCode: 404 });
 				return <Toast open={true} message='Hello, Toast!' severity='success' />;
 			}
 		} else {
 			console.error(error);
-			reject({ message: "An error occurred", statusCode: 0 });
+			//reject({ message: "An error occurred", statusCode: 0 });
 			return <Toast open={true} message='Hello, Toast!' severity='success' />;
 		}
 	});
